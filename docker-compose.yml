@@ -1,0 +1,19 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: web.dockerfile
+    image: codesentry-web
+    container_name: codesentry-web
+    working_dir: /var/www/codesentry
+    volumes:
+      - ./web:/var/www/codesentry
+    ports:
+      - "8089:8089"
+    networks:
+      - codesentry-network
+
+networks:
+  codesentry-network:
+    driver: bridge
