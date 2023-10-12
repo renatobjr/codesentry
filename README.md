@@ -32,10 +32,10 @@ Install dependencies
 npm install
 ~~~
 
-Start the server  
+Run Docker  
 
 ~~~bash  
-npm run start
+docker-compose up 
 ~~~  
 
 ## Features  
