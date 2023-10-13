@@ -1,12 +1,14 @@
+<script setup>
+
+</script>
+
 <template>
   <v-app>
-    <default-bar />
-
-    <default-view />
+    <v-main class="bg-blue-grey-lighten-5">
+      <slot />
+    </v-main>
   </v-app>
 </template>
 
-<script setup>
-  import DefaultBar from './AppBar.vue'
-  import DefaultView from './View.vue'
-</script>
+
+

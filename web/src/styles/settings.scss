@@ -8,3 +8,12 @@
 // @use 'vuetify/settings' with (
 //   $color-pack: false
 // );
+
+a {
+  text-decoration: none;
+  color: #1867C0;
+}
+
+.btn-login {
+  margin-bottom: 10px;
+}
