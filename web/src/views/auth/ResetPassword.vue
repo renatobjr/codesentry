@@ -1,9 +1,8 @@
 <script setup>
-import card from "@/components/login/Card.vue";
 </script>
 
 <template>
-  <card>
+  <cs-card>
     <template v-slot:title>Reset Password</template>
     <template v-slot:content>
       <form class="mt-5" action="">
@@ -27,12 +26,12 @@ import card from "@/components/login/Card.vue";
     </template>
     <template v-slot:actions>
       <v-btn
-        class="btn-login"
+        class="cs-btn-login"
         variant="flat"
         block
         color="primary"
         >Reset Password</v-btn
       >
     </template>
-  </card>
+  </cs-card>
 </template>

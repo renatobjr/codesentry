@@ -1,6 +1,5 @@
 <script setup>
 import { AUTH_ROUTES } from "@/router/auth";
-import card from "@/components/login/Card.vue";
 import router from "@/router";
 
 const inputs = 6;
@@ -15,7 +14,7 @@ const backToLogin = () => {
 </script>
 
 <template>
-  <card>
+  <cs-card>
     <template v-slot:title>Verify code</template>
     <template v-slot:content>
       <p class="mb-10">Enter the 6-digit code sent to your email.</p>
@@ -33,23 +32,23 @@ const backToLogin = () => {
     <template v-slot:actions>
       <v-btn
         @click="verifyCode"
-        class="btn-login"
+        class="cs-btn-login"
         variant="flat"
         block
         color="primary"
         >Verify code</v-btn
       >
-      <v-btn class="btn-login" variant="flat" block color="secondary"
+      <v-btn class="cs-btn-login" variant="flat" block color="secondary"
         >Resend code</v-btn
       >
       <v-btn
         @click="backToLogin"
-        class="btn-login"
+        class="cs-btn-login"
         variant="flat"
         block
         color="secondary"
         >Back to Login</v-btn
       >
     </template>
-  </card>
+  </cs-card>
 </template>

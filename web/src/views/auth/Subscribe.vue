@@ -1,5 +1,4 @@
 <script setup>
-import card from "@/components/login/Card.vue";
 import router from "@/router";
 
 const back = () => {
@@ -8,7 +7,7 @@ const back = () => {
 </script>
 
 <template>
-  <card>
+  <cs-card>
     <template v-slot:title>Request Subscribe</template>
     <template v-slot:content>
       <form class="mt-5" action="">
@@ -24,7 +23,7 @@ const back = () => {
     </template>
     <template v-slot:actions>
       <v-btn
-        class="btn-login"
+        class="cs-btn-login"
         variant="flat"
         block
         color="primary"
@@ -32,12 +31,12 @@ const back = () => {
       >
       <v-btn
         @click="back"
-        class="btn-login"
+        class="cs-btn-login"
         variant="flat"
         block
         color="secondary"
         >Back</v-btn
       >
     </template>
-  </card>
+  </cs-card>
 </template>

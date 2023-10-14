@@ -1,16 +1,19 @@
 <script setup>
 import { AUTH_ROUTES } from "@/router/auth";
+import { DASH_ROUTES } from "@/router/dashboard";
 import { RouterLink } from "vue-router";
-import card from "@/components/login/Card.vue";
 import router from "@/router";
 
+const login = () => {
+  router.push({ name: DASH_ROUTES.DASHBOARD });
+};
 const subscribe = () => {
   router.push({ name: AUTH_ROUTES.SUBSCRIBE });
 };
 </script>
 
 <template>
-  <card>
+  <cs-card>
     <template v-slot:title>Login</template>
     <template v-slot:content>
       <form class="mt-5" action="">
@@ -36,12 +39,22 @@ const subscribe = () => {
       </form>
     </template>
     <template v-slot:actions>
-      <v-btn class="btn-login" variant="flat" block color="primary"
+      <v-btn
+        @click="login"
+        class="cs-btn-login"
+        variant="flat"
+        block
+        color="primary"
         >Access</v-btn
       >
-      <v-btn @click="subscribe" class="btn-login" variant="flat" block color="secondary"
+      <v-btn
+        @click="subscribe"
+        class="cs-btn-login"
+        variant="flat"
+        block
+        color="secondary"
         >Request Access</v-btn
       >
     </template>
-  </card>
+  </cs-card>
 </template>
