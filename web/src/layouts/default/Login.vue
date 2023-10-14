@@ -6,7 +6,7 @@
   <default-view>
     <v-container fluid class="fill-height">
       <v-row justify="center">
-        <v-col cols="6">
+        <v-col lg="3" md="6" sm="6" xs="12">
 
           <slot />
         </v-col>
