@@ -1,5 +1,7 @@
 <script setup></script>
 
 <template>
-  <h1>Users</h1>
+  <cs-header
+    title="Users"
+  ></cs-header>
 </template>

@@ -1,5 +1,5 @@
 export const PROJECT_ROUTES = {
-  VIEW: 'view',
+  VIEW: 'projects-view',
 }
 
 export default [
