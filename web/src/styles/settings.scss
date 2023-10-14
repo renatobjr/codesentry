@@ -9,11 +9,6 @@
 //   $color-pack: false
 // );
 
-a {
-  text-decoration: none;
-  color: #1867C0;
-}
-
-.btn-login {
-  margin-bottom: 10px;
-}
+@use "vuetify/settings" with (
+  $expansion-panel-text-padding: 8px 12px,
+);

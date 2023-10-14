@@ -1,0 +1,59 @@
+html {
+  font-size: 0.9rem !important;
+}
+
+a {
+  text-decoration: none;
+  color: #1867c0;
+}
+
+.cs-btn-login {
+  margin-bottom: 10px;
+}
+
+.cs-container {
+  margin-top: 40px;
+  width: 80%;
+}
+
+.cs-header {
+  background-color: #fff;
+  border-radius: 5px;
+  margin-bottom: 16px;
+  padding: 20px;
+  width: 100%;
+}
+
+.cs-graph {
+  border-radius: 5px;
+  background-color: #fff;
+  margin-bottom: 16px;
+  height: 40vh;
+}
+
+.cs-datatable {
+  border-radius: 5px;
+  margin-bottom: 16px;
+}
+
+.cs-list-header {
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.col-datatable {
+  padding: 0 !important;
+}
+
+/* Refactor colunms */
+@media screen and (min-width: 1280px) {
+  .col-graph {
+    flex: 0 0 32.5% !important;
+    max-width: 32.5%;
+  }
+
+  .col-datatable {
+    flex: 0 0 49.5% !important;
+    max-width: 49.5%;
+  }
+}

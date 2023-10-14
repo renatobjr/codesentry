@@ -8,6 +8,7 @@
 import { md2 } from 'vuetify/blueprints'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+import '@/styles/custom.css'
 
 // Composables
 import { createVuetify } from 'vuetify'
