@@ -9,7 +9,7 @@
   ></cs-header>
 
   <!-- Graphs -->
-  <cs-graphics />
+  <!-- <cs-graphics /> -->
 
   <!-- Table -->
   <v-row justify-lg="space-between">

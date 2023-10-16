@@ -11,19 +11,12 @@ const listUnsignedIssues = () => {
   <v-expansion-panels>
     <v-expansion-panel elevation="0">
       <v-expansion-panel-title>
-        <v-row>
-          <v-col>
-            <span class="text-h6 mr-8 font-weight-light">Unsigned Issues</span>
-            <v-chip label class="bg-red">8/90</v-chip>
-            <v-btn
-              class="float-right mr-8"
-              flat
-              color="primary"
-              @click.native.stop="listUnsignedIssues"
-              >see all</v-btn
-            >
-          </v-col>
-        </v-row>
+        <cs-list-header
+          title="Unsigned Issues"
+          :action="listUnsignedIssues"
+          :infoChips="{ partial: 8, total: 90}"
+          infoColor="bg-red"
+        />
       </v-expansion-panel-title>
       <div v-for="item in items" :key="item">
         <v-expansion-panel-text>

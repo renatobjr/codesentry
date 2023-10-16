@@ -16,6 +16,11 @@ a {
   width: 80%;
 }
 
+.cs-main {
+  background-color: #fff;
+  margin-top: 16px;
+}
+
 .cs-header {
   background-color: #fff;
   border-radius: 5px;
@@ -31,9 +36,19 @@ a {
   height: 40vh;
 }
 
-.cs-datatable {
+.cs-datalist {
   border-radius: 5px;
-  margin-bottom: 16px;
+  background-color: #fff;
+  margin: 16px 0;
+}
+
+.cs-datalist-row {
+  margin: 0 auto;
+}
+
+.cs-datalist-col-center {
+  display: flex;
+  justify-content: center;
 }
 
 .cs-list-header {

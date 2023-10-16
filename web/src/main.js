@@ -11,6 +11,7 @@ import CSCard from '@/components/login/CSCard.vue'
 import CSGraphiscs from '@/components/dashboard/CSGraphics.vue'
 import CSUnsignedIssues from '@/components/dashboard/CSUnsignedIssues.vue'
 import CSSignedIssues from '@/components/dashboard/CSSignedIssues.vue'
+import CSListHeader from '@/components/shared/CSListHeader.vue'
 
 // Composables
 import { createApp } from 'vue'
@@ -27,6 +28,7 @@ app
   .component('cs-graphics', CSGraphiscs)
   .component('cs-unsigned-issues', CSUnsignedIssues)
   .component('cs-signed-issues', CSSignedIssues)
+  .component('cs-list-header', CSListHeader)
 
 registerPlugins(app)
 

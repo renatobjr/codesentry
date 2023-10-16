@@ -5,25 +5,18 @@ const items = 8;
 const listSignedIssues = () => {
   console.log("listSignedIssues");
 };
+
 </script>
 
 <template>
   <v-expansion-panels>
     <v-expansion-panel elevation="0">
       <v-expansion-panel-title>
-        <v-row>
-          <v-col>
-            <span class="text-h6 mr-8 font-weight-light">Signed Issues</span>
-            <v-chip label class="bg-green">8/90</v-chip>
-            <v-btn
-              class="float-right mr-8"
-              flat
-              color="primary"
-              @click.native.stop="listSignedIssues"
-              >see all</v-btn
-            >
-          </v-col>
-        </v-row>
+        <cs-list-header
+          title="Signed Issues"
+          :action="listSignedIssues"
+          :infoChips="{ partial: 8, total: 90}"
+        />
       </v-expansion-panel-title>
       <div v-for="item in items" :key="item">
         <v-expansion-panel-text>
@@ -48,7 +41,6 @@ const listSignedIssues = () => {
         </v-expansion-panel-text>
         <v-divider></v-divider>
       </div>
-      <v-divider></v-divider>
     </v-expansion-panel>
   </v-expansion-panels>
 </template>
