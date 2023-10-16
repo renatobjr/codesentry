@@ -1,3 +1,13 @@
+:root {
+  --open: #FFB6C1;
+  --in-progress: #FFD700;
+  --waiting-feedback: #87CEEB;
+  --solved: #98FB98;
+  --closed: #F08080;
+  --rejected: #D3D3D3;
+  --assigned: #DDA0DD;
+  --duplicated: #BC8F8F;
+}
 html {
   font-size: 0.9rem !important;
 }
@@ -71,4 +81,81 @@ a {
     flex: 0 0 49.5% !important;
     max-width: 49.5%;
   }
+}
+
+/* Bar Stacked Graph */
+#issuesGraph {
+  border: 1px solid white;
+  overflow: hidden;
+  display: grid;
+  width: 100%;
+}
+
+#open,
+#in-progress,
+#waiting-feedback,
+#solved,
+#closed,
+#rejected,
+#assigned,
+#duplicated {
+  height: 7px;
+}
+
+#open {
+  color: var(--open);
+  background-color: var(--open);
+}
+#in-progress {
+  background-color: var(--in-progress);
+}
+#waiting-feedback {
+  background-color: var(--waiting-feedback);
+}
+#solved {
+  background-color: var(--solved);
+}
+#closed {
+  background-color: var(--closed);
+}
+#rejected {
+  background-color: var(--rejected);
+}
+#assigned {
+  background-color: var(--assigned);
+}
+#duplicated {
+  background-color: var(--duplicated);
+}
+
+#open-icon {
+  color: var(--open);
+}
+
+#in-progress-icon {
+  color: var(--in-progress);
+}
+
+#waiting-feedback-icon {
+  color: var(--waiting-feedback);
+}
+
+#solved-icon {
+  color: var(--solved);
+}
+
+#closed-icon {
+  color: var(--closed);
+}
+
+#rejected-icon {
+  color: var(--rejected);
+}
+
+#assigned-icon {
+  color: var(--assigned);
+}
+
+#duplicated-icon {
+  color: var(--duplicated);
 }

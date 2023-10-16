@@ -1,5 +1,6 @@
 export const PROJECT_ROUTES = {
-  VIEW: 'projects-view',
+  LIST: 'projects',
+  ADD: 'projects-add',
 }
 
 export default [
@@ -8,6 +9,11 @@ export default [
     name: PROJECT_ROUTES.VIEW,
     component: () => import('@/views/projects/View.vue'),
   },
+  {
+    path: '/projects/add',
+    name: PROJECT_ROUTES.ADD,
+    component: () => import('@/views/projects/CreateEdit.vue'),
+  }
 ].map((route) => {
   route['meta'] = {
     layout: 'base',

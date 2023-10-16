@@ -1,11 +1,11 @@
 export const USERS_ROUTES = {
-  VIEW: 'users-view',
+  LIST: 'users',
 }
 
 export default [
   {
     path: '/users',
-    name: USERS_ROUTES.VIEW,
+    name: USERS_ROUTES.LIST,
     component: () => import('@/views/users/View.vue'),
   },
 ].map((route) => {

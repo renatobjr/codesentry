@@ -1,11 +1,11 @@
 export const ISSUES_ROUTES = {
-  VIEW: 'issues-view',
+  LIST: 'issues',
 }
 
 export default [
   {
     path: '/issues',
-    name: ISSUES_ROUTES.VIEW,
+    name: ISSUES_ROUTES.LIST,
     component: () => import('@/views/issues/View.vue'),
   },
 ].map((route) => {

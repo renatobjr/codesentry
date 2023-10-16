@@ -26,7 +26,7 @@ const listSignedIssues = () => {
             </v-col>
             <v-col class="mr-n10" cols="2">
               <span class="d-block">00000</span>
-              <v-icon color="red">mdi-square-rounded</v-icon>
+              <v-icon id="solved-icon">mdi-square-rounded</v-icon>
               <v-icon color="orange" size="x-large">mdi-chevron-up</v-icon>
             </v-col>
             <v-col cols="2">

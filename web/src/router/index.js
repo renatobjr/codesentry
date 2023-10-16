@@ -14,7 +14,10 @@ const router = createRouter({
     ...projects,
     ...issues,
     ...users,
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    return { x: 0, y: 0, behavior: 'smooth' };
+  },
 })
 
 export default router
