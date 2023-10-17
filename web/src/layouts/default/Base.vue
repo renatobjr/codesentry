@@ -1,3 +1,5 @@
+// @TODO: Refactor to remove de navigation drawer from the default layout
+
 <script setup>
 import { useRoute } from "vue-router";
 import router from "@/router";
@@ -51,19 +53,19 @@ const logout = () => {
       <template v-for="link in links" :key="link">
         <v-list-item
           :active="isActive(link.path)"
-          active-class="bg-blue-grey-darken-1"
+          active-class="bg-primary"
           link
           @click="navigateTo(link.path)"
         >
           <template v-slot:prepend>
             <v-icon
-              :color="isActive(link.path) ? 'white' : 'blue-grey-darken-1'"
+              :color="isActive(link.path) ? 'white' : 'primary'"
               >{{ link.icon }}</v-icon
             >
           </template>
 
           <span
-            :class="isActive(link.path ? 'white' : 'blue-grey-darken-1')"
+            :class="isActive(link.path) ? 'white' : 'text-primary'"
             class="text-capitalize"
             >{{ link.name }}</span
           >
@@ -79,7 +81,7 @@ const logout = () => {
           >
         </template>
         <span
-          class="bg-blue-grey-darkne-1 text-capitalize"
+          class="text-primary text-capitalize"
           >Logout</span
         >
       </v-list-item>

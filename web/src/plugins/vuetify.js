@@ -10,21 +10,31 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import '@/styles/custom.css'
 
+
 // Composables
 import { createVuetify } from 'vuetify'
 
 const csTheme = {
   dark: false,
   colors: {
-    primary: '#526D82',
-    secondary: '#27374D',
+    primary: '#27374D',
+    secondary: '#526D82',
     accent: '#9DB2BF',
     error: '#FF5252',
     info: '#2196F3',
     success: '#4CAF50',
     warning: '#FFC107',
     background: '#FFF',
-    maingrey: '#f8f9fb'
+    maingrey: '#f8f9fb',
+    // issues status coloar
+    open: '#ffb6c1',
+    inProgress: '#ffd700',
+    waitingFeedback: '#87ceeb',
+    solved: '#98fb98',
+    closed: '#f08080',
+    rejected: '#d3d3d3',
+    assigned: '#dda0dd',
+    duplicated: '#bc8f8f',
   }
 }
 

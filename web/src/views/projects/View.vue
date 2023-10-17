@@ -4,14 +4,14 @@ import { PROJECT_ROUTES } from "@/router/projects";
 
 const listIssues = {
   legend: [
-    { data: "0", tag: "Open", id: "open" },
-    { data: "0", tag: "In Progress", id: "in-progress" },
-    { data: "0", tag: "Watingn feedback", id: "waiting-feedback" },
-    { data: "100", tag: "Solved", id: "solved" },
-    { data: "0", tag: "Closed", id: "closed" },
-    { data: "0", tag: "Rejected", id: "rejected" },
-    { data: "0", tag: "Assigned", id: "assigned" },
-    { data: "0", tag: "Duplicated", id: "duplicated" },
+    { data: "0", tag: "Open", class: "open" },
+    { data: "0", tag: "In Progress", class: "inProgress" },
+    { data: "0", tag: "Watingn feedback", class: "waitingFeedback" },
+    { data: "100", tag: "Solved", class: "solved" },
+    { data: "0", tag: "Closed", class: "closed" },
+    { data: "0", tag: "Rejected", class: "rejected" },
+    { data: "0", tag: "Assigned", class: "assigned" },
+    { data: "0", tag: "Duplicated", class: "duplicated" },
   ],
 };
 
@@ -32,85 +32,62 @@ const stackedBar = computed(() => {
   ></cs-header>
 
   <v-container class="cs-container">
-    <v-row align="center" justify="center">
-      <v-col class="pa-0">
-        <v-card rounded="0" elevation="0">
-          <v-list density="compact" class="pa-3 bg-maingrey">
-            <v-row style="margin: 0 auto">
-              <v-col lg="1" align-self="center">
-                <span class="d-block text-uppercase font-weight-light"
-                  >Admin</span
-                >
-              </v-col>
-              <v-col cols="2" align-self="center">
-                <span class="d-block text-uppercase font-weight-light"
-                  >Project Name</span
-                >
-              </v-col>
-              <v-col class="" cols="7" align-self="center">
-                <span class="d-block text-uppercase font-weight-light"
-                  >Track Issues</span
-                >
-                <div
-                  class="d-inline"
-                  v-for="legend in listIssues.legend"
-                  :key="legend.tag"
-                >
-                  <span class="mr-3">
-                    <v-icon :id="legend.id + '-icon'"
-                      >mdi-square-rounded</v-icon
-                    >
-                    <span style="font-size: 11px"> {{ legend.tag }}</span>
-                  </span>
-                </div>
-              </v-col>
-              <v-col cols="2" align-self="center">
-                <span
-                  class="d-block text-uppercase float-right font-weight-light"
-                  >Actions</span
-                >
-              </v-col>
-            </v-row>
-          </v-list>
-          <v-divider></v-divider>
-        </v-card>
-        <v-card rounded="0" elevation="0" v-for="item in 2" :key="item">
-          <v-list density="compact" class="pa-3 bg-maingrey">
-            <v-row style="margin: 0 auto">
-              <v-col lg="1">
-                <v-avatar class="me-4" color="blue-grey" size="36"></v-avatar>
-              </v-col>
-              <v-col cols="2">
-                <span class="d-block">Project Name</span>
-                <span>Created at</span>
-              </v-col>
-              <v-col
-                class="cs-datalist-col-center"
-                cols="7"
-                align-self="center"
-              >
-                <div
-                  id="issuesGraph"
-                  :style="{
-                    'grid-template-columns': `
-                    ${stackedBar}`,
-                  }"
-                >
-                  <div v-for="legend in listIssues.legend">
-                    <div :id="legend.id"></div>
-                  </div>
-                </div>
-              </v-col>
-              <v-col cols="2" align-self="center">
-                <v-icon color="blue-grey-darken-1" class="float-right">mdi-delete</v-icon>
-                <v-icon color="blue-grey-darken-1" class="float-right mr-4">mdi-pencil</v-icon>
-                <v-icon color="blue-grey-darken-1" class="float-right mr-4">mdi-close-circle</v-icon>
-              </v-col>
-            </v-row>
-          </v-list>
-          <v-divider></v-divider>
-        </v-card>
-      </v-col>
-    </v-row>
+    <v-card class="cs-header-list" rounded="0" elevation="0">
+      <v-list density="compact" class="pa-2 bg-primary">
+        <v-row style="margin: 0 auto;">
+          <v-col align-self="center" cols="1" class="d-flex justify-center">
+            <span class="font-weight-bold">Stakeholder</span>
+          </v-col>
+          <v-col align-self="center" cols="2">
+            <span class="font-weight-bold">Project Name</span>
+          </v-col>
+          <v-col align-self="center" cols="7">
+            <span class="mb-2 d-block font-weight-bold">Tracked Issues</span>
+            <div
+              class="d-inline"
+              v-for="legend in listIssues.legend"
+            >
+              <span class="mr-2">
+                <v-icon :color="legend.class">mdi-square</v-icon>
+                <span>{{ legend.tag }}</span>
+              </span>
+            </div>
+          </v-col>
+          <v-col class="d-flex justify-center" align-self="center">
+            <span class="font-weight-bold">Actions</span>
+          </v-col>
+        </v-row>
+      </v-list>
+      <v-divider></v-divider>
+      <v-list density="compact" class="pa-2 bg-maingrey">
+        <v-row style="margin: 0 auto;">
+          <v-col align-self="center" cols="1" class="d-flex justify-center">
+            <v-avatar color="blue-grey" size="36"></v-avatar>
+          </v-col>
+          <v-col align-self="center" cols="2">
+            <span class="d-block">Project name</span>
+            <span>Created at</span>
+          </v-col>
+          <v-col align-self="center" cols="7">
+            <div
+              id="issuesGraph"
+              :style="{
+                'grid-template-columns': `
+                ${stackedBar}`,
+              }"
+            >
+              <div v-for="legend in listIssues.legend">
+                <div :id="legend.class"></div>
+              </div>
+            </div>
+          </v-col>
+          <v-col class="d-flex justify-center" align-self="center">
+            <v-icon color="primary" class="ma-2">mdi-delete</v-icon>
+            <v-icon color="primary" class="ma-2">mdi-pencil</v-icon>
+            <v-icon color="primary" class="ma-2">mdi-close-circle</v-icon>
+          </v-col>
+        </v-row>
+      </v-list>
+    </v-card>
   </v-container>
 </template>

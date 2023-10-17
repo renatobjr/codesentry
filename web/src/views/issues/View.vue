@@ -7,4 +7,8 @@ import { ISSUES_ROUTES } from '@/router/issues';
     title="Issues"
     :actions="[{ title: 'New Issue', route: ISSUES_ROUTES.ADD }]"
   ></cs-header>
+
+  <v-container class="cs-container">
+    oi
+  </v-container>
 </template>

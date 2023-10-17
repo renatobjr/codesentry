@@ -36,17 +36,17 @@ defineProps({
 
 <template>
   <v-row class="ma-0 cs-header">
-    <v-col class="">
-      <span class="mr-16"><v-icon color="blue-grey-darken-1" @click="$emit('closeDock')" icon="mdi-dock-left"></v-icon></span>
-      <span><v-icon color="blue-grey-darken-1" :icon="links[0].title" /></span>
+    <v-col align-self="center">
+      <span class="mr-16"><v-icon color="primary" @click="$emit('closeDock')" icon="mdi-dock-left"></v-icon></span>
+      <span><v-icon color="primary" :icon="links[0].title" /></span>
         <template v-for="(link, index) in links.slice(1)">
-          <v-icon color="blue-grey-darken-1" class="mx-2">mdi-chevron-right</v-icon>
-          <router-link :to="link.disable ? '' : link.href"  class="text-blue-grey-darken-1">{{ link.title }}</router-link>
+          <v-icon color="primary" class="mx-2">mdi-chevron-right</v-icon>
+          <router-link :to="link.disable ? '' : link.href"  class="text-primary">{{ link.title }}</router-link>
       </template>
     </v-col>
     <v-col>
       <template v-for="action in actions">
-        <v-btn class="float-right" size="small" flat @click="router.push({ name: action.route })">{{
+        <v-btn class="float-right" flat @click="router.push({ name: action.route })">{{
           action.title
         }}</v-btn>
       </template>

@@ -1,8 +1,8 @@
 :root {
   /* Colors */
+  --bg-primary: #27374D;
   --bg-divider: #e4e4e4;
   --bg-grey: #f8f9fb;
-  --icon-color: #757575;
   /* Stares / Prioritys issues */
   --open: #ffb6c1;
   --in-progress: #ffd700;
@@ -47,6 +47,15 @@ a {
 .cs-header-breadcrumb {
   border-bottom: solid 1.5px;
   border-color: var(--bg-divider);
+}
+
+.cs-header-form {
+  border-radius: 5px 5px 0px 0px !important;
+  padding: 10px 40px
+}
+
+.cs-header-list {
+  border-radius: 5px 5px 0px 0px !important;
 }
 
 .cs-graph {
