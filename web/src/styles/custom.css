@@ -1,12 +1,17 @@
 :root {
-  --open: #FFB6C1;
-  --in-progress: #FFD700;
-  --waiting-feedback: #87CEEB;
-  --solved: #98FB98;
-  --closed: #F08080;
-  --rejected: #D3D3D3;
-  --assigned: #DDA0DD;
-  --duplicated: #BC8F8F;
+  /* Colors */
+  --bg-divider: #e4e4e4;
+  --bg-grey: #f8f9fb;
+  --icon-color: #757575;
+  /* Stares / Prioritys issues */
+  --open: #ffb6c1;
+  --in-progress: #ffd700;
+  --waiting-feedback: #87ceeb;
+  --solved: #98fb98;
+  --closed: #f08080;
+  --rejected: #d3d3d3;
+  --assigned: #dda0dd;
+  --duplicated: #bc8f8f;
 }
 html {
   font-size: 0.9rem !important;
@@ -21,34 +26,39 @@ a {
   margin-bottom: 10px;
 }
 
+.cs-icon {
+  color: var(--icon-color);
+}
 .cs-container {
   margin-top: 40px;
-  width: 80%;
+  width: 90%;
 }
 
 .cs-main {
-  background-color: #fff;
   margin-top: 16px;
 }
 
 .cs-header {
-  background-color: #fff;
-  border-radius: 5px;
-  margin-bottom: 16px;
-  padding: 20px;
-  width: 100%;
+  border-bottom: solid 1.5px;
+  border-color: var(--bg-divider);
+  padding: 8px;
+}
+
+.cs-header-breadcrumb {
+  border-bottom: solid 1.5px;
+  border-color: var(--bg-divider);
 }
 
 .cs-graph {
   border-radius: 5px;
-  background-color: #fff;
+  background-color: var(--bg-grey);
   margin-bottom: 16px;
   height: 40vh;
 }
 
 .cs-datalist {
   border-radius: 5px;
-  background-color: #fff;
+  background-color: var(--bg-grey);
   margin: 16px 0;
 }
 
@@ -62,7 +72,7 @@ a {
 }
 
 .cs-list-header {
-  background-color: #fff;
+  background-color: var(--bg-white);
   border-radius: 5px;
 }
 
@@ -106,24 +116,31 @@ a {
   color: var(--open);
   background-color: var(--open);
 }
+
 #in-progress {
   background-color: var(--in-progress);
 }
+
 #waiting-feedback {
   background-color: var(--waiting-feedback);
 }
+
 #solved {
   background-color: var(--solved);
 }
+
 #closed {
   background-color: var(--closed);
 }
+
 #rejected {
   background-color: var(--rejected);
 }
+
 #assigned {
   background-color: var(--assigned);
 }
+
 #duplicated {
   background-color: var(--duplicated);
 }

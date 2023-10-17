@@ -24,4 +24,8 @@
     return currentLayout;
   })
 
+  const closeDock = () => {
+    console.log('funciona')
+  };
+
 </script>

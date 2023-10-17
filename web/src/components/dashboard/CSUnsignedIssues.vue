@@ -9,7 +9,7 @@ const listUnsignedIssues = () => {
 
 <template>
   <v-expansion-panels>
-    <v-expansion-panel elevation="0">
+    <v-expansion-panel elevation="0" class="bg-maingrey">
       <v-expansion-panel-title>
         <cs-list-header
           title="Unsigned Issues"

@@ -10,7 +10,7 @@ const listSignedIssues = () => {
 
 <template>
   <v-expansion-panels>
-    <v-expansion-panel elevation="0">
+    <v-expansion-panel elevation="0" class="bg-maingrey">
       <v-expansion-panel-title>
         <cs-list-header
           title="Signed Issues"
@@ -29,7 +29,7 @@ const listSignedIssues = () => {
               <v-icon id="solved-icon">mdi-square-rounded</v-icon>
               <v-icon color="orange" size="x-large">mdi-chevron-up</v-icon>
             </v-col>
-            <v-col cols="2">
+            <v-col cols="3">
               <span class="d-block">Issue Title</span>
               <span>Asinnged at</span>
             </v-col>

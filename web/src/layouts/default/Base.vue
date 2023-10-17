@@ -1,40 +1,90 @@
 <script setup>
-import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
+import router from "@/router";
 import DefaultView from "./Default.vue";
-import { onBeforeMount } from "vue";
+import { AUTH_ROUTES } from "@/router/auth";
+import { onBeforeMount, ref } from "vue";
 
+const drawer = ref(true);
+const rail = ref(false);
 const links = [
-  { name: "HOME", path: "/dashboard" },
-  { name: "PROJECTS", path: "/projects" },
-  { name: "ISSUES", path: "/issues" },
-  { name: "USERS", path: "/users" },
+  { name: "dashboard", path: "/dashboard", icon: "mdi-view-dashboard" },
+  { name: "projects", path: "/projects", icon: "mdi-briefcase" },
+  { name: "issues", path: "/issues", icon: "mdi-bug" },
+  { name: "users", path: "/users", icon: "mdi-account-group" },
+  { name: "settings", path: "/settings", icon: "mdi-cog" },
 ];
 
-let location = useRouter();
+const closeDock = () => {
+  console.log("funciona");
+};
 
-onBeforeMount(() => {
-  console.log(location.currentRoute.value.path);
-});
+let route = useRoute();
+
+const isActive = (path) => {
+  return route.meta.active === path;
+};
+
+const navigateTo = (path) => {
+  router.push({ path });
+};
+
+const logout = () => {
+  // localStorage.removeItem("token");
+  router.push({ name: AUTH_ROUTES.LOGIN })
+};
 </script>
 
 <template>
   <default-view>
-    <v-app-bar class="bg-blue-grey-darken-4" flat>
-      <v-container class="mx-auto d-flex align-center justify-content">
+    <v-navigation-drawer
+      border="false"
+      class="bg-background"
+      v-model="drawer"
+      :rail="rail"
+      @close-dock="() => console.log('ok')"
+    >
+      <v-list-item class="pa-4">
         <v-avatar class="me-4" color="blue-grey" size="36"></v-avatar>
-        <v-btn
-          v-for="link in links"
-          :key="link"
-          :text="link.name"
-          :href="link.path"
-          :active="link.path === location.currentRoute.value.path ? true : false"
-          variant="text"
-        ></v-btn>
-      </v-container>
-    </v-app-bar>
+        <span class="text-blue-grey-darken-1">Username</span>
+      </v-list-item>
+      <template v-for="link in links" :key="link">
+        <v-list-item
+          :active="isActive(link.path)"
+          active-class="bg-blue-grey-darken-1"
+          link
+          @click="navigateTo(link.path)"
+        >
+          <template v-slot:prepend>
+            <v-icon
+              :color="isActive(link.path) ? 'white' : 'blue-grey-darken-1'"
+              >{{ link.icon }}</v-icon
+            >
+          </template>
 
-    <v-container class="cs-container" fluid>
-      <slot />
-    </v-container>
+          <span
+            :class="isActive(link.path ? 'white' : 'blue-grey-darken-1')"
+            class="text-capitalize"
+            >{{ link.name }}</span
+          >
+        </v-list-item>
+      </template>
+      <v-list-item
+        @click="logout"
+      >
+        <template v-slot:prepend>
+          <v-icon
+            color="blue-grey-darken-1"
+            >mdi-logout</v-icon
+          >
+        </template>
+        <span
+          class="bg-blue-grey-darkne-1 text-capitalize"
+          >Logout</span
+        >
+      </v-list-item>
+    </v-navigation-drawer>
+
+    <slot></slot>
   </default-view>
 </template>

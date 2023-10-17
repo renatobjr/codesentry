@@ -1,17 +1,25 @@
 export const DASH_ROUTES = {
-  DASHBOARD: 'dashboard',
-}
+  DASHBOARD: "dashboard",
+};
 
 export default [
   {
-    path: '/dashboard',
+    path: "/dashboard",
     name: DASH_ROUTES.DASHBOARD,
-    component: () => import('@/views/Dashboard.vue'),
+    component: () => import("@/views/Dashboard.vue"),
+    meta: {
+      breadcrumb: [
+        { title: "mdi-home" },
+        { title: "Dashboard", disable: true, href: "/dashboard" }
+      ],
+    },
   },
 ].map((route) => {
-  route['meta'] = {
-    layout: 'base',
+  route["meta"] = {
+    ...route["meta"],
+    active: '/dashboard',
+    layout: "base",
     public: false,
-  }
+  };
   return route;
 });

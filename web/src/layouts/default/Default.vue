@@ -4,7 +4,7 @@
 
 <template>
   <v-app>
-    <v-main class="bg-blue-grey-lighten-5">
+    <v-main>
       <slot />
     </v-main>
   </v-app>
