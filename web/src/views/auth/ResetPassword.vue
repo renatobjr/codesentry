@@ -7,16 +7,16 @@
     <template v-slot:content>
       <form class="mt-5" action="">
         <v-text-field
-          outlined
-          dense
+          variant="outlined"
+          density="compact"
           append-inner-icon="mdi-eye"
           type="password"
           name="passwprd"
           label="Password"
         ></v-text-field>
         <v-text-field
-          outlined
-          dense
+          variant="outlined"
+          density="compact"
           append-inner-icon="mdi-eye"
           type="password"
           name="comfirmPasswprd"

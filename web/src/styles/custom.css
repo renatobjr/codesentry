@@ -39,6 +39,7 @@ a {
 }
 
 .cs-header {
+  height: 80px;
   border-bottom: solid 1.5px;
   border-color: var(--bg-divider);
   padding: 8px;
@@ -111,8 +112,8 @@ a {
 }
 
 #open,
-#in-progress,
-#waiting-feedback,
+#inProgress,
+#waitingFeedback,
 #solved,
 #closed,
 #rejected,
@@ -126,11 +127,11 @@ a {
   background-color: var(--open);
 }
 
-#in-progress {
+#inProgress {
   background-color: var(--in-progress);
 }
 
-#waiting-feedback {
+#waitingFeedback {
   background-color: var(--waiting-feedback);
 }
 

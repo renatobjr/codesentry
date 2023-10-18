@@ -21,7 +21,7 @@ const backToLogin = () => {
       <v-row id="pin" aling="start">
         <v-col v-for="index in inputs" :key="index" class="pa-2">
           <v-text-field
-            outlined
+            variant="outlined"
             class="ma-0"
             type="text"
             maxLength="1"
@@ -38,7 +38,7 @@ const backToLogin = () => {
         color="primary"
         >Verify code</v-btn
       >
-      <v-btn class="cs-btn-login" variant="flat" block color="secondary"
+      <v-btn class="cs-btn-login" variant="flat" block color="secundary"
         >Resend code</v-btn
       >
       <v-btn
@@ -46,7 +46,7 @@ const backToLogin = () => {
         class="cs-btn-login"
         variant="flat"
         block
-        color="secondary"
+        color="secundary"
         >Back to Login</v-btn
       >
     </template>

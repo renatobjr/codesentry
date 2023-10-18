@@ -18,7 +18,7 @@ const csTheme = {
   dark: false,
   colors: {
     primary: '#27374D',
-    secondary: '#526D82',
+    secundary: '#526D82',
     accent: '#9DB2BF',
     error: '#FF5252',
     info: '#2196F3',
@@ -35,6 +35,9 @@ const csTheme = {
     rejected: '#d3d3d3',
     assigned: '#dda0dd',
     duplicated: '#bc8f8f',
+    // Customo background panels
+    panel: '#CFD8DC',
+
   }
 }
 

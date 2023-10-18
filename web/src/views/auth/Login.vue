@@ -18,16 +18,16 @@ const subscribe = () => {
     <template v-slot:content>
       <form class="mt-5" action="">
         <v-text-field
-          outlined
-          dense
+          variant="outlined"
+          density="compact"
           append-inner-icon="mdi-email"
           type="email"
           name="email"
           label="Email"
         ></v-text-field>
         <v-text-field
-          outlined
-          dense
+          variant="outlined"
+          density="compact"
           append-inner-icon="mdi-eye"
           type="password"
           name="password"
@@ -52,7 +52,7 @@ const subscribe = () => {
         class="cs-btn-login"
         variant="flat"
         block
-        color="secondary"
+        color="secundary"
         >Request Access</v-btn
       >
     </template>

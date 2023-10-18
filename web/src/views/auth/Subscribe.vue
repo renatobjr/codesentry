@@ -34,7 +34,7 @@ const back = () => {
         class="cs-btn-login"
         variant="flat"
         block
-        color="secondary"
+        color="secundary"
         >Back</v-btn
       >
     </template>

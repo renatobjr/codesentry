@@ -17,8 +17,8 @@ const back = () => {
     <template v-slot:content>
       <form class="mt-5" action="">
         <v-text-field
-          outlined
-          dense
+          variant="outlined"
+          density="compact"
           append-inner-icon="mdi-email"
           type="email"
           name="email"
@@ -40,7 +40,7 @@ const back = () => {
         class="cs-btn-login"
         variant="flat"
         block
-        color="secondary"
+        color="secundary"
         >Back</v-btn
       >
     </template>
