@@ -4,11 +4,15 @@ defineProps({
     type: Number,
     required: false,
   },
+  class: {
+    type: String,
+    required: false,
+  },
 })
 </script>
 
 <template>
-  <v-col :cols="cols" align-self="center">
+  <v-col :class="class" :cols="cols" align-self="center">
     <slot></slot>
   </v-col>
 </template>

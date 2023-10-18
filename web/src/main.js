@@ -9,6 +9,7 @@ import App from './App.vue'
 import CSHeader from '@/components/shared/CSHeader.vue'
 import CSListHeader from '@/components/shared/CSListHeader.vue'
 import CSDefaultList from '@/components/shared/CSDefaultList.vue'
+import CSDefaultListRow from '@/components/shared/CSDefaultListRow.vue'
 import CSDefaultListItem from '@/components/shared/CSDefaultListItem.vue'
 import CSCard from '@/components/login/CSCard.vue'
 import CSGraphiscs from '@/components/dashboard/CSGraphics.vue'
@@ -33,6 +34,7 @@ app
   .component('cs-list-header', CSListHeader)
   .component('cs-list', CSDefaultList)
   .component('cs-list-item', CSDefaultListItem)
+  .component('cs-list-row', CSDefaultListRow)
 
 registerPlugins(app)
 
