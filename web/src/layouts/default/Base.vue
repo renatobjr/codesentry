@@ -14,7 +14,7 @@ const links = [
   { name: "projects", path: "/projects", icon: "mdi-briefcase" },
   { name: "issues", path: "/issues", icon: "mdi-bug" },
   { name: "users", path: "/users", icon: "mdi-account-group" },
-  { name: "settings", path: "/settings", icon: "mdi-cog" },
+  // { name: "settings", path: "/settings", icon: "mdi-cog" },
 ];
 
 const closeDock = () => {

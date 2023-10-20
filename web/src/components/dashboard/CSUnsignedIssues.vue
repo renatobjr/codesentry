@@ -23,7 +23,7 @@ const listUnsignedIssues = () => {
           <v-row align="center" justify="center">
             <v-col cols="2">
               <span class="d-block">00000</span>
-              <v-icon id="open-icon">mdi-square-rounded</v-icon>
+              <v-icon class="open-icon">mdi-square-rounded</v-icon>
               <v-icon color="orange" size="x-large">mdi-chevron-up</v-icon>
             </v-col>
             <v-col cols="3">

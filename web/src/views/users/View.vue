@@ -2,7 +2,12 @@
 // Only for demo purpose
 import { dataUsers, dataHeader } from "@/data/users";
 
+import { ref } from "vue";
 import { USERS_ROUTES } from "@/router/users";
+
+const itemsPerPage = ref(10);
+const header = ref(dataHeader);
+const users = ref(dataUsers);
 </script>
 
 <template>
@@ -12,7 +17,38 @@ import { USERS_ROUTES } from "@/router/users";
   ></cs-header>
 
   <v-container class="cs-container">
-    <cs-list :dataHeader="dataHeader">
+    <v-data-table-server
+      v-model:items-per-page="itemsPerPage"
+      :headers="header"
+      :items="users"
+      :items-length="users.length"
+      :loading="false"
+      class="rounded bg-maingrey"
+    >
+      <template v-slot:item="{ item }">
+        <tr>
+          <td>
+            <v-avatar color="blue-grey" size="36" class="mr-4"></v-avatar>
+            <span>{{ item.name }}</span>
+          </td>
+          <td>
+            <span>{{ item.email }}</span>
+          </td>
+          <td>
+            <v-chip label>{{ item.resolvedIssues }}</v-chip>
+          </td>
+          <td>
+            <v-chip label>{{ item.projectsAssigned }}</v-chip>
+          </td>
+          <td class="text-center">
+            <v-icon size="small" class="mr-2"> mdi-pencil </v-icon>
+            <v-icon size="small" class="mr-2"> mdi-eye</v-icon>
+            <v-icon size="small"> mdi-delete </v-icon>
+          </td>
+        </tr>
+      </template>
+    </v-data-table-server>
+    <!-- <cs-list :dataHeader="dataHeader">
       <template v-slot:dataList>
         <cs-list-row v-for="(user, index) in dataUsers">
           <cs-list-item :cols="3">
@@ -42,6 +78,6 @@ import { USERS_ROUTES } from "@/router/users";
           </cs-list-item>
         </cs-list-row>
       </template>
-    </cs-list>
+    </cs-list> -->
   </v-container>
 </template>

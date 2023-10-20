@@ -9,6 +9,11 @@ import { md2 } from 'vuetify/blueprints'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import '@/styles/custom.css'
+import {
+  VDataTable,
+  VDataTableServer,
+  VDataTableVirtual,
+} from "vuetify/labs/VDataTable";
 
 
 // Composables
@@ -17,8 +22,8 @@ import { createVuetify } from 'vuetify'
 const csTheme = {
   dark: false,
   colors: {
-    primary: '#27374D',
-    secundary: '#526D82',
+    primary: '#1C2826',
+    secundary: '#5398BE',
     accent: '#9DB2BF',
     error: '#FF5252',
     info: '#2196F3',
@@ -49,5 +54,10 @@ export default createVuetify({
     themes: {
       csTheme
     }
+  },
+  components: {
+    VDataTable,
+    VDataTableServer,
+    VDataTableVirtual,
   },
 })

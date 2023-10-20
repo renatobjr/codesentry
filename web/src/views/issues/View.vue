@@ -1,13 +1,23 @@
 <script setup>
+// Only for demo purpose
+import { dataIssues, dataHeader } from "@/data/issues";
+
+import { ref } from "vue";
 import { ISSUES_ROUTES } from "@/router/issues";
 
-const dataHeader = [
-  { cols: "1", tag: "Asignned" },
-  { cols: "1", tag: "Status" },
-  { cols: "2", tag: "Issue" },
-  { cols: "6", tag: "Description" },
-  { cols: "2", tag: "Actions" },
-];
+const itemsPerPage = ref(5);
+const header = ref(dataHeader);
+const issues = ref(dataIssues);
+
+function workingDays(createdAt, updatedAt) {
+  const created = new Date(createdAt);
+  const updated = new Date(updatedAt);
+
+  const diffTime = Math.abs(updated - created);
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  return diffDays;
+}
 </script>
 
 <template>
@@ -17,34 +27,50 @@ const dataHeader = [
   ></cs-header>
 
   <v-container class="cs-container">
-    <cs-list :dataHeader="dataHeader">
-      <template v-slot:dataList>
-        <cs-list-item :cols="1">
-          <v-avatar color="blue-grey" size="36"></v-avatar>
-        </cs-list-item>
-        <cs-list-item :cols="1">
-          <v-icon>mdi-square-rounded</v-icon>
-          <v-icon size="x-large">mdi-chevron-up</v-icon>
-        </cs-list-item>
+    <v-data-table-server
+      v-model:items-per-page="itemsPerPage"
+      :headers="header"
+      :items="issues"
+      :items-length="issues.length"
+      item-value="name"
+      class="rounded bg-maingrey"
+    >
+      <template v-slot:item="{ item }">
+        <tr>
+          <td>{{ item.id }}</td>
+          <td>{{ item.priority }}</td>
+          <td>
+            <v-icon :class="`${ item.state }-icon`">mdi-square-rounded</v-icon>
+            <span>{{ item.state }}</span>
+          </td>
+          <td class="text-center">{{ item.attechedFiles.length }}</td>
+          <td class="text-center">{{ item.notes.length }}</td>
+          <td>{{ item.createdAt }}</td>
+          <td>{{ item.updatedAt }}</td>
+          <td><v-chip label color="secundary">{{ workingDays(item.createdAt, item.updatedAt) }} days</v-chip></td>
+          <td>{{ item.description }}</td>
+          <td class="text-center">
+            <v-icon size="small" class="mr-2"> mdi-pencil </v-icon>
+            <v-icon size="small" class="mr-2"> mdi-eye</v-icon>
+            <v-icon size="small"> mdi-delete </v-icon>
+          </td>
+          <!-- <td>
+            <v-icon :color="item.status">mdi-square-rounded</v-icon>
+            <v-icon :color="item.priority">mdi-chevron-up</v-icon>
+          </td>
+          <td>
+            <span class="d-block">{{ item.issue }}</span>
+            <span>Created at {{ item.createdAt}}</span>
 
-        <cs-list-item :cols="2">
-          <span class="d-block">Issue Name</span>
-          <span>Created at 00/00/0000</span>
-        </cs-list-item>
-        <cs-list-item :cols="6">
-          <span
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
-            blanditiis aliquid sunt eum! Dolore rem fuga necessitatibus
-            doloribus officiis quaerat incidunt facilis cumque laudantium, animi
-            tempore ex ea obcaecati unde.</span
-          >
-        </cs-list-item>
-        <cs-list-item :cols="2">
-          <v-icon color="primary" class="mr-4">mdi-pencil</v-icon>
-          <v-icon color="primary" class="mr-4">mdi-eye</v-icon>
-          <v-icon color="primary" class="mr-4">mdi-delete</v-icon>
-        </cs-list-item>
+            </td>
+          <td>{{ item.description }}</td>
+          <td class="text-center">
+            <v-icon size="small" class="mr-2"> mdi-pencil </v-icon>
+            <v-icon size="small" class="mr-2"> mdi-eye</v-icon>
+            <v-icon size="small"> mdi-delete </v-icon>
+          </td> -->
+        </tr>
       </template>
-    </cs-list>
+    </v-data-table-server>
   </v-container>
 </template>

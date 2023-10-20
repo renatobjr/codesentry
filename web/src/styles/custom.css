@@ -1,8 +1,11 @@
 :root {
   /* Colors */
-  --bg-primary: #27374D;
+  --bg-primary: #1C2826;
   --bg-divider: #e4e4e4;
   --bg-grey: #f8f9fb;
+  --bg-panel: #CFD8DC;
+  --font-header: #212121;
+  --border-color: #000000;
   /* Stares / Prioritys issues */
   --open: #ffb6c1;
   --in-progress: #ffd700;
@@ -22,9 +25,42 @@ a {
   color: #1867c0;
 }
 
+.v-list {
+  /* border-bottom: thin solid rgba(0, 0, 0, 0.12) !important; */
+  padding: 5px 0 !important;
+}
+
+.v-table--density-compact>.v-table__wrapper>table>tbody>tr>th,
+.v-table--density-compact>.v-table__wrapper>table>thead>tr>th,
+.v-table--density-compact>.v-table__wrapper>table>tfoot>tr>th {
+  color: var(--font-header) !important;
+  background: var(--bg-panel) !important;
+}
+
+
+.v-table--density-default>.v-table__wrapper>table>tbody>tr>th,
+.v-table--density-default>.v-table__wrapper>table>thead>tr>th,
+.v-table--density-default>.v-table__wrapper>table>tfoot>tr>th {
+  color: var(--font-header) !important;
+  background: var(--bg-panel) !important;
+}
+
+.v-table--density-default>.v-table__wrapper>table>tbody>tr>td,
+.v-table--density-default>.v-table__wrapper>table>thead>tr>td,
+.v-table--density-default>.v-table__wrapper>table>tfoot>tr>td {
+  background-color: var(--bg-grey) !important;
+  height: calc(var(--v-table-row-height, 52px) + 0px);
+}
+
+.v-data-table-footer {
+  padding: 8px 0 !important;
+  /* background-color: var(--bg-panel) !important; */
+}
+
 .cs-btn-login {
   margin-bottom: 10px;
 }
+
 
 .cs-icon {
   color: var(--icon-color);
@@ -51,23 +87,23 @@ a {
 }
 
 .cs-header-form {
-  border-radius: 5px 5px 0px 0px !important;
+  border-radius: 4px 4px 0px 0px !important;
   padding: 10px 40px
 }
 
 .cs-header-list {
-  border-radius: 5px 5px 0px 0px !important;
+  border-radius: 4px 4px 0px 0px !important;
 }
 
 .cs-graph {
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: var(--bg-grey);
   margin-bottom: 16px;
   height: 40vh;
 }
 
 .cs-datalist {
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: var(--bg-grey);
   margin: 16px 0;
 }
@@ -112,8 +148,8 @@ a {
 }
 
 #open,
-#inProgress,
-#waitingFeedback,
+#in-progress,
+#waiting-feedback,
 #solved,
 #closed,
 #rejected,
@@ -127,11 +163,11 @@ a {
   background-color: var(--open);
 }
 
-#inProgress {
+#in-progress {
   background-color: var(--in-progress);
 }
 
-#waitingFeedback {
+#waiting-feedback {
   background-color: var(--waiting-feedback);
 }
 
@@ -155,34 +191,34 @@ a {
   background-color: var(--duplicated);
 }
 
-#open-icon {
+.open-icon {
   color: var(--open);
 }
 
-#in-progress-icon {
+.in-progress-icon {
   color: var(--in-progress);
 }
 
-#waiting-feedback-icon {
+.waiting-feedback-icon {
   color: var(--waiting-feedback);
 }
 
-#solved-icon {
+.solved-icon {
   color: var(--solved);
 }
 
-#closed-icon {
+.closed-icon {
   color: var(--closed);
 }
 
-#rejected-icon {
+.rejected-icon {
   color: var(--rejected);
 }
 
-#assigned-icon {
+.assigned-icon {
   color: var(--assigned);
 }
 
-#duplicated-icon {
+.duplicated-icon {
   color: var(--duplicated);
 }

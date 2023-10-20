@@ -47,8 +47,8 @@ const cancel = () => {
             <v-text-field
               density="compact"
               variant="outlined"
-              name="issueName"
-              label="Issue Name"
+              name="resume"
+              label="Resume"
               id="id"
             ></v-text-field>
             <v-textarea
@@ -56,6 +56,13 @@ const cancel = () => {
               variant="outlined"
               name="issusDescription"
               label="Description"
+              id="id"
+            ></v-textarea>
+            <v-textarea
+              density="compact"
+              variant="outlined"
+              name="stepsToReproduce"
+              label="Steps to reproduce"
               id="id"
             ></v-textarea>
             <v-row>
