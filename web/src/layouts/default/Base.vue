@@ -47,8 +47,8 @@ const logout = () => {
       @close-dock="() => console.log('ok')"
     >
       <v-list-item class="pa-4">
-        <v-avatar class="me-4" color="blue-grey" size="36"></v-avatar>
-        <span class="text-blue-grey-darken-1">Username</span>
+        <v-avatar class="me-4" color="primary font-weight-bold" size="36">JF</v-avatar>
+        <span class="text-blue-grey-darken-4">James Franco</span>
       </v-list-item>
       <template v-for="link in links" :key="link">
         <v-list-item
@@ -76,7 +76,7 @@ const logout = () => {
       >
         <template v-slot:prepend>
           <v-icon
-            color="blue-grey-darken-1"
+            color="primary"
             >mdi-logout</v-icon
           >
         </template>
