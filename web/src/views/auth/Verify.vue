@@ -38,7 +38,7 @@ const backToLogin = () => {
         color="primary"
         >Verify code</v-btn
       >
-      <v-btn class="cs-btn-login" variant="flat" block color="secundary"
+      <v-btn class="cs-btn-login" variant="flat" block color="secondary"
         >Resend code</v-btn
       >
       <v-btn
@@ -46,7 +46,7 @@ const backToLogin = () => {
         class="cs-btn-login"
         variant="flat"
         block
-        color="secundary"
+        color="secondary"
         >Back to Login</v-btn
       >
     </template>

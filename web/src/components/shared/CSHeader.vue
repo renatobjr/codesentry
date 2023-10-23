@@ -35,10 +35,10 @@ defineProps({
 </script>
 
 <template>
-  <v-row class="ma-0 cs-header">
+  <v-row class="ma-0 cs-header elevation-0">
     <v-col align-self="center">
-      <span class="mr-16"><v-icon color="primary" @click="$emit('closeDock')" icon="mdi-dock-left"></v-icon></span>
-      <span><v-icon color="primary" :icon="links[0].title" /></span>
+      <!-- <span class="mr-16"><v-icon color="primary" @click="$emit('closeDock')" icon="mdi-dock-left"></v-icon></span> -->
+      <span><v-icon color="primary" :icon="links[0].title" @click="router.push({ name: 'dashboard'})"/></span>
         <template v-for="(link, index) in links.slice(1)">
           <v-icon color="primary" class="mx-2">mdi-chevron-right</v-icon>
           <router-link :to="link.disable ? '' : link.href"  class="text-primary">{{ link.title }}</router-link>

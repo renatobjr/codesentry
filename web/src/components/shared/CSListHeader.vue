@@ -11,7 +11,7 @@ defineProps({
   infoColor: {
     type: String,
     required: false,
-    default: "bg-green",
+    default: "bg-success",
   },
   action: {
     type: Function,

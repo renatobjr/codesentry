@@ -2,112 +2,437 @@
  The main JSON format API Returnable
  @TODO: Do a bechmaark to collect the data from others APIs
  {
-    id: 2,
-    admin: "Jane Smith",
-    name: "Project Phoenix",
-    admin: "Jane Smith",
-    assignedTo: "Jane Smith",
-    mainLanguage: "Java",
-    database: "PostgreSQL",
-    createdAt: "2023-10-18",
+    id: 3,
+    admin: "John Doe",
+    name: "Project Orion",
+    mainLanguage: "Python",
+    database: "MySQL",
+    createdAt: "2023-10-19",
     trackedIssues: [
-      { data: "25", status: "Open", class: "open" },
-      { data: "15", status: "In Progress", class: "in-progress" },
-      { data: "10", status: "Waiting Feedback", class: "waiting-feedback" },
-      { data: "20", status: "Solved", class: "solved" },
-      { data: "10", status: "Closed", class: "closed" },
-      { data: "5", status: "Rejected", class: "rejected" },
-      { data: "10", status: "Assigned", class: "assigned" },
-      { data: "5", status: "Duplicated", class: "duplicated" }
-    ]
+      {
+        id: "4",
+        priority: "medium",
+        state: "open",
+        resume: "Bug in Module A",
+        description: "description of a medium-priority unsigned task",
+        reporter: 'Emily Johnson',
+        assignedTo: 'Alex Brown',
+        stepsToReproduce: "Not applicable for the high-priority unsigned task",
+        notes: [
+          {
+            id: "8",
+            content: "Important note for the unsigned task",
+          },
+        ],
+        attachedFiles: [
+          {
+            id: "5",
+            name: "document.docx",
+            url: "https://example.com/document.docx",
+          },
+        ],
+        relatedTo: [],
+        createdAt: "2023-07-01",
+        updatedAt: "2023-07-05",
+        closedAt: null,
+      },
+      {
+        id: "5",
+        state: "closed",
+        priority: "low",
+        resume: "Feature Request: User Authentication",
+        description: "description of an unsigned issue",
+        reporter: 'Jane Doe',
+        assignedTo: 'John Doe',
+        stepsToReproduce: "Steps to reproduce the unsigned issue",
+        notes: [
+          {
+            id: "3",
+            content: "Note about the unsigned issue",
+          },
+          {
+            id: "4",
+            content: "Additional note for the unsigned issue",
+          },
+        ],
+        attachedFiles: [
+          {
+            id: "3",
+            name: "document.pdf",
+            url: "https://example.com/document.pdf",
+          },
+        ],
+        relatedTo: [
+          {
+            id: "5",
+            title: "Related Issue X",
+          },
+          {
+            id: "6",
+            title: "Related Issue Y",
+          },
+        ],
+        createdAt: "2023-02-15",
+        updatedAt: "2023-03-05",
+        closedAt: null,
+      },
+      {
+        id: "6",
+        state: "open",
+        priority: "high",
+        resume: "Performance Issue in API Endpoint",
+        description: "description of an unsigned issue",
+        reporter: 'Jane Doe',
+        assignedTo: 'John Doe',
+        stepsToReproduce: "Steps to reproduce the unsigned issue",
+        notes: [
+          {
+            id: "3",
+            content: "Note about the unsigned issue",
+          },
+          {
+            id: "4",
+            content: "Additional note for the unsigned issue",
+          },
+        ],
+        attachedFiles: [
+          {
+            id: "3",
+            name: "document.pdf",
+            url: "https://example.com/document.pdf",
+          },
+        ],
+        relatedTo: [
+          {
+            id: "5",
+            title: "Related Issue X",
+          },
+          {
+            id: "6",
+            title: "Related Issue Y",
+          },
+        ],
+        createdAt: "2023-02-15",
+        updatedAt: "2023-03-05",
+        closedAt: null,
+      },
+    ],
   },
 */
 export const dataHeader = [
-  { title: "Admin", key: "admin", width: '10%' },
-  { title: "Project Name", key: "projectName", width: '10%' },
-  { title: "Tracked Issues", key: "trackedIssues", sortable: false, width: '40%' },
-  { title: "Actions", key: "actions", align: 'center', sortable: false, width: '10%' },
+  { title: "Admin", key: "admin", width: "10%" },
+  { title: "Project Name", key: "projectName", width: "10%" },
+  {
+    title: "Tracked Issues",
+    key: "trackedIssues",
+    sortable: false,
+    width: "40%",
+  },
+  {
+    title: "Actions",
+    key: "actions",
+    align: "center",
+    sortable: false,
+    width: "10%",
+  },
 ];
 
 export const dataProjects = [
   {
-    id: 2,
-    admin: "Jane Smith",
-    projectName: "Project Phoenix",
-    createdAt: "2023-10-18T12:00:00.000Z",
-    trackedIssues: [
-      { data: "25", status: "Open", class: "open" },
-      { data: "15", status: "In Progress", class: "in-progress" },
-      { data: "10", status: "Waiting Feedback", class: "waiting-feedback" },
-      { data: "20", status: "Solved", class: "solved" },
-      { data: "10", status: "Closed", class: "closed" },
-      { data: "5", status: "Rejected", class: "rejected" },
-      { data: "10", status: "Assigned", class: "assigned" },
-      { data: "5", status: "Duplicated", class: "duplicated" }
-    ]
-  },
-  {
     id: 3,
-    admin: "Alice Johnson",
-    projectName: "Project Nebula",
-    createdAt: "2023-10-18T12:15:00.000Z",
+    admin: "John Doe",
+    name: "Project Orion",
+    mainLanguage: "Python",
+    database: "MySQL",
+    createdAt: "2023-10-19",
     trackedIssues: [
-      { data: "20", status: "Open", class: "open" },
-      { data: "10", status: "In Progress", class: "in-progress" },
-      { data: "15", status: "Waiting Feedback", class: "waiting-feedback" },
-      { data: "10", status: "Solved", class: "solved" },
-      { data: "25", status: "Closed", class: "closed" },
-      { data: "5", status: "Rejected", class: "rejected" },
-      { data: "5", status: "Assigned", class: "assigned" },
-      { data: "10", status: "Duplicated", class: "duplicated" }
-    ]
+      {
+        id: "4",
+        priority: "medium",
+        state: "open",
+        resume: "Bug in Module A",
+        description: "description of a medium-priority unsigned task",
+        reporter: 'Emily Johnson',
+        assignedTo: 'Alex Brown',
+        stepsToReproduce: "Not applicable for the high-priority unsigned task",
+        notes: [
+          {
+            id: "8",
+            content: "Important note for the unsigned task",
+          },
+        ],
+        attachedFiles: [
+          {
+            id: "5",
+            name: "document.docx",
+            url: "https://example.com/document.docx",
+          },
+        ],
+        relatedTo: [],
+        createdAt: "2023-07-01",
+        updatedAt: "2023-07-05",
+        closedAt: null,
+      },
+      {
+        id: "5",
+        state: "closed",
+        priority: "low",
+        resume: "Feature Request: User Authentication",
+        description: "description of an unsigned issue",
+        reporter: 'Jane Doe',
+        assignedTo: 'John Doe',
+        stepsToReproduce: "Steps to reproduce the unsigned issue",
+        notes: [
+          {
+            id: "3",
+            content: "Note about the unsigned issue",
+          },
+          {
+            id: "4",
+            content: "Additional note for the unsigned issue",
+          },
+        ],
+        attachedFiles: [
+          {
+            id: "3",
+            name: "document.pdf",
+            url: "https://example.com/document.pdf",
+          },
+        ],
+        relatedTo: [
+          {
+            id: "5",
+            title: "Related Issue X",
+          },
+          {
+            id: "6",
+            title: "Related Issue Y",
+          },
+        ],
+        createdAt: "2023-02-15",
+        updatedAt: "2023-03-05",
+        closedAt: null,
+      },
+      {
+        id: "6",
+        state: "open",
+        priority: "high",
+        resume: "Performance Issue in API Endpoint",
+        description: "description of an unsigned issue",
+        reporter: 'Jane Doe',
+        assignedTo: 'John Doe',
+        stepsToReproduce: "Steps to reproduce the unsigned issue",
+        notes: [
+          {
+            id: "3",
+            content: "Note about the unsigned issue",
+          },
+          {
+            id: "4",
+            content: "Additional note for the unsigned issue",
+          },
+        ],
+        attachedFiles: [
+          {
+            id: "3",
+            name: "document.pdf",
+            url: "https://example.com/document.pdf",
+          },
+        ],
+        relatedTo: [
+          {
+            id: "5",
+            title: "Related Issue X",
+          },
+          {
+            id: "6",
+            title: "Related Issue Y",
+          },
+        ],
+        createdAt: "2023-02-15",
+        updatedAt: "2023-03-05",
+        closedAt: null,
+      },
+    ],
   },
   {
     id: 4,
-    admin: "Bob Williams",
-    projectName: "Project Odyssey",
-    createdAt: "2023-10-18T12:30:00.000Z",
+    admin: "Emily Johnson",
+    name: "Project Nebula",
+    mainLanguage: "JavaScript",
+    database: "MongoDB",
+    createdAt: "2023-10-20",
     trackedIssues: [
-      { data: "15", status: "Open", class: "open" },
-      { data: "20", status: "In Progress", class: "in-progress" },
-      { data: "5", status: "Waiting Feedback", class: "waiting-feedback" },
-      { data: "25", status: "Solved", class: "solved" },
-      { data: "10", status: "Closed", class: "closed" },
-      { data: "5", status: "Rejected", class: "rejected" },
-      { data: "10", status: "Assigned", class: "assigned" },
-      { data: "10", status: "Duplicated", class: "duplicated" }
-    ]
+      {
+        id: "7",
+        state: "closed",
+        priority: "medium",
+        resume: "UI Bug in Dashboard",
+        description: "description of another unsigned issue",
+        reporter: 'John Doe',
+        assignedTo: 'Jane Doe',
+        stepsToReproduce: "Steps to reproduce the second unsigned issue",
+        notes: [
+          {
+            id: "5",
+            content: "Note about the second unsigned issue",
+          },
+        ],
+        attachedFiles: [],
+        relatedTo: [
+          {
+            id: "7",
+            title: "Related Issue Z",
+          },
+        ],
+        createdAt: "2023-03-10",
+        updatedAt: "2023-03-12",
+        closedAt: null,
+      },
+      {
+        id: "8",
+        state: "open",
+        priority: "high",
+        resume: "Backend Refactoring Task",
+        description: "description of another unsigned issue",
+        reporter: 'John Doe',
+        assignedTo: 'Jane Doe',
+        stepsToReproduce: "Steps to reproduce the second unsigned issue",
+        notes: [
+          {
+            id: "5",
+            content: "Note about the second unsigned issue",
+          },
+        ],
+        attachedFiles: [],
+        relatedTo: [
+          {
+            id: "7",
+            title: "Related Issue Z",
+          },
+        ],
+        createdAt: "2023-03-10",
+        updatedAt: "2023-03-12",
+        closedAt: null,
+      },
+      {
+        id: "9",
+        state: "open",
+        priority: "low",
+        resume: "Integration with External API",
+        description: "description of another unsigned issue",
+        reporter: 'John Doe',
+        assignedTo: 'Jane Doe',
+        stepsToReproduce: "Steps to reproduce the second unsigned issue",
+        notes: [
+          {
+            id: "5",
+            content: "Note about the second unsigned issue",
+          },
+        ],
+        attachedFiles: [],
+        relatedTo: [
+          {
+            id: "7",
+            title: "Related Issue Z",
+          },
+        ],
+        createdAt: "2023-03-10",
+        updatedAt: "2023-03-12",
+        closedAt: null,
+      },
+    ],
   },
   {
     id: 5,
-    admin: "Eva Davis",
-    projectName: "Project Quantum",
-    createdAt: "2023-10-18T12:45:00.000Z",
+    admin: "Alex Brown",
+    name: "Project Odyssey",
+    mainLanguage: "C#",
+    database: "Microsoft SQL Server",
+    createdAt: "2023-10-21",
     trackedIssues: [
-      { data: "10", status: "Open", class: "open" },
-      { data: "25", status: "In Progress", class: "in-progress" },
-      { data: "20", status: "Waiting Feedback", class: "waiting-feedback" },
-      { data: "15", status: "Solved", class: "solved" },
-      { data: "5", status: "Closed", class: "closed" },
-      { data: "10", status: "Rejected", class: "rejected" },
-      { data: "5", status: "Assigned", class: "assigned" },
-      { data: "10", status: "Duplicated", class: "duplicated" }
-    ]
+      {
+        id: "10",
+        state: "waiting-feedback",
+        priority: "high",
+        resume: "Security Vulnerability in Authentication Module",
+        description: "description of an unsigned task",
+        reporter: 'John Doe',
+        assignedTo: 'Jane Doe',
+        stepsToReproduce: "Not applicable for an unsigned task",
+        notes: [
+          {
+            id: "7",
+            content: "Note about the unsigned task",
+          },
+        ],
+        attachedFiles: [],
+        relatedTo: [
+          {
+            id: "8",
+            title: "Related Task X",
+          },
+        ],
+        createdAt: "2023-05-15",
+        updatedAt: "2023-05-20",
+        closedAt: null,
+      },
+      {
+        id: "11",
+        state: "solved",
+        priority: "low",
+        resume: "Usability Improvement: Add Dark Mode",
+        description: "description of an unsigned task",
+        reporter: 'John Doe',
+        assignedTo: 'Jane Doe',
+        stepsToReproduce: "Not applicable for an unsigned task",
+        notes: [
+          {
+            id: "7",
+            content: "Note about the unsigned task",
+          },
+        ],
+        attachedFiles: [],
+        relatedTo: [
+          {
+            id: "8",
+            title: "Related Task X",
+          },
+        ],
+        createdAt: "2023-05-15",
+        updatedAt: "2023-05-20",
+        closedAt: null,
+      },
+      {
+        id: "12",
+        state: "unsigned",
+        priority: "medium",
+        resume: "Database Connection Issue",
+        description: "description of another unsigned task",
+        reporter: 'Alex Brown',
+        assignedTo: 'Emily Johnson',
+        stepsToReproduce: "Not applicable for the second unsigned task",
+        notes: [],
+        attachedFiles: [],
+        relatedTo: [
+          {
+            id: "9",
+            title: "Related Task Y",
+          },
+        ],
+        createdAt: "2023-06-10",
+        updatedAt: "2023-06-15",
+        closedAt: null,
+      },
+    ],
   },
   {
     id: 6,
-    admin: "Mike Brown",
-    projectName: "Project Eclipse",
-    createdAt: "2023-10-18T13:00:00.000Z",
-    trackedIssues: [
-      { data: "20", status: "Open", class: "open" },
-      { data: "15", status: "In Progress", class: "in-progress" },
-      { data: "10", status: "Waiting Feedback", class: "waiting-feedback" },
-      { data: "10", status: "Solved", class: "solved" },
-      { data: "25", status: "Closed", class: "closed" },
-      { data: "5", status: "Rejected", class: "rejected" },
-      { data: "5", status: "Assigned", class: "assigned" },
-      { data: "10", status: "Duplicated", class: "duplicated" }
-    ]
-  }
-]
+    admin: "Alex Brown",
+    name: "Project Legacy",
+    mainLanguage: "C#",
+    database: "Microsoft SQL Server",
+    createdAt: "2023-10-21",
+    trackedIssues: [],
+  },
+];

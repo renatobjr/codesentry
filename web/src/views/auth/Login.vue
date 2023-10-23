@@ -52,7 +52,7 @@ const subscribe = () => {
         class="cs-btn-login"
         variant="flat"
         block
-        color="secundary"
+        color="secondary"
         >Request Access</v-btn
       >
     </template>

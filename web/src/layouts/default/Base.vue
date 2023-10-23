@@ -1,25 +1,21 @@
 // @TODO: Refactor to remove de navigation drawer from the default layout
 
 <script setup>
-import { useRoute } from "vue-router";
-import router from "@/router";
-import DefaultView from "./Default.vue";
 import { AUTH_ROUTES } from "@/router/auth";
-import { onBeforeMount, ref } from "vue";
+import { ref } from "vue";
+import { useRoute } from "vue-router";
+import DefaultView from "./Default.vue";
+import normalize from "@/utils/normalize";
+import router from "@/router";
 
 const drawer = ref(true);
-const rail = ref(false);
 const links = [
-  { name: "dashboard", path: "/dashboard", icon: "mdi-view-dashboard" },
-  { name: "projects", path: "/projects", icon: "mdi-briefcase" },
-  { name: "issues", path: "/issues", icon: "mdi-bug" },
-  { name: "users", path: "/users", icon: "mdi-account-group" },
+  { name: "Dashboard", path: "/dashboard", icon: "mdi-view-dashboard" },
+  { name: "Projects", path: "/projects", icon: "mdi-briefcase" },
+  { name: "Issues", path: "/issues", icon: "mdi-bug" },
+  { name: "Users", path: "/users", icon: "mdi-account-group" },
   // { name: "settings", path: "/settings", icon: "mdi-cog" },
 ];
-
-const closeDock = () => {
-  console.log("funciona");
-};
 
 let route = useRoute();
 
@@ -40,51 +36,28 @@ const logout = () => {
 <template>
   <default-view>
     <v-navigation-drawer
-      border="false"
-      class="bg-background"
       v-model="drawer"
-      :rail="rail"
-      @close-dock="() => console.log('ok')"
+      expand-on-hover
+      rail
+      border="false"
+      class="bg-primary"
     >
-      <v-list-item class="pa-4">
-        <v-avatar class="me-4" color="primary font-weight-bold" size="36">JF</v-avatar>
-        <span class="text-blue-grey-darken-4">James Franco</span>
-      </v-list-item>
-      <template v-for="link in links" :key="link">
+      <v-list>
         <v-list-item
-          :active="isActive(link.path)"
-          active-class="bg-primary"
-          link
-          @click="navigateTo(link.path)"
         >
           <template v-slot:prepend>
-            <v-icon
-              :color="isActive(link.path) ? 'white' : 'primary'"
-              >{{ link.icon }}</v-icon
-            >
+            <v-avatar class="font-weight-bold ml-n3" color="white" :size="32">{{ normalize.setAvatar('James Franco') }}</v-avatar>
           </template>
-
-          <span
-            :class="isActive(link.path) ? 'white' : 'text-primary'"
-            class="text-capitalize"
-            >{{ link.name }}</span
-          >
+          <template v-slot:title>
+            <span>James Franco</span>
+          </template>
         </v-list-item>
-      </template>
-      <v-list-item
-        @click="logout"
-      >
-        <template v-slot:prepend>
-          <v-icon
-            color="primary"
-            >mdi-logout</v-icon
-          >
-        </template>
-        <span
-          class="text-primary text-capitalize"
-          >Logout</span
-        >
-      </v-list-item>
+      </v-list>
+      <v-divider></v-divider>
+      <v-list density="comfortable" nav>
+        <v-list-item v-for="link in links" :active="isActive(link.path)" :prepend-icon="link.icon" :title="link.name" :value="link.name" base-color="white" @click="navigateTo(link.path)"></v-list-item>
+        <v-list-item prepend-icon="mdi-logout" title="Logout" @click="logout"></v-list-item>
+      </v-list>
     </v-navigation-drawer>
 
     <slot></slot>

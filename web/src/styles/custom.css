@@ -1,11 +1,12 @@
 :root {
   /* Colors */
-  --bg-primary: #1C2826;
   --bg-divider: #e4e4e4;
+  --bg-panel: #CFD8DC;
+  /* --bg-primary: #1C2826;
   --bg-grey: #f8f9fb;
   --bg-panel: #CFD8DC;
   --font-header: #212121;
-  --border-color: #000000;
+  --border-color: #000000; */
   /* Stares / Prioritys issues */
   --open: #ffb6c1;
   --in-progress: #ffd700;
@@ -15,7 +16,9 @@
   --rejected: #d3d3d3;
   --assigned: #dda0dd;
   --duplicated: #bc8f8f;
+  --unsigned: #B71C1C;
 }
+
 html {
   font-size: 0.9rem !important;
 }
@@ -56,18 +59,31 @@ a {
   padding: 8px 0 !important;
   /* background-color: var(--bg-panel) !important; */
 }
+.v-list-item--active>.v-list-item__overlay,
+.v-list-item[aria-haspopup=menu][aria-expanded=true]>.v-list-item__overlay {
+  border-radius: 5px;
+  margin-right: 4px;
+  margin-left: 3px;
+}
+
+.v-list-item__prepend {
+  margin-left: 8px;
+}
+
+.v-card--variant-outlined {
+  border: thin solid #9E9E9E !important;
+}
 
 .cs-btn-login {
   margin-bottom: 10px;
 }
 
-
 .cs-icon {
   color: var(--icon-color);
 }
+
 .cs-container {
-  margin-top: 40px;
-  width: 90%;
+  padding: 4rem;
 }
 
 .cs-main {
@@ -79,6 +95,10 @@ a {
   border-bottom: solid 1.5px;
   border-color: var(--bg-divider);
   padding: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #f5f5f5;
 }
 
 .cs-header-breadcrumb {
@@ -88,7 +108,7 @@ a {
 
 .cs-header-form {
   border-radius: 4px 4px 0px 0px !important;
-  padding: 10px 40px
+  padding: 20px 40px
 }
 
 .cs-header-list {
@@ -97,7 +117,6 @@ a {
 
 .cs-graph {
   border-radius: 4px;
-  background-color: var(--bg-grey);
   margin-bottom: 16px;
   height: 40vh;
 }
@@ -147,13 +166,14 @@ a {
   width: 100%;
 }
 
+#unsigned,
 #open,
+#assigned,
 #in-progress,
 #waiting-feedback,
 #solved,
 #closed,
 #rejected,
-#assigned,
 #duplicated {
   height: 7px;
 }
@@ -191,6 +211,10 @@ a {
   background-color: var(--duplicated);
 }
 
+#unsigned {
+  background-color: var(--unsigned);
+}
+
 .open-icon {
   color: var(--open);
 }
@@ -221,4 +245,8 @@ a {
 
 .duplicated-icon {
   color: var(--duplicated);
+}
+
+.unsigned-icon {
+  color: var(--unsigned);
 }

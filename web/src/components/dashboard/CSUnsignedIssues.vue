@@ -1,6 +1,16 @@
 <script setup>
-// For development porpuse
-const items = 8;
+// For development porpuse remeber to create an endpoint to get unsigned issues
+import normalize from "@/utils/normalize";
+
+defineProps({
+  issues: {
+    type: Object,
+    required: false,
+  },
+});
+const countUnsignedIssues = (issues) => {
+  return issues.length;
+};
 
 const listUnsignedIssues = () => {
   console.log("listUnsignedIssues");
@@ -9,34 +19,41 @@ const listUnsignedIssues = () => {
 
 <template>
   <v-expansion-panels>
-    <v-expansion-panel elevation="0" class="bg-maingrey">
+    <v-expansion-panel elevation="1" class="bg-maingrey">
       <v-expansion-panel-title>
         <cs-list-header
           title="Unsigned Issues"
           :action="listUnsignedIssues"
-          :infoChips="{ partial: 8, total: 90}"
-          infoColor="bg-red"
+          :infoChips="{ partial: countUnsignedIssues(issues), total: 90 }"
+          infoColor="bg-warning"
         />
       </v-expansion-panel-title>
-      <div v-for="item in items" :key="item">
+      <div v-for="issue in issues" :key="issue">
         <v-expansion-panel-text>
           <v-row align="center" justify="center">
-            <v-col cols="2">
-              <span class="d-block">00000</span>
-              <v-icon class="open-icon">mdi-square-rounded</v-icon>
-              <v-icon color="orange" size="x-large">mdi-chevron-up</v-icon>
+            <v-col cols="1" align-self="center">
+              <span class="d-block">{{ issue.id }}</span>
+            </v-col>
+            <v-col cols="1">
+              <v-icon
+                style="margin-left: -1.5px"
+                class="d-block"
+                size="large"
+                :color="normalize.setPriorityIcons(issue.priority).color"
+                >{{ normalize.setPriorityIcons(issue.priority).icon }}</v-icon
+              >
+              <v-icon class="unsigned-icon">mdi-square-rounded</v-icon>
             </v-col>
             <v-col cols="3">
-              <span class="d-block">Issue Title</span>
-              <span>Project Name</span>
+              <span class="d-block">{{ issue.resume }}</span>
+              <span class="text-caption">Created at {{ issue.createdAt }}</span>
             </v-col>
             <v-col>
-              <span class="d-block">Issue Description</span>
-              <span>Created date</span>
+              <span>{{ issue.description }}</span>
             </v-col>
           </v-row>
         </v-expansion-panel-text>
-        <v-divider></v-divider>
+        <!-- <v-divider></v-divider> -->
       </div>
     </v-expansion-panel>
   </v-expansion-panels>

@@ -6,6 +6,8 @@
     role: "Administrator",
     email: "jane.smith@exemple.com",
     password: "123456",
+    avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+    avatarColor: "#B71C1C"
     assignedIssues: [
       {
         id: "1",
@@ -39,6 +41,7 @@ export const dataHeader = [
   { title: "Name", key: "name", width: "10%" },
   { title: "Email", key: "email", width: "20%" },
   { title: "Resolved Issues", key: "resolved", width: "5%" },
+  { title: "Assignet Issues", key: "assinged", width: "5%" },
   { title: "Projects Assigned", key: "projects", width: "5%" },
   {
     title: "Actions",
@@ -56,7 +59,8 @@ export const dataUsers = [
     email: "jane.smith@example.com",
     resolvedIssues: "12",
     assignedProjects: "2",
-    projectsAssigned: "4"
+    projectsAssigned: "4",
+    assignedIssues: "4"
   },
   {
     id: "3",
@@ -64,7 +68,8 @@ export const dataUsers = [
     email: "john.doe@example.com",
     resolvedIssues: "8",
     assignedProjects: "3",
-    projectsAssigned: "6"
+    projectsAssigned: "6",
+    assignedIssues: "4"
   },
   {
     id: "4",
@@ -72,7 +77,8 @@ export const dataUsers = [
     email: "emily.johnson@example.com",
     resolvedIssues: "15",
     assignedProjects: "5",
-    projectsAssigned: "3"
+    projectsAssigned: "3",
+    assignedIssues: "4"
   },
   {
     id: "5",
@@ -80,7 +86,8 @@ export const dataUsers = [
     email: "alex.brown@example.com",
     resolvedIssues: "10",
     assignedProjects: "4",
-    projectsAssigned: "7"
+    projectsAssigned: "7",
+    assignedIssues: "4"
   },
   {
     id: "6",
@@ -88,7 +95,8 @@ export const dataUsers = [
     email: "sarah.williams@example.com",
     resolvedIssues: "18",
     assignedProjects: "6",
-    projectsAssigned: "5"
+    projectsAssigned: "5",
+    assignedIssues: "4"
   },
   {
     id: "7",
@@ -96,7 +104,8 @@ export const dataUsers = [
     email: "michael.davis@example.com",
     resolvedIssues: "9",
     assignedProjects: "2",
-    projectsAssigned: "8"
+    projectsAssigned: "8",
+    assignedIssues: "4"
   },
   {
     id: "8",
@@ -104,7 +113,8 @@ export const dataUsers = [
     email: "olivia.taylor@example.com",
     resolvedIssues: "14",
     assignedProjects: "3",
-    projectsAssigned: "6"
+    projectsAssigned: "6",
+    assignedIssues: "4"
   },
   {
     id: "9",
@@ -112,7 +122,8 @@ export const dataUsers = [
     email: "christopher.miller@example.com",
     resolvedIssues: "11",
     assignedProjects: "5",
-    projectsAssigned: "4"
+    projectsAssigned: "4",
+    assignedIssues: "4"
   },
   {
     id: "10",
@@ -120,7 +131,8 @@ export const dataUsers = [
     email: "ava.smith@example.com",
     resolvedIssues: "13",
     assignedProjects: "4",
-    projectsAssigned: "7"
+    projectsAssigned: "7",
+    assignedIssues: "4"
   },
   {
     id: "11",
@@ -128,7 +140,8 @@ export const dataUsers = [
     email: "daniel.white@example.com",
     resolvedIssues: "7",
     assignedProjects: "2",
-    projectsAssigned: "9"
+    projectsAssigned: "9",
+    assignedIssues: "4"
   },
   {
     id: "12",
@@ -136,7 +149,8 @@ export const dataUsers = [
     email: "sophia.johnson@example.com",
     resolvedIssues: "16",
     assignedProjects: "6",
-    projectsAssigned: "5"
+    projectsAssigned: "5",
+    assignedIssues: "4"
   }
 ]
 
