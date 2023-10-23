@@ -1,0 +1,7 @@
+{
+  "watch": ["src", "views"],
+  "ext": "ts,json,mustache",
+  "ignore": ["src/tests/*"],
+  "exec": "ts-node -T ./src/App.ts",
+  "signal": "SIGINT"
+}

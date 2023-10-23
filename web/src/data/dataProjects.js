@@ -36,7 +36,7 @@ export const databases = [
 
 export const states = [
   { id: "1", class: "unsigned", name: "Unsigned" },
-  { id: "2", class: "ppen", name: "Open" },
+  { id: "2", class: "open", name: "Open" },
   { id: "3", class: "assigned", name: "Assigned" },
   { id: "4", class: "in-progress", name: "In progress" },
   { id: "5", class: "waiting-feedback", name: "Waiting feedback" },

@@ -14,6 +14,47 @@ services:
     networks:
       - codesentry-network
 
+  api:
+    build:
+      dockerfile: api.dockerfile
+      context: .
+    image: codesentry-api
+    container_name: codesentry-api
+    working_dir: /var/www
+    ports:
+      - 3000:3000
+    volumes:
+      - ./api:/var/www
+    networks:
+      - codesentry-network
+    
+  mongo:
+    image: mongo:4.4.8-focal
+    container_name: codesentry-mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - './mongo/:/data/db'
+    networks:
+      - codesentry-network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: codesentry
+
+  mongo-test:
+    image: mongo:4.4.8-focal
+    container_name: codesentry-mongo-test
+    ports:
+      - 27018:27017
+    volumes:
+      - './mongo/test:/data/db'
+    networks:
+      - codesentry-network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: codesentry
 networks:
   codesentry-network:
     driver: bridge
