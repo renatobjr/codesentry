@@ -3,6 +3,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import path from "path";
 import mongoose, { ConnectOptions } from "mongoose";
+import users from "./routes/users";
+import dbSeed from "./models/dbSeed";
 
 require("dotenv").config({
   path: path.join(__dirname, "../.env"),
@@ -16,6 +18,9 @@ app.use(bodyParser.json());
 app.get("/", (req: any, res: any) => {
   res.send({ status: "codesetry is online" });
 });
+
+app.use(express.static(path.join(__dirname, "../public")));
+app.use("/users", users);
 
 const mongoUrl: any =
   process.env.NODE_ENV != "test"
@@ -31,5 +36,6 @@ mongoose
   .then(() => {
     app.listen(port, () => {
       console.log(`Listen on http://localhost:${port}`);
+      dbSeed.seed();
     });
   });

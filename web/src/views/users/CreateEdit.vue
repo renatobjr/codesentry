@@ -1,16 +1,15 @@
 <script setup>
 import router from '@/router';
-import { ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 
 let isEdit = ref(false);
 
-const save = () => {
-  console.log('teste');
-};
+onBeforeMount(() => {
+  if (router.currentRoute.value.params.id) {
+    isEdit.value = true;
+  }
+});
 
-const cancel = () => {
-  router.go(-1);
-};
 </script>
 
 <template>
@@ -18,7 +17,5 @@ const cancel = () => {
 
   <cs-form-user
     :isEdit="isEdit"
-    @cancel="cancel"
-    @save="save"
   ></cs-form-user>
 </template>

@@ -1,12 +1,66 @@
 <script setup>
-// Only for demo purpose
-import { dataProjects } from "@/data/projects";
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useUserStore } from '@/store/user';
+import { useSnackbarStore } from '@/store/snackbar';
+import { storeToRefs } from 'pinia';
+import { USERS_ROUTES } from '@/router/users';
+import validator from '@/utils/validator';
+import router from '@/router';
 
-import { ref } from "vue";
-
-defineProps({
+const props = defineProps({
   isEdit: Boolean,
 });
+
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
+const form = ref();
+
+onMounted( async () => {
+  await getUser();
+});
+
+onBeforeUnmount(() => {
+  userStore.resetUser();
+});
+
+const getUser = async () => {
+  if (props.isEdit)
+    await userStore.fetchUser(router.currentRoute.value.params.id);
+};
+
+const save = async () => {
+  const is = await form.value.validate();
+
+  if (is.valid) {
+
+    let snackBarMessage = {};
+
+    const result = props.isEdit
+      ? await userStore.updateUser(user.value)
+      : await userStore.createUser(user.value);
+
+    if (result) {
+      router.push({ name: USERS_ROUTES.LIST });
+
+      snackBarMessage = {
+        message: props.isEdit ? 'User updated sucessfully' : 'User saved successfully',
+        color: 'success',
+      };
+    } else {
+      snackBarMessage = {
+        message: 'Something went wrong',
+        color: 'error',
+      };
+    }
+
+    useSnackbarStore().showSnackbar(snackBarMessage);
+  }
+};
+
+const cancel = () => {
+  router.go(-1);
+};
+
 </script>
 
 <template>
@@ -19,56 +73,53 @@ defineProps({
           </span>
         </v-card>
         <v-card class="bg-maingrey pa-10" rounded="0" elevation="1">
-          <form action="">
-            <v-row>
+          <v-form ref="form">
+            <v-text-field
+              v-model="user.name"
+              density="compact"
+              variant="outlined"
+              label="Name"
+              :rules="[validator.isRequired]"
+            ></v-text-field>
+            <v-row class="mt-2">
               <v-col>
                 <v-text-field
+                  v-model="user.email"
                   density="compact"
                   variant="outlined"
-                  name="name"
-                  label="Name"
-                ></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field
-                  density="compact"
-                  variant="outlined"
-                  name="email"
                   label="Email"
+                  :disabled="isEdit"
+                  :rules="[validator.isRequired, validator.isEmail]"
                 ></v-text-field>
               </v-col>
-            </v-row>
-            <v-row class="mt-n5">
               <v-col>
                 <v-select
+                  v-model="user.role"
+                  :items="userStore.roles"
+                  item-title="name"
+                  item-value="value"
                   density="compact"
                   variant="outlined"
                   label="Role"
-                ></v-select>
-              </v-col>
-              <v-col>
-                <v-select
-                  density="compact"
-                  variant="outlined"
-                  label="Project"
+                  :rules="[validator.isSelected]"
                 ></v-select>
               </v-col>
             </v-row>
             <v-row>
               <v-col>
                 <v-btn
-                  @click="$emit('save')"
+                  @click="save"
                   flat
                   class="mr-4"
                   color="primary"
                   >{{ isEdit ? "Save" : "Create" }}</v-btn
                 >
-                <v-btn @click="$emit('cancel')" flat color="warning"
+                <v-btn @click="cancel" flat color="warning"
                   >Cancel</v-btn
                 >
               </v-col>
             </v-row>
-          </form>
+          </v-form>
         </v-card>
       </v-col>
     </v-row>

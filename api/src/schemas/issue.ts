@@ -1,32 +1,49 @@
 import { InferSchemaType, Schema, model, models } from "mongoose";
 
-enum priotrity {
-  low = 'low',
-  medium = 'medium',
-  high = 'high',
-  urgent = 'urgent',
-  immediate = 'immediate',
-}
+const priotrity  = [
+'low',
+'medium',
+'high',
+'urgent',
+'immediate',
+] as const;
 
-enum reproducibility {
-  always = 'always',
-  sometimes = 'sometimes',
-  once = 'once',
-  unable = 'unable',
-  nottried = 'nottried',
-  random = 'random',
-}
+const reproducibility = [
+  'always',
+  'sometimes',
+  'once',
+  'unable',
+  'nottried',
+  'random',
+] as const;
 
-enum state {
-  unsigned = 'unsigned',
-  open = 'open',
-  assigned = 'assigned',
-  inProgress = 'in-progress',
-  waitingFeedback = 'waiting-feedback',
-  solved = 'solved',
-  closed = 'closed',
-  rejected = 'rejected',
-  duplicate = 'duplicate',
+const state = [
+  'unsigned',
+  'open',
+  'assigned',
+  'inProgress',
+  'waitingFeedback',
+  'solved',
+  'closed',
+  'rejected',
+  'duplicate',
+] as const;
+
+type Priority = typeof priotrity[number];
+type Reproducibility = typeof reproducibility[number];
+type State = typeof state[number];
+
+interface Issue extends Document {
+  resume: string;
+  description: string;
+  stepsToReproduce: string;
+  priority: Priority;
+  reproducibility: Reproducibility;
+  state: State;
+  assignedTo: string[];
+  relatedTo: string[];
+  attechedFiles: string[];
+  notes: string[];
 }
 
 const schema = new Schema({
@@ -44,19 +61,21 @@ const schema = new Schema({
   },
   priority: {
     required: true,
-    type: priotrity,
-    enum: Object.values(priotrity),
+    type: String,
+    enum: priotrity,
+    default: 'medium'
   },
   reproducibility: {
     required: true,
-    type: reproducibility,
-    enum: Object.values(reproducibility),
+    type: String,
+    enum: reproducibility,
+    default: 'always'
   },
   state: {
     required: true,
-    type: state,
-    enum: Object.values(state),
-    default: state.unsigned
+    type: String,
+    enum: state,
+    default: 'unsigned'
   },
   assignedTo: {
     required: true,
@@ -82,4 +101,6 @@ const schema = new Schema({
 }, { timestamps: true });
 
 export type IssueType = InferSchemaType<typeof schema>;
-export default models.Issue || model("Issue", schema);
+const Issue =  models.Issue || model("Issue", schema);
+
+export default Issue;

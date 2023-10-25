@@ -14,7 +14,7 @@ let dialog = ref(false);
     :actions="[{ title: 'New Project', route: PROJECT_ROUTES.ADD }]"
   ></cs-header>
 
-  <!-- @TODO: needing to be moved to a store -->
+  <!-- TODO: needing to be moved to a store -->
   <v-dialog
     v-model="dialog"
     width="500"

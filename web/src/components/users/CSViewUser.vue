@@ -1,13 +1,27 @@
 <script setup>
 import { dataHeader, dataIssues } from "@/data/issues";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useUserStore } from "@/store/user";
+import { storeToRefs } from "pinia";
+import normalize from "@/utils/normalize";
+import router from "@/router";
 
-let project = ref({});
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
+
+onMounted( async () => {
+  await getUser();
+});
+
+const getUser = async () => {
+  await userStore.fetchUser(router.currentRoute.value.params.id);
+};
+
 let header = ref(dataHeader);
 </script>
 
 <template>
-  <v-container class="cs-container">
+  <v-container fluid class="cs-container">
     <v-row>
       <v-col cols="3">
         <v-card rounded="1" class="pa-4">
@@ -16,13 +30,13 @@ let header = ref(dataHeader);
               size="128"
               color="primary"
             >
-            <span style="font-size: 4rem;" class="font-weight-bold">JF</span>
+            <span style="font-size: 4rem;" class="font-weight-bold">{{ normalize.setAvatar(user.name) }}</span>
             </v-avatar>
           </v-card-title>
           <v-card-text class="text-center mt-4">
-            <span class="text-h4 d-block mb-2">James Franco</span>
-            <span class="d-block">james.franco@exemple.com</span>
-            <v-chip label variant="flat" class="mt-6" color="accent">Reporter</v-chip>
+            <span class="text-h4 d-block mb-2">{{ user.name }}</span>
+            <span class="d-block">{{ user.email }}</span>
+            <v-chip label variant="flat" class="mt-6 text-capitalize" color="accent">{{ user.role }}</v-chip>
           </v-card-text>
           <v-card-text>
             <v-row>
@@ -73,8 +87,9 @@ let header = ref(dataHeader);
         </v-card>
       </v-col>
       <v-col>
+        <!-- TODO: Remeber to refactor de issues list -->
         <cs-list-issues
-        :header="header"
+          :header="header"
           :issues="dataIssues"
           from="project"
         ></cs-list-issues>

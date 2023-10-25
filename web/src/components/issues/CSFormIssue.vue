@@ -1,6 +1,6 @@
 <script setup>
-// @TODO: Only for development porpuses
-import { dataUsers } from "@/data/users";
+// TODO: Only for development porpuses
+import userData from "@/data/users";
 import { priority, reproducibility, states } from "@/data/dataProjects";
 import { dataIssues } from "@/data/issues";
 
@@ -8,7 +8,7 @@ import { ref } from "vue";
 
 let files = ref([]);
 
-const users = ref(dataUsers);
+const users = ref(userData.mock);
 const selectedPriority = ref(priority);
 const selectedReproducibility = ref(reproducibility);
 const selectedState = ref(states);

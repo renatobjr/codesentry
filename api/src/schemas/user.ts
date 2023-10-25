@@ -1,9 +1,19 @@
 import { InferSchemaType, Schema, model, models } from "mongoose";
 
-enum Role {
-  admin = 'admin',
-  reporter = 'reporter',
-  developer = 'developer',
+const roles = ["admin", "reporter", "developer"] as const;
+const status = ["active", "inactive"] as const;
+
+type Role = typeof roles[number];
+type Status = typeof status[number];
+
+interface User extends Document {
+  name: string;
+  avatar?: string;
+  email: string;
+  password: string;
+  role: Role;
+  firstLogin: boolean;
+  token: string;
 }
 
 const schema = new Schema({
@@ -11,29 +21,45 @@ const schema = new Schema({
     required: true,
     type: String
   },
-  avatar: String,
+  avatar: {
+    type: String,
+    default: null
+  },
   email: {
     required: true,
     type: String
   },
   password: {
-    required: true,
+    required: false,
     type: String
   },
   role: {
     required: true,
-    type: Role,
-    enum: Object.values(Role),
+    type: String,
+    enum: roles,
+    default: "developer"
   },
-  projects: {
-    type: [{
-      type: Schema.Types.ObjectId,
-      ref: "Project"
-    }],
-    default: []
-  
-  }
+  firstLogin: {
+    type: Boolean,
+    default: true,
+  },
+  token: {
+    type: String,
+    default: null
+  },
+  status: {
+    required: true,
+    type: String,
+    enum: status,
+    default: "active"
+  },
+  lastLogin: {
+    type: Date,
+    default: null
+  },
 },{ timestamps: true });
 
 export type UserType = InferSchemaType<typeof schema>;
-export default models.User || model("User", schema);
+const User = models.User || model<User>("User", schema);
+
+export default User;

@@ -1,6 +1,6 @@
 <script setup>
-// @TODO: Only for development porpuses
-import { dataUsers } from "@/data/users";
+// TODO: Only for development porpuses
+import userData from '@/data/users';
 import { languages, databases } from "@/data/dataProjects";
 
 import { ref } from "vue";
@@ -9,7 +9,7 @@ defineProps({
   isEdit: Boolean,
 });
 
-const users = ref(dataUsers);
+const users = ref(userData.mock);
 let selectedUsers = ref([]);
 let selectedlanguages = ref([]);
 let selectedDatabases = ref([]);

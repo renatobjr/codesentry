@@ -1,5 +1,3 @@
-// @TODO: Refactor to remove de navigation drawer from the default layout
-
 <script setup>
 import { AUTH_ROUTES } from "@/router/auth";
 import { ref } from "vue";
