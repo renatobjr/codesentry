@@ -11,6 +11,7 @@ const { user } = storeToRefs(userStore);
 
 onMounted( async () => {
   await getUser();
+  console.log(user)
 });
 
 const getUser = async () => {
@@ -90,7 +91,7 @@ let header = ref(dataHeader);
         <!-- TODO: Remeber to refactor de issues list -->
         <cs-list-issues
           :header="header"
-          :issues="dataIssues"
+          :issues="user.issues"
           from="project"
         ></cs-list-issues>
       </v-col>

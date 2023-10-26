@@ -4,12 +4,12 @@
 /dist
 
 # local env files
-/api/src/.env
-/api/src/.env.local
-/api/src/.env.*.local
-/web/src/.env
-/web/src/.env.local
-/web/src/.env.*.local
+/api/.env
+/api/.env.local
+/api/.env.*.local
+/web/.env
+/web/.env.local
+/web/.env.*.local
 
 # Mongo data
 data/

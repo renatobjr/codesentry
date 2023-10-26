@@ -1,7 +1,7 @@
 import { InferSchemaType, Schema, model, models } from "mongoose";
 
 const roles = ["admin", "reporter", "developer"] as const;
-const status = ["active", "inactive"] as const;
+const status = ["active", "dosabled", "pending"] as const;
 
 type Role = typeof roles[number];
 type Status = typeof status[number];

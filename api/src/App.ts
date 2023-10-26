@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use("/users", users);
 
 const mongoUrl: any =
-  process.env.NODE_ENV != "test"
+  process.env.NODE_ENV != "development" && process.env.NODE_ENV != "test"
     ? process.env.MONGO_URL
     : process.env.MONGO_URL_TEST;
 const port = +(process.env.PORT ?? 3000);

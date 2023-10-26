@@ -19,7 +19,11 @@ import { get as getUser }from "../../@types/user";
 
 const get = async (id: string) => {
   try {
-    let user:getUser = await User.findById(id).select("-password").lean().exec() as any;
+    let user:getUser = await User.find({ _id: id, status: 'active'})
+      .select("-password")
+      .lean()
+      .exec()
+      .then((u: any) => u[0]);
     user.issues = await Issue.find({ assignedTo: user._id, relatedTo: user._id });
 
     return apiResponse('users/get', 200, user);

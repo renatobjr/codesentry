@@ -20,6 +20,7 @@ export interface templateOptions {
 const main = {
   send: async (options: mailOptions) => {
     try {
+      const apiKey = process.env.SENDGRID_API_KEY || "";
       const to = options.to;
       const from = options.from;
       // const replyTo = options.replyTo || process.env.SENDGRID_REPLY_TO;
@@ -27,7 +28,7 @@ const main = {
 
       const mailOptions = {
         to: to,
-        from: from || process.env.SENDGRID_SENDER_EMAIL || '',
+        from: from,
         subject: options.subject,
         html: options.html,
       }
@@ -35,7 +36,7 @@ const main = {
       if (process.env.NODE_ENV === "test") {
         return true;
       } else {
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+        sgMail.setApiKey(apiKey);
         const [result] = await sgMail.send(mailOptions);
         return +result.statusCode === 202;
       }

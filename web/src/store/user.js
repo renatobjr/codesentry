@@ -53,7 +53,7 @@ export const useUserStore = defineStore("user", () => {
   }
   async function fetchUser(id) {
     const response = await userService.fetchUser(id);
-
+    console.log(response.data)
     if (response.status == 200) {
       user.value = response.data;
     }
@@ -65,8 +65,14 @@ export const useUserStore = defineStore("user", () => {
     }
   }
   async function updateUser(data) {
-    console.log(data)
     const response = await userService.updateUser(data);
+
+    if (response.status == 200) {
+      return true;
+    }
+  }
+  async function deleteUser(id) {
+    const response = await userService.deleteUser(id);
 
     if (response.status == 200) {
       return true;
@@ -86,7 +92,8 @@ export const useUserStore = defineStore("user", () => {
     fetchUser,
     resetUser,
     createUser,
-    updateUser
+    updateUser,
+    deleteUser
   };
 });
 

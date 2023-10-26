@@ -7,5 +7,6 @@ routes.post('/create', controller.create);
 routes.put('/update/:id', controller.update);
 routes.get('/list', controller.list);
 routes.get('/get/:id', controller.get);
+routes.post('/remove/:id', controller.remove);
 
 export default routes;

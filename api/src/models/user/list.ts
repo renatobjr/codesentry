@@ -17,7 +17,7 @@ import apiResponse from "../../utils/apiResponse";
 
 const list = async () => {
   try {
-    let users = await User.find();
+    let users = await User.find({ status: 'active'});
     users = await Promise.all(
       users.map(async (user: any) => {
         const issues = await Issue.find({ assignedTo: user._id, relatedTo: user._id });
@@ -28,8 +28,8 @@ const list = async () => {
           name: user.name,
           role: user.role,
           avatar: user.avatar,
+          issues,
           projects,
-          issues
         }
       })
     );
