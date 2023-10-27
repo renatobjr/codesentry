@@ -10,7 +10,12 @@ const validator = {
   isSelected: (value) => {
     if (value) return true;
     return 'Select an option'
-  }
+  },
+  isMathcing: (value, match) => {
+    console.log(value, match)
+    if (value === match) return true;
+    return 'Password does not match'
+  },
 }
 
 export default validator;

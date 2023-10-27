@@ -95,7 +95,8 @@ const remove = async (id) => {
             <v-icon @click="view(item._id)" size="small" class="mr-2">
               mdi-eye</v-icon
             >
-            <v-icon @click="remove(item._id)" size="small"> mdi-delete </v-icon>
+            <v-icon @click="remove(item._id)" size="small" class="mr-2"> mdi-delete </v-icon>
+            <v-icon size="small"> mdi-email </v-icon>
           </td>
         </tr>
       </template>

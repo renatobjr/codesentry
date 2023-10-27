@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken"
 import { tokenData } from "../@types/auth";
+import { decodedToken as decodedTokenType } from "../@types/auth";
 
 const secret = process.env.JWT_SECRET ?? '5ane8fqubXB3NMeSTULFhgvfv4aBs2';
 

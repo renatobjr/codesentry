@@ -1,30 +1,38 @@
 <script setup>
 import { AUTH_ROUTES } from "@/router/auth";
+import { ref } from "vue";
+import { useAuthStore } from "@/store/auth";
+import validator from "@/utils/validator";
 import router from "@/router";
 
+const auth = useAuthStore();
+const form  = ref();
+
 const verify = () => {
-  router.push(AUTH_ROUTES.VERIFY);
-};
+  const isValid = form.value.validate();
+}
 
 const back = () => {
   router.go(-1);
 };
+
 </script>
 
 <template>
   <cs-card>
     <template v-slot:title>Recovery account</template>
     <template v-slot:content>
-      <form class="mt-5" action="">
+      <v-form class="mt-5" ref="form">
         <v-text-field
+          v-model="auth.recoveryEmail"
           variant="outlined"
           density="compact"
           append-inner-icon="mdi-email"
           type="email"
-          name="email"
           label="Email"
+          :rules="[validator.isRequired, validator.isEmail]"
         ></v-text-field>
-      </form>
+      </v-form>
     </template>
     <template v-slot:actions>
       <v-btn

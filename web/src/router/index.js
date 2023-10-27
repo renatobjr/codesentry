@@ -29,7 +29,6 @@ router.beforeEach(async (to, from ) => {
   const { isLogged } = authStore;
   if (!isLogged && to.meta.requiresAuth == true) {
     const check = await authService.check();
-    console.log(check)
     if(!check) {
       return { name: AUTH_ROUTES.LOGIN };
     }

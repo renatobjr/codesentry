@@ -41,7 +41,7 @@ const schema = new Schema({
   },
   firstLogin: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   token: {
     type: String,
@@ -51,7 +51,7 @@ const schema = new Schema({
     required: true,
     type: String,
     enum: status,
-    default: "active"
+    default: "pending"
   },
   lastLogin: {
     type: Date,

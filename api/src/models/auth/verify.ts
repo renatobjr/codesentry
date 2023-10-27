@@ -1,24 +1,23 @@
-import { create as createType } from "../../@types/user";
+import { get as getUser } from "../../@types/user";
+import { verify as verifyType } from "../../@types/auth";
 import apiResponse from "../../utils/apiResponse";
-import token from "../../utils/token";
 import mail from "../../utils/mail";
+import token from "../../utils/token";
 import User from "../../schemas/user";
 
-const create = async (payload: createType) => {
+const verify = async (payload: verifyType) => {
   try {
-    const searchingUser = await User.find({ email: payload.email });
-    console.log(searchingUser.length);
-    if (searchingUser.length != 0)
-      return apiResponse("users/create", 400, "User already exists");
-
-    const user = await User.create(payload);
+    let user: getUser = await User.find({
+      email: payload.email,
+      status: "active",
+    }).then((u: any) => u[0]);
 
     if (user) {
       const sixDigitCode = Math.floor(
         100000 + Math.random() * 900000
       ).toString();
       const generatedToken = token.generate({
-        action: "register",
+        action: "recovery",
         email: user.email,
         code: sixDigitCode,
       });
@@ -27,15 +26,15 @@ const create = async (payload: createType) => {
 
       const to = payload.email;
       const from = process.env.SENDGRID_USER ?? "";
-      const subject = "Welcome to CodeSentry";
-      const link = `${process.env.SENDGRID_URL}/register?token=${generatedToken}`;
+      const subject = "Recovery Codesentry Password";
+      const link = `${process.env.SENDGRID_URL}/verify/`;
       const code = sixDigitCode;
 
       // @FIX: verify mustache template to atteched a img
       const html = await mail.template({
         name: "register_invite",
         data: {
-          user: payload.name,
+          user: user.name,
           link: link,
           label: "Register",
           code: code,
@@ -53,10 +52,10 @@ const create = async (payload: createType) => {
       if (!email)
         return apiResponse("users/create", 400, "Error sending email");
     }
-    return apiResponse("users/create", 200, user);
+    return apiResponse("auth/verify", 200, user);
   } catch (error: any) {
-    return apiResponse("users/create", 400, error.message);
+    return apiResponse("auth/verify", 400, error.message);
   }
 };
 
-export default create;
+export default verify;

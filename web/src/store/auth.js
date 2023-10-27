@@ -3,6 +3,7 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 import authService from "@/service/auth";
 
 export const useAuthStore = defineStore("auth", () => {
+  // Reactive state
   const loggedUser = reactive({
     _id: null,
     name: "",
@@ -16,9 +17,10 @@ export const useAuthStore = defineStore("auth", () => {
     issues: "",
   });
   const loggedToken = ref(null);
-  const isLogged = computed(() => loggedToken.value != null);
+  let recoveryEmail = ref('')
 
   // Actions
+  const isLogged = computed(() => loggedToken.value != null);
   const setLoginData = (userData, token) => {
     loggedUser._id = userData._id;
     loggedUser.name = userData.name;
@@ -33,7 +35,20 @@ export const useAuthStore = defineStore("auth", () => {
     // User validation token
     loggedToken.value = token;
   };
-
+  const clearLoginData = () => {
+    loggedUser._id = null;
+    loggedUser.name = "";
+    loggedUser.email = "";
+    loggedUser.avatar = "";
+    loggedUser.role = "";
+    loggedUser.firstLogin = "";
+    loggedUser.status = "";
+    loggedUser.lastLogin = "";
+    loggedUser.projects = "";
+    loggedUser.issues = "";
+    // User validation token
+    loggedToken.value = null;
+  };
   async function login({ email, password }) {
     const response = await authService.login({ email, password });
 
@@ -41,12 +56,36 @@ export const useAuthStore = defineStore("auth", () => {
     setLoginData(response.data.user, response.data.token);
 
     return true;
-  }
+  };
+  async function verifyCode(data) {
+    const response = await authService.verifyCode(data);
 
-  function logout() {
-    loggedToken.value = null;
-    localStorage.removeItem(process.env.SESSION_TOKEN);
+    if (response.status != 200) return false;
+    return true;
+  };
+  async function resendCode(data) {
+    const response = await authService.resendCode(data);
+
+    if (response.status != 200) return false;
+    return true;
+  };
+  async function setPassword(data) {
+    const response = await authService.setPassword(data);
+
+    if (response.status != 200) return false;
+    return true;
+  };
+  async function verifyEmail(email) {
+    const response = await authService.verifyEmail(email);
+
+    if (response.status != 200) return false;
+
+    return true;
   }
+  function logout() {
+    clearLoginData();
+    localStorage.removeItem(process.env.SESSION_TOKEN);
+  };
 
   return {
     loggedUser,
@@ -54,6 +93,11 @@ export const useAuthStore = defineStore("auth", () => {
     isLogged,
     login,
     logout,
+    recoveryEmail,
+    verifyCode,
+    resendCode,
+    setLoginData,
+    setPassword,
   };
 });
 

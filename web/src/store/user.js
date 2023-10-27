@@ -50,50 +50,51 @@ export const useUserStore = defineStore("user", () => {
         });
       });
     }
-  }
+  };
   async function fetchUser(id) {
     const response = await userService.fetchUser(id);
     console.log(response.data)
     if (response.status == 200) {
       user.value = response.data;
     }
-  }
+  };
   async function createUser(data) {
     const response = await userService.createUser(data);
+    console.log(response)
     if (response.status == 200) {
       return true;
     }
-  }
+  };
   async function updateUser(data) {
     const response = await userService.updateUser(data);
 
     if (response.status == 200) {
       return true;
     }
-  }
+  };
   async function deleteUser(id) {
     const response = await userService.deleteUser(id);
 
     if (response.status == 200) {
       return true;
     }
-  }
+  };
   function resetUser() {
     user.value = [];
-  }
+  };
 
   return {
+    createUser,
+    deleteUser,
+    fetchUser,
+    fetchUsers,
+    isLoaded,
+    resetUser,
+    roles,
+    totalUsers,
+    updateUser,
     user,
     userList,
-    isLoaded,
-    totalUsers,
-    roles,
-    fetchUsers,
-    fetchUser,
-    resetUser,
-    createUser,
-    updateUser,
-    deleteUser
   };
 });
 

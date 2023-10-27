@@ -4,7 +4,7 @@
       <v-img
         class="mx-auto pb-15"
         :width="300"
-        src="public/svg/codesentry_full_logo.svg"
+        src="/public/svg/codesentry_full_logo.svg"
       ></v-img>
       <slot name="title" />
     </v-card-title>
