@@ -58,7 +58,7 @@ export default [
     ...route['meta'],
     active: '/users',
     layout: 'base',
-    public: false,
+    requiresAuth: true,
   }
   return route;
 });

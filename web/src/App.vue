@@ -16,16 +16,11 @@
   })
 
   const layout = computed(() => {
-    let currentLayout = Base;
-    if (route.meta.layout === 'login') {
-      currentLayout = Login;
+    let currentLayout = Login;
+    if (route.meta.layout === 'base') {
+      currentLayout = Base;
     }
 
     return currentLayout;
   })
-
-  const closeDock = () => {
-    console.log('funciona')
-  };
-
 </script>

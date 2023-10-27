@@ -86,7 +86,7 @@ export default [
     ...route['meta'],
     active: '/projects',
     layout: 'base',
-    public: false,
+    requiresAuth: true,
   }
   return route;
 });

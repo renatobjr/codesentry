@@ -8,6 +8,7 @@
 import App from './App.vue'
 // Login components
 import CSCard from '@/components/login/CSCard.vue'
+import CSFormLogin from '@/components/login/CSFormLogin.vue'
 // Shared components
 import CSDefaultList from '@/components/shared/CSDefaultList.vue'
 import CSDefaultListItem from '@/components/shared/CSDefaultListItem.vue'
@@ -43,7 +44,9 @@ const app = createApp(App)
 
 // Registered components
 app
+  // Login components
   .component('cs-card', CSCard)
+  .component('cs-form-login', CSFormLogin)
   // Shared components
   .component('cs-list', CSDefaultList)
   .component('cs-list-item', CSDefaultListItem)

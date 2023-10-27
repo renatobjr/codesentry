@@ -19,7 +19,7 @@ export default [
     ...route["meta"],
     active: '/dashboard',
     layout: "base",
-    public: false,
+    requiresAuth: true,
   };
   return route;
 });

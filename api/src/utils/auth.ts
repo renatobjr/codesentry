@@ -1,11 +1,10 @@
-import jwt from "jsonwebtoken"
-
-const secret = process.env.JWT_SECRET ?? '5ane8fqubXB3NMeSTULFhgvfv4aBs2';
+import bcryptjs from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const auth = {
-  generateToken: (data: any): string => {
-    const token = jwt.sign(data, secret, { expiresIn: '12h' });
-    return token;
+  isValidPassword: (password: string, hash: string): boolean => {
+    console.log(password, hash)
+    return bcryptjs.compareSync(password, hash);
   }
 }
 

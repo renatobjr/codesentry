@@ -19,7 +19,7 @@ export default [
     ...route["meta"],
     active: "/settings",
     layout: "base",
-    public: false,
+    requiresAuth: true,
   };
 
   return route;

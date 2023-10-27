@@ -35,7 +35,7 @@ export default [
 ].map((route) => {
   route['meta'] = {
     layout: 'login',
-    public: true,
+    requiresAuth: false,
   }
   return route;
 });

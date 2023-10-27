@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.VITE_API;
+const BASE_URL = process.env.URL_API;
 
 export const post = async (url, data) => {
   const response = await axios.post(`${BASE_URL}/${url}`, data);

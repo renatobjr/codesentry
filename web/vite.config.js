@@ -33,7 +33,8 @@ export default defineConfig({
   ],
   define: {
     "process.env": {
-      VITE_API: "http://localhost:3000",
+      URL_API: "http://localhost:3000",
+      SESSION_TOKEN: 'session_token'
     },
   },
   resolve: {

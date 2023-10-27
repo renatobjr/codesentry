@@ -1,21 +1,21 @@
-import { create as createUser } from "../../@types/user";
+import { create as createType } from "../../@types/user";
 import apiResponse from "../../utils/apiResponse";
-import auth from "../../utils/auth";
+import token from "../../utils/token";
 import mail from "../../utils/mail";
 import User from "../../schemas/user";
 
-const create = async (payload: createUser) => {
+const create = async (payload: createType) => {
   const user = await User.create(payload);
 
   if (user) {
     const sixDigitCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const token = auth.generateToken({
+    const generatedToken = token.generate({
       action: "register",
       email: user.email,
       code: sixDigitCode,
     });
 
-    await User.updateOne({ _id: user._id }, { token });
+    await User.updateOne({ _id: user._id }, { generatedToken });
 
     const to = payload.email;
     const from = process.env.SENDGRID_USER ?? "";

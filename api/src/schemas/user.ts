@@ -41,7 +41,7 @@ const schema = new Schema({
   },
   firstLogin: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   token: {
     type: String,

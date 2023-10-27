@@ -58,7 +58,7 @@ export default [
     ...route['meta'],
     active: '/issues',
     layout: 'base',
-    public: false,
+    requiresAuth: true,
   }
   return route;
 });

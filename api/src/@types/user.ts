@@ -6,6 +6,7 @@ export type create = {
 
 export type get = {
   _id: string;
+  password: string;
   name: string;
   email: string;
   role: string;
@@ -15,5 +16,3 @@ export type get = {
   updatedAt: Date;
   lastLogin: Date;
 }
-
-// export default {create, get};

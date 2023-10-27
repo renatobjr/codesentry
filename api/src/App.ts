@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import path from "path";
 import mongoose, { ConnectOptions } from "mongoose";
 import users from "./routes/users";
+import auth from "./routes/auth";
 import dbSeed from "./models/dbSeed";
 
 require("dotenv").config({
@@ -20,7 +21,9 @@ app.get("/", (req: any, res: any) => {
 });
 
 app.use(express.static(path.join(__dirname, "../public")));
-app.use("/users", users);
+app
+  .use("/users", users)
+  .use("/auth", auth)
 
 const mongoUrl: any =
   process.env.NODE_ENV != "development" && process.env.NODE_ENV != "test"

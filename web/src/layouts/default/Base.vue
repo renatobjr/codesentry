@@ -2,6 +2,7 @@
 import { AUTH_ROUTES } from "@/router/auth";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+import { useAuthStore } from "@/store/auth";
 import DefaultView from "./Default.vue";
 import normalize from "@/utils/normalize";
 import router from "@/router";
@@ -26,7 +27,7 @@ const navigateTo = (path) => {
 };
 
 const logout = () => {
-  // localStorage.removeItem("token");
+  useAuthStore().logout();
   router.push({ name: AUTH_ROUTES.LOGIN })
 };
 </script>
