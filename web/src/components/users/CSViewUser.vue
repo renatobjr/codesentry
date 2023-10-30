@@ -78,7 +78,7 @@ let header = ref(dataHeader);
               </v-col>
               <v-col>
                 <span class="d-flex float-right">
-                  2021-08-10 15:00:00
+                  {{ normalize.formatDate(user.lastLogin) }}
                 </span>
               </v-col>
             </v-row>

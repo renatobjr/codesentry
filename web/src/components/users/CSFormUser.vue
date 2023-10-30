@@ -1,56 +1,65 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { useUserStore } from '@/store/user';
-import { useSnackbarStore } from '@/store/snackbar';
-import { storeToRefs } from 'pinia';
-import { USERS_ROUTES } from '@/router/users';
-import validator from '@/utils/validator';
-import router from '@/router';
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useUserStore } from "@/store/user";
+import { useSnackbarStore } from "@/store/snackbar";
+import { USERS_ROUTES } from "@/router/users";
+import validator from "@/utils/validator";
+import router from "@/router";
+import { reactive } from "vue";
+import { onBeforeMount } from "vue";
 
 const props = defineProps({
   isEdit: Boolean,
 });
 
 const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
+const user = reactive({
+  name: "",
+  email: "",
+  role: "",
+  status: "waiting registration",
+});
 const form = ref();
 
-onMounted( async () => {
+onBeforeMount(async () => {
   await getUser();
 });
 
-onBeforeUnmount(() => {
-  userStore.resetUser();
-});
-
 const getUser = async () => {
-  if (props.isEdit)
+  if (props.isEdit) {
     await userStore.fetchUser(router.currentRoute.value.params.id);
+
+    user.name = userStore.user.name;
+    user.email = userStore.user.email;
+    user.role = userStore.user.role;
+    user.status = userStore.user.status;
+  }
 };
 
 const save = async () => {
   const is = await form.value.validate();
 
   if (is.valid) {
-
     let snackBarMessage = {};
 
     const result = props.isEdit
-      ? await userStore.updateUser(user.value)
-      : await userStore.createUser(user.value);
+      ? await userStore.updateUser(user)
+      : await userStore.createUser(user);
 
-    console.log(result)
+    console.log(result);
     if (result == true) {
       router.push({ name: USERS_ROUTES.LIST });
 
       snackBarMessage = {
-        message: props.isEdit ? 'User updated sucessfully' : 'User saved successfully',
-        color: 'success',
+        message: props.isEdit
+          ? "User updated sucessfully"
+          : "User saved successfully",
+        color: "success",
       };
     } else {
       snackBarMessage = {
         message: result,
-        color: 'error',
+        color: "error",
       };
     }
 
@@ -61,7 +70,6 @@ const save = async () => {
 const cancel = () => {
   router.go(-1);
 };
-
 </script>
 
 <template>
@@ -105,19 +113,25 @@ const cancel = () => {
                   :rules="[validator.isSelected]"
                 ></v-select>
               </v-col>
+              <v-col v-if="isEdit">
+                <v-select
+                  v-model="user.status"
+                  :items="userStore.status"
+                  item-title="name"
+                  item-value="value"
+                  density="compact"
+                  variant="outlined"
+                  label="Status"
+                  :rules="[validator.isSelected]"
+                ></v-select>
+              </v-col>
             </v-row>
             <v-row>
               <v-col>
-                <v-btn
-                  @click="save"
-                  flat
-                  class="mr-4"
-                  color="primary"
-                  >{{ isEdit ? "Save" : "Create" }}</v-btn
-                >
-                <v-btn @click="cancel" flat color="warning"
-                  >Cancel</v-btn
-                >
+                <v-btn @click="save" flat class="mr-4" color="primary">{{
+                  isEdit ? "Save" : "Create"
+                }}</v-btn>
+                <v-btn @click="cancel" flat color="warning">Cancel</v-btn>
               </v-col>
             </v-row>
           </v-form>

@@ -1,6 +1,7 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { ref } from "vue";
 import userService from "@/service/users";
+import dataUser from "@/data/users";
 
 export const useUserStore = defineStore("user", () => {
   // Reactive state
@@ -10,8 +11,8 @@ export const useUserStore = defineStore("user", () => {
     email: "",
     avatar: "",
     role: "",
-    firstLogin: "",
-    status: "",
+    firstLogin: true,
+    status: "pending",
     lastLogin: "",
     projects: [],
     issues: [],
@@ -21,11 +22,19 @@ export const useUserStore = defineStore("user", () => {
   let totalUsers = ref(0);
 
   // Define roles for users
-  const roles = ref([
-    { value: "admin", name: "Admin" },
-    { value: "reporter", name: "Reporter" },
-    { value: "developer", name: "Developer" },
-  ]);
+  const roles = [
+    { value: dataUser.roles.ADMIN, name: "Admin" },
+    { value: dataUser.roles.REPORTER, name: "Reporter" },
+    { value: dataUser.roles.DEVELOPER, name: "Developer" },
+  ];
+  // Define status for users
+  const status = [
+    { value: dataUser.status.WAITING_REGISTER, name: "Waiting Registration" },
+    { value: dataUser.status.WAITING_APPROVAL, name: "Waiting Approval" },
+    { value: dataUser.status.PENDING, name: "Pending" },
+    { value: dataUser.status.ACTIVE, name: "Active" },
+    { value: dataUser.status.DISABLED, name: "Disabled" },
+  ]
 
   // Actions
   async function fetchUsers({ page, itemsPerPage, sortBy }) {
@@ -93,9 +102,6 @@ export const useUserStore = defineStore("user", () => {
       return true;
     }
   }
-  function resetUser() {
-    user.value = [];
-  };
 
   return {
     approveUser,
@@ -104,8 +110,8 @@ export const useUserStore = defineStore("user", () => {
     fetchUser,
     fetchUsers,
     isLoaded,
-    resetUser,
     roles,
+    status,
     totalUsers,
     updateUser,
     user,

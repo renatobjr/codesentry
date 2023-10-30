@@ -51,6 +51,28 @@ const normalize = {
     }
 
   },
+  setUserStatus: (status) => {
+    switch (status) {
+      case 'waiting registration':
+        return '#E65100'
+      case 'waiting approval':
+        return '#DD2C00'
+      case 'active':
+        return '#00C853'
+      default:
+        return '#E65100'
+    }
+  },
+  formatDate: (date) => {
+    const d = new Date(date);
+    console.log(d);
+    const year = d.getFullYear();
+    const month = ("0" + (d.getMonth() + 1)).slice(-2);
+    const day = ("0" + d.getDate()).slice(-2);
+    const hours = ("0" + d.getHours()).slice(-2);
+    const minutes = ("0" + d.getMinutes()).slice(-2);
+    return `${day}/${month}/${year} at ${hours}:${minutes}`;
+  },
   setItemsPerPage: 10
 };
 

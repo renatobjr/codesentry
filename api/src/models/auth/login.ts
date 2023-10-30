@@ -4,18 +4,20 @@ import apiResponse from '../../utils/apiResponse';
 import auth from '../../utils/auth';
 import token from '../../utils/token';
 import User from '../../schemas/user';
+import sanitize from 'mongo-sanitize';
 
 const login = async (payload: loginType) => {
   try {
+    const sanitize_payload = sanitize(payload);
     let user: getUser | null = await User.findOne({
-      email: payload.email,
+      email: sanitize_payload.email,
       status: "active",
     })
 
     if (!user) return apiResponse("auth/login", 400, "Something went wrong");
 
     const isValidPassword = auth.isValidPassword(
-      payload.password,
+      sanitize_payload.password,
       user.password
     );
 
@@ -25,6 +27,9 @@ const login = async (payload: loginType) => {
     const generatedToken = token.generate({
       _id: user._id,
     });
+
+    const lastLogin = new Date();
+    await User.updateOne({_id: user._id}, { lastLogin })
 
     return apiResponse("auth/login", 200, {
       user: user,

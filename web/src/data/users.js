@@ -54,16 +54,17 @@ const dataUser = {
       width: "10%",
     },
   ],
-  mock: [
-    {
-      id: "1",
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      resolvedIssues: "12",
-      assignedProjects: "2",
-      projectsAssigned: "4",
-      assignedIssues: "4"
-    },
-  ]
+  status: {
+    WAITING_REGISTER: 'waiting registration',
+    WAITING_APPROVAL: 'waiting for approval',
+    PENDING: 'pending',
+    ACTIVE: 'active',
+    DISABLED: 'disabled'
+  },
+  roles: {
+    ADMIN: 'admin',
+    REPORTER: 'reporter',
+    DEVELOPER: 'developer',
+  },
 }
  export default dataUser;

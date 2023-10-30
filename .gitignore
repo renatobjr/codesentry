@@ -12,7 +12,6 @@
 /web/.env.*.local
 
 # Mongo data
-data/
 mongo/
 
 # Log files

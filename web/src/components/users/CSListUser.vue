@@ -15,6 +15,7 @@ const users = ref([]);
 const itemsPerPage = ref(normalize.setItemsPerPage);
 const header = ref([userData.header]);
 
+
 onMounted(async () => {
   await loadUsers({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
 });
@@ -27,7 +28,7 @@ const loadUsers = async ({ page, itemsPerPage, sortBy }) => {
 };
 
 const countUserPending = () => {
-  return users.value.filter((user) => user.status == "pending").length;
+  return users.value.filter((user) => user.status == userData.status.PENDING).length;
 };
 
 const edit = (id) => {
@@ -99,7 +100,7 @@ const approve = async (id) => {
             <span>{{ item.name }}</span>
           </td>
           <td>
-            <v-chip class="text-capitalize" variant="flat" label :color="item.status == 'pending' ? 'warning' : 'success'">
+            <v-chip class="text-capitalize" variant="flat" label :color="normalize.setUserStatus(item.status)">
               {{ item.status }}
             </v-chip>
           </td>
@@ -128,8 +129,10 @@ const approve = async (id) => {
               mdi-eye</v-icon
             >
             <v-icon @click="remove(item._id)" size="small" class="mr-2"> mdi-delete </v-icon>
-            <v-icon @click="approve(item._id)" v-if="item.status == 'pending'" size="small"> mdi-account-check </v-icon>
-            <v-icon v-if="item.status != 'pending'" size="small"> mdi-email </v-icon>
+            <!-- Icons loop -->
+            <v-icon v-if="item.status == userData.status.WAITING_REGISTER" color="grey">mdi-account-check</v-icon>
+            <v-icon v-else-if="item.status == userData.status.WAITING_APPROVAL">mdi-account-check</v-icon>
+            <v-icon v-else>mdi-email</v-icon>
           </td>
         </tr>
       </template>

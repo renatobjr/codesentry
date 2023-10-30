@@ -17,7 +17,7 @@ import apiResponse from "../../utils/apiResponse";
 
 const list = async () => {
   try {
-    let users = await User.find({ status: ['active', 'pending']});
+    let users = await User.find({ status: { $ne: "disabled" } });
     users = await Promise.all(
       users.map(async (user: any) => {
         const issues = await Issue.find({ assignedTo: user._id, relatedTo: user._id });

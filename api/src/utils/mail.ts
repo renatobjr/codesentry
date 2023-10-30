@@ -48,6 +48,8 @@ const mail = {
       },
     });
 
+    console.log(html)
+
     return await mail.internalSend({
       to: options.to,
       from: process.env.SENDGRID_USER ?? "",

@@ -16,10 +16,12 @@ import User from "../../schemas/user";
 import Issue from "../../schemas/issue";
 import apiResponse from "../../utils/apiResponse";
 import { get as getUser }from "../../@types/user";
+import sanitize from "mongo-sanitize";
 
 const get = async (id: string) => {
   try {
-    const user: getUser | null = await User.findOne({ _id: id, status: 'active'}).lean();
+    let sanitize_id = sanitize(id);
+    const user: getUser | null = await User.findOne({ _id: sanitize_id, status: 'active'}).lean();
 
     if (!user) {
       return apiResponse("users/get", 400, "User not found");

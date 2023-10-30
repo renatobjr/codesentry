@@ -1,7 +1,7 @@
 import { InferSchemaType, Schema, model, models } from "mongoose";
 
 const roles = ["admin", "reporter", "developer"] as const;
-const status = ["active", "dosabled", "pending"] as const;
+const status = ["waiting registration", "waiting approval", "active", "disabled"] as const;
 
 type Role = typeof roles[number];
 type Status = typeof status[number];
@@ -12,6 +12,7 @@ interface User extends Document {
   email: string;
   password: string;
   role: Role;
+  status: Status;
   firstLogin: boolean;
   token: string;
 }
@@ -48,10 +49,9 @@ const schema = new Schema({
     default: null
   },
   status: {
-    required: true,
     type: String,
     enum: status,
-    default: "pending"
+    default: "waiting registration"
   },
   lastLogin: {
     type: Date,
