@@ -4,7 +4,18 @@ import userService from "@/service/users";
 
 export const useUserStore = defineStore("user", () => {
   // Reactive state
-  let user = ref([]);
+  let user = ref({
+    _id: null,
+    name: "",
+    email: "",
+    avatar: "",
+    role: "",
+    firstLogin: "",
+    status: "",
+    lastLogin: "",
+    projects: [],
+    issues: [],
+  });
   let userList = ref([]);
   let isLoaded = ref(true);
   let totalUsers = ref(0);
@@ -53,17 +64,13 @@ export const useUserStore = defineStore("user", () => {
   };
   async function fetchUser(id) {
     const response = await userService.fetchUser(id);
-    console.log(response.data)
+
     if (response.status == 200) {
       user.value = response.data;
     }
   };
   async function createUser(data) {
-    const response = await userService.createUser(data);
-    console.log(response)
-    if (response.status == 200) {
-      return true;
-    }
+    return await userService.createUser(data);
   };
   async function updateUser(data) {
     const response = await userService.updateUser(data);
@@ -79,11 +86,19 @@ export const useUserStore = defineStore("user", () => {
       return true;
     }
   };
+  async function approveUser(id) {
+    const response = await userService.approveUser(id);
+
+    if (response.status == 200) {
+      return true;
+    }
+  }
   function resetUser() {
     user.value = [];
   };
 
   return {
+    approveUser,
     createUser,
     deleteUser,
     fetchUser,

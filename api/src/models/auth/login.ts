@@ -7,12 +7,10 @@ import User from '../../schemas/user';
 
 const login = async (payload: loginType) => {
   try {
-    let user: getUser = await User.find({
+    let user: getUser | null = await User.findOne({
       email: payload.email,
       status: "active",
     })
-      .select("-token")
-      .then((u: any) => u[0]);
 
     if (!user) return apiResponse("auth/login", 400, "Something went wrong");
 

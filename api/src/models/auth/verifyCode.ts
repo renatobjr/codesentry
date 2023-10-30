@@ -16,12 +16,10 @@ const verifyCode = async (payload: any) => {
     if (decodedToken.action != origin) return apiResponse("auth/verifyCode", 401, "Unauthorized");
     if (decodedToken.code != pinCode) return apiResponse("auth/verifyCode", 401, "Unauthorized");
     
-    const user:any = await User.find({
+    const user:any = await User.findOne({
       email: decodedToken.email,
       token: token,
     })
-      .select("-password")
-      .then((u: any) => u[0]);
     if (!user)
       return apiResponse("auth/verifyCode", 400, "User not found");
     

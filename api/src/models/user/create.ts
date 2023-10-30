@@ -6,9 +6,9 @@ import User from "../../schemas/user";
 
 const create = async (payload: createType) => {
   try {
-    const searchingUser = await User.find({ email: payload.email });
-    console.log(searchingUser.length);
-    if (searchingUser.length != 0)
+    const data = await User.find({ email: payload.email });
+    
+    if (data.length != 0)
       return apiResponse("users/create", 400, "User already exists");
 
     const user = await User.create(payload);
@@ -25,29 +25,14 @@ const create = async (payload: createType) => {
 
       await User.updateOne({ _id: user._id }, { token: generatedToken });
 
-      const to = payload.email;
-      const from = process.env.SENDGRID_USER ?? "";
-      const subject = "Welcome to CodeSentry";
-      const link = `${process.env.SENDGRID_URL}/register?token=${generatedToken}`;
-      const code = sixDigitCode;
-
-      // @FIX: verify mustache template to atteched a img
-      const html = await mail.template({
-        name: "register_invite",
-        data: {
-          user: payload.name,
-          link: link,
-          label: "Register",
-          code: code,
-          img: `${process.env.SENDGRID_URL}/svg/logo_email.svg`,
-        },
-      });
-
-      const email = await mail.send({
-        to,
-        from,
-        subject,
-        html,
+      const email = mail.send({
+        to: user.email,
+        subject: "Welcome to Codesentry",
+        link: `${process.env.SENDGRID_URL}/register?token=${generatedToken}`,
+        template: "register_invite",
+        user: user.name,
+        label: "Register",
+        attachment: { code: sixDigitCode },
       });
 
       if (!email)

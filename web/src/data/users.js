@@ -40,6 +40,7 @@
 const dataUser = {
   header: [
     { title: "Name", key: "name", width: "10%" },
+    { title: "Status", key: "status", width: "10%" },
     { title: "Email", key: "email", width: "10%" },
     { title: "Role", key: "role", width: "10%" },
     { title: "Resolved Issues", key: "resolved", width: "5%" },

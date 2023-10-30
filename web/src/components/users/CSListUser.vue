@@ -26,6 +26,10 @@ const loadUsers = async ({ page, itemsPerPage, sortBy }) => {
   });
 };
 
+const countUserPending = () => {
+  return users.value.filter((user) => user.status == "pending").length;
+};
+
 const edit = (id) => {
   router.push({ name: USERS_ROUTES.EDIT, params: { id } });
 };
@@ -47,10 +51,33 @@ const remove = async (id) => {
   });
 };
 
+const approve = async (id) => {
+  const isConfirmed = await useDialogStore().openDialog({
+    title: "Approve User",
+    message: "Are you sure you want to approve this user?",
+  });
+
+  if (!isConfirmed) return;
+
+  await userStore.approveUser(id).then(() => {
+    loadUsers({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
+  });
+};
+
 </script>
 
 <template>
-
+  <v-banner
+    v-if="countUserPending() > 0"
+    lines="one"
+    icon="mdi-alert-box"
+    color="warning"
+    elevation="1"
+  >
+    <v-banner-text>
+      You have <strong>{{ countUserPending() }}</strong> pending user to approve.
+    </v-banner-text>
+  </v-banner>
 
   <v-container fluid class="cs-container">
     <v-data-table-server
@@ -70,6 +97,11 @@ const remove = async (id) => {
               normalize.setAvatar(item.name)
             }}</v-avatar>
             <span>{{ item.name }}</span>
+          </td>
+          <td>
+            <v-chip class="text-capitalize" variant="flat" label :color="item.status == 'pending' ? 'warning' : 'success'">
+              {{ item.status }}
+            </v-chip>
           </td>
           <td>
             <span>{{ item.email }}</span>
@@ -96,7 +128,8 @@ const remove = async (id) => {
               mdi-eye</v-icon
             >
             <v-icon @click="remove(item._id)" size="small" class="mr-2"> mdi-delete </v-icon>
-            <v-icon size="small"> mdi-email </v-icon>
+            <v-icon @click="approve(item._id)" v-if="item.status == 'pending'" size="small"> mdi-account-check </v-icon>
+            <v-icon v-if="item.status != 'pending'" size="small"> mdi-email </v-icon>
           </td>
         </tr>
       </template>

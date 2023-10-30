@@ -8,5 +8,6 @@ routes.put('/update/:id', controller.update);
 routes.get('/list', controller.list);
 routes.get('/get/:id', controller.get);
 routes.post('/remove/:id', controller.remove);
+routes.post('/approve/:id', controller.approve);
 
 export default routes;

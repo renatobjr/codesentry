@@ -39,7 +39,8 @@ const save = async () => {
       ? await userStore.updateUser(user.value)
       : await userStore.createUser(user.value);
 
-    if (result) {
+    console.log(result)
+    if (result == true) {
       router.push({ name: USERS_ROUTES.LIST });
 
       snackBarMessage = {
@@ -48,7 +49,7 @@ const save = async () => {
       };
     } else {
       snackBarMessage = {
-        message: 'Something went wrong',
+        message: result,
         color: 'error',
       };
     }

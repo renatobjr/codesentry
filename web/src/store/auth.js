@@ -4,6 +4,7 @@ import authService from "@/service/auth";
 
 export const useAuthStore = defineStore("auth", () => {
   // Reactive state
+  // @TODO: need to refactor
   const loggedUser = reactive({
     _id: null,
     name: "",
@@ -13,8 +14,8 @@ export const useAuthStore = defineStore("auth", () => {
     firstLogin: "",
     status: "",
     lastLogin: "",
-    projects: "",
-    issues: "",
+    projects: [],
+    issues: [],
   });
   const loggedToken = ref(null);
   let recoveryEmail = ref('')

@@ -21,7 +21,6 @@ const props = defineProps({
   },
 });
 
-
 const idProject = ref(router.currentRoute.value.params.id);
 
 const edit = (id) => {

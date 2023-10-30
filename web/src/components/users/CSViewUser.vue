@@ -11,7 +11,6 @@ const { user } = storeToRefs(userStore);
 
 onMounted( async () => {
   await getUser();
-  console.log(user)
 });
 
 const getUser = async () => {

@@ -5,10 +5,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 const setPassword = async (payload: any) => {
-  const { token: token, setPasswordData: setPasswordData } = payload;
-
   try {
-    console.log(payload, token, setPasswordData.password);
+    const { token: token, setPasswordData: setPasswordData } = payload;
 
     const decodedToken: any = jwt.decode(token) as decodedTokenType;
     if (!decodedToken)

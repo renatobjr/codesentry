@@ -10,7 +10,7 @@ let route = useRoute();
 const inputs = 6;
 const form = ref();
 const isTimerRunning = ref(false);
-const timeLeft = ref(5);
+const timeLeft = ref(120);
 const pin = ref({
   digit: Array(inputs).fill(undefined),
 });
