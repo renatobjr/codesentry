@@ -1,4 +1,4 @@
-import axios from "axios";
+import $axios from "axios";
 import { useAuthStore } from "@/store/auth";
 import { storeToRefs } from "pinia";
 
@@ -12,9 +12,22 @@ axios.interceptors.request.use(
     const { isLogged, loggedToken } = storeToRefs(store);
 
     if (isLogged.value) {
-      config.headers.Authorization = `Bearer ${loggedToken.value}`;
+      config.headers.Authorization = `${loggedToken.value}`;
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
+
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 401) {
+      const store = useAuthStore();
+      store.logout();
+    }
+    return Promise.reject(error);
+  }
+)
+
+export default axios;

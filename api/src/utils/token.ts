@@ -6,7 +6,7 @@ const secret = process.env.JWT_SECRET ?? '5ane8fqubXB3NMeSTULFhgvfv4aBs2';
 
 const token = {
   generate: (data: any): string => {
-    const token = jwt.sign(data, secret, { expiresIn: '12h' });
+    const token = jwt.sign(data, secret, { expiresIn: '1h' });
     return token;
   },
   verify: (token: string): tokenData | boolean => {

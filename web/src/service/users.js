@@ -26,7 +26,8 @@ const userService = {
     return result.data;
   },
   updateUser: async (data) => {
-    const result = await api.put(`${BASE_URL}/update/${data._id}`, { ...data });
+    console.log(data);
+    const result = await api.put(`${BASE_URL}/update/${data.id}`, { ...data });
     if (result.status == 200) {
       return true;
     }

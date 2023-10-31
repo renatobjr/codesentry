@@ -43,7 +43,7 @@ const save = async () => {
     let snackBarMessage = {};
 
     const result = props.isEdit
-      ? await userStore.updateUser(user)
+      ? await userStore.updateUser({id: router.currentRoute.value.params.id, user: user})
       : await userStore.createUser(user);
 
     if (result == true) {

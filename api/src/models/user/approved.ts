@@ -13,7 +13,7 @@ const approve = async (id: string) => {
     if (!user) return apiResponse("users/approve", 400, "User not found");
 
     await User.updateOne(
-      { _id: id },
+      { _id: user._id },
       { status: userStatus.APPROVED }
     );
 

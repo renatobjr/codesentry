@@ -6,6 +6,7 @@ const roles = [
   userRoles.REPORTER,
   userRoles.DEVELOPER,
 ] as const;
+
 const status = [
   userStatus.WAITING_REGISTER,
   userStatus.WAITING_APPROVAL,

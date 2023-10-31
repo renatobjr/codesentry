@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from '@/utils/interceptor'
 
 const BASE_URL = process.env.URL_API;
 
