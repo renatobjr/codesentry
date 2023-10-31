@@ -35,7 +35,7 @@ export default defineConfig({
     "process.env": {
       URL_API: "http://localhost:3000",
       SESSION_TOKEN: 'session_token',
-      PASSWORD_TOKEN: 'password_token',
+      RECOVERY_TOKEN: 'recovery_token',
     },
   },
   resolve: {

@@ -7,10 +7,6 @@ import validator from "@/utils/validator";
 import router from "@/router";
 import { useRoute } from "vue-router";
 
-onBeforeMount(() => {
-  console.log(route.meta.origin);
-});
-
 let route = useRoute();
 const form = ref();
 const showPassword = ref(false);
@@ -21,16 +17,15 @@ const setPasswordData = reactive({
 });
 
 const setPassword = async () => {
-  let snackbar = {};
-  const isValid = await form.value.validate();
+  const is = await form.value.validate();
 
-  if (!isValid) return;
+  if (!is.valid) return;
 
   const result = await useAuthStore().setPassword({ setPasswordData });
 
-  if (!result) {
+  if (result != true) {
     useSnackbarStore().showSnackbar({
-      message: "It's not possible to change your password. Try Again!",
+      message: result,
       color: "error",
     });
     return;
@@ -57,7 +52,7 @@ const setPassword = async () => {
           :type="showPassword ? 'text' : 'password'"
           name="passwprd"
           label="Password"
-          class="mt-10"
+          class="mt-8"
           :rules="[validator.isRequired]"
           @click:append-inner="showPassword = !showPassword"
         ></v-text-field>

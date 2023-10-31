@@ -28,7 +28,7 @@ const loadUsers = async ({ page, itemsPerPage, sortBy }) => {
 };
 
 const countUserPending = () => {
-  return users.value.filter((user) => user.status == userData.status.PENDING).length;
+  return users.value.filter((user) => user.status == userData.status.WAITING_APPROVAL).length;
 };
 
 const edit = (id) => {
@@ -131,7 +131,7 @@ const approve = async (id) => {
             <v-icon @click="remove(item._id)" size="small" class="mr-2"> mdi-delete </v-icon>
             <!-- Icons loop -->
             <v-icon v-if="item.status == userData.status.WAITING_REGISTER" color="grey">mdi-account-check</v-icon>
-            <v-icon v-else-if="item.status == userData.status.WAITING_APPROVAL">mdi-account-check</v-icon>
+            <v-icon @click="approve(item._id)" v-else-if="item.status == userData.status.WAITING_APPROVAL">mdi-account-check</v-icon>
             <v-icon v-else>mdi-email</v-icon>
           </td>
         </tr>

@@ -1,15 +1,17 @@
 import login from "./login";
 import session from "./session";
-import verify from "./verify";
+import verifyEmail from "./verifyEmail";
 import verifyCode from "./verifyCode";
 import resendCode from "./resendCode";
 import setPassword from "./setPassword";
+import subscribe from "./subscribe";
 
 export default {
   login,
   session,
-  verify,
+  verifyEmail,
   verifyCode,
   resendCode,
-  setPassword 
+  setPassword,
+  subscribe
 }

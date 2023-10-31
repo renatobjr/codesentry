@@ -4,12 +4,16 @@ import apiResponse from "../../utils/apiResponse";
 import mail from "../../utils/mail";
 import token from "../../utils/token";
 import User from "../../schemas/user";
+import sanitize from "mongo-sanitize";
+import { status as userStatus } from "../../data/users"; 
 
-const verify = async (payload: verifyType) => {
+const verifyEmail = async (payload: verifyType) => {
   try {
+    const sanitizedEmail = sanitize(payload.email);
+
     let user: getUser | null = await User.findOne({
-      email: payload.email,
-      status: "active",
+      email: sanitizedEmail,
+      status: userStatus.ACTIVE,
     });
 
     if (!user) {
@@ -25,37 +29,22 @@ const verify = async (payload: verifyType) => {
 
     await User.updateOne({ _id: user._id }, { token: generatedToken });
 
-    const to = payload.email;
-    const from = process.env.SENDGRID_USER ?? "";
-    const subject = "Recovery Codesentry Password";
-    const link = `${process.env.SENDGRID_URL}/verify/`;
-    const code = sixDigitCode;
-
-    // @FIX: verify mustache template to atteched a img
-    const html = await mail.template({
-      name: "register_invite",
-      data: {
-        user: user.name,
-        link: link,
-        label: "Register",
-        code: code,
-        img: `${process.env.SENDGRID_URL}/svg/logo_email.svg`,
-      },
-    });
-
-    const email = await mail.send({
-      to,
-      from,
-      subject,
-      html,
+    const email = mail.send({
+      to: user.email,
+      subject: "Recovery your Codesentry account",
+      link: `${process.env.SENDGRID_URL}/verify`,
+      template: "recovery",
+      user: user.name,
+      label: "Recovery Password",
+      attachment: { code: sixDigitCode },
     });
 
     if (!email) return apiResponse("users/create", 400, "Error sending email");
 
-    return apiResponse("auth/verify", 200, user);
+    return apiResponse("auth/verify", 200, { user: user, token: generatedToken });
   } catch (error: any) {
     return apiResponse("auth/verify", 400, error.message);
   }
 };
 
-export default verify;
+export default verifyEmail;

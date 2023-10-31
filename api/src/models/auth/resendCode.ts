@@ -4,62 +4,46 @@ import { decodedToken as decodedTokenType } from "../../@types/auth";
 import jwt from "jsonwebtoken";
 import mail from "../../utils/mail";
 import token from "../../utils/token";
+import { get as getUser } from "../../@types/user";
 
 const resendCode = async (payload: any) => {
-  const { token: oldToken } = payload;
-
   try {
+    const sanitizedPayload = payload;
+    const { token: oldToken } = sanitizedPayload;
     const decodedToken: any = jwt.decode(oldToken) as decodedTokenType;
 
     if (!decodedToken)
       return apiResponse("auth/verifyCode", 401, "Unauthorized");
 
-    const user: any = await User.find({
+    const user: getUser | null  = await User.findOne({
       email: decodedToken.email,
       token: oldToken,
-    })
-      .select("-password")
-      .then((u: any) => u[0]);
+    });
 
     if (!user) return apiResponse("auth/resend-code", 400, "User not found");
 
     const sixDigitCode = Math.floor(100000 + Math.random() * 900000).toString();
     const generatedToken = token.generate({
-      action: "register",
+      action: "recovery",
       email: user.email,
       code: sixDigitCode,
     });
 
     await User.updateOne({ _id: user._id }, { token: generatedToken });
 
-    const to = user.email;
-    const from = process.env.SENDGRID_USER ?? "";
-    const subject = "Welcome to CodeSentry";
-    const link = `${process.env.SENDGRID_URL}/register?token=${generatedToken}`;
-    const code = sixDigitCode;
-
-    // @FIX: verify mustache template to atteched a img
-    const html = await mail.template({
-      name: "register_invite",
-      data: {
-        user: user.name,
-        link: link,
-        label: "Register",
-        code: code,
-        img: `${process.env.SENDGRID_URL}/svg/logo_email.svg`,
-      },
-    });
-
-    const email = await mail.send({
-      to,
-      from,
-      subject,
-      html,
+    const email = mail.send({
+      to: user.email,
+      subject: "Recovery your Codesentry account",
+      link: `${process.env.SENDGRID_URL}/verify`,
+      template: "resend",
+      user: user.name,
+      label: "Recovery Password",
+      attachment: { code: sixDigitCode },
     });
 
     if (!email) return apiResponse("users/create", 400, "Error sending email");
 
-    return apiResponse("auth/resend-code", 200, user);
+    return apiResponse("auth/resend-code", 200, { user: user, token: generatedToken });
   } catch (error: any) {
     return apiResponse("auth/resend-code", 400, error.message);
   }

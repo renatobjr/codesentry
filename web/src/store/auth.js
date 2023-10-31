@@ -51,37 +51,22 @@ export const useAuthStore = defineStore("auth", () => {
     loggedToken.value = null;
   };
   async function login({ email, password }) {
-    const response = await authService.login({ email, password });
-
-    if (response.status != 200) return false;
-    setLoginData(response.data.user, response.data.token);
-
-    return true;
+    return await authService.login({ email, password });
   };
   async function verifyCode(data) {
-    const response = await authService.verifyCode(data);
-
-    if (response.status != 200) return false;
-    return true;
+    return await authService.verifyCode(data);
   };
   async function resendCode(data) {
-    const response = await authService.resendCode(data);
-
-    if (response.status != 200) return false;
-    return true;
+    return  await authService.resendCode(data);
   };
   async function setPassword(data) {
-    const response = await authService.setPassword(data);
-
-    if (response.status != 200) return false;
-    return true;
+    return await authService.setPassword(data);
   };
   async function verifyEmail(email) {
-    const response = await authService.verifyEmail(email);
-
-    if (response.status != 200) return false;
-
-    return true;
+    return await authService.verifyEmail(email);
+  };
+  async function subscribe(data) {
+    return await authService.subscribe(data);
   }
   function logout() {
     clearLoginData();
@@ -96,9 +81,11 @@ export const useAuthStore = defineStore("auth", () => {
     logout,
     recoveryEmail,
     verifyCode,
+    verifyEmail,
     resendCode,
     setLoginData,
     setPassword,
+    subscribe,
   };
 });
 

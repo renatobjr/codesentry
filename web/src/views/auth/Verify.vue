@@ -10,13 +10,12 @@ let route = useRoute();
 const inputs = 6;
 const form = ref();
 const isTimerRunning = ref(false);
-const timeLeft = ref(120);
+const timeLeft = ref(10);
 const pin = ref({
   digit: Array(inputs).fill(undefined),
 });
 
 onBeforeMount(() => {
-  console.log(route.meta.origin)
   startTimer();
 });
 
@@ -61,30 +60,40 @@ watch(timeLeft, (time) => {
 });
 
 const verifyCode = async () => {
+  let token = "";
   const pinCode = pin.value.digit.join("");
-  const token = router.currentRoute.value.query.token;
   const origin = route.meta.origin;
+
+  origin === AUTH_ROUTES.REGISTER
+    ? (token = router.currentRoute.value.query.token)
+    : (token = localStorage.getItem(process.env.RECOVERY_TOKEN));
 
   const result = await useAuthStore().verifyCode({ pinCode, token, origin });
 
-  if (!result) {
+  if (result != true) {
     useSnackbarStore().showSnackbar({
-      message: "It's not possible to verify your code. Try Again!",
+      message: result,
       color: "error",
     });
     return;
   }
 
-  (origin === AUTH_ROUTES.REGISTER) ? router.push({ name: AUTH_ROUTES.CREATE }) : router.push({ name: AUTH_ROUTES.RESET });
+  origin === AUTH_ROUTES.REGISTER
+    ? router.push({ name: AUTH_ROUTES.CREATE })
+    : router.push({ name: AUTH_ROUTES.RESET });
 };
 
 const resend = async () => {
   let snackbar = {};
-  const token = router.currentRoute.value.query.token;
-  const origin = router.currentRoute.value.name;
+  let token = "";
+  const origin = route.meta.origin;
+
+  origin === AUTH_ROUTES.REGISTER
+    ? (token = router.currentRoute.value.query.token)
+    : (token = localStorage.getItem(process.env.RECOVERY_TOKEN));
 
   const result = await useAuthStore().resendCode({ token, origin });
-  console.log(result);
+
   if (!result) {
     snackbar = {
       message: "It's not possible to resend your code. Try Again!",

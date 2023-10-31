@@ -34,8 +34,7 @@ export interface templateOptions {
 }
 
 const mail = {
-  send: async (options: sendOptions) => {
-    console.log(options)
+  send: async (options: any) => {
 
     const html = await mail.template({
       name: options.template,
@@ -44,11 +43,8 @@ const mail = {
         link: options.link,
         label: options.label,
         code: options.attachment?.code,
-        img: `${process.env.SENDGRID_URL}/svg/logo_email.svg`,
       },
     });
-
-    console.log(html)
 
     return await mail.internalSend({
       to: options.to,

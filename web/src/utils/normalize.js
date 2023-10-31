@@ -1,3 +1,5 @@
+import dataUser from "@/data/users";
+
 const normalize = {
   formatTags: (tag) => {
     return tag.split("-").join(" ");
@@ -53,25 +55,31 @@ const normalize = {
   },
   setUserStatus: (status) => {
     switch (status) {
-      case 'waiting registration':
-        return '#E65100'
-      case 'waiting approval':
-        return '#DD2C00'
-      case 'active':
-        return '#00C853'
+      case dataUser.status.WAITING_REGISTER:
+        return '#6fa2e5'
+      case dataUser.status.WAITING_APPROVAL:
+        return '#5cb85c'
+      case dataUser.status.APPROVED:
+        return '#4cae4c'
+      case dataUser.status.PENDING:
+        return '#ffd700'
+      case dataUser.status.ACTIVE:
+        return '#337ab7'
       default:
-        return '#E65100'
+        return '#808080'
     }
   },
   formatDate: (date) => {
-    const d = new Date(date);
-    console.log(d);
-    const year = d.getFullYear();
-    const month = ("0" + (d.getMonth() + 1)).slice(-2);
-    const day = ("0" + d.getDate()).slice(-2);
-    const hours = ("0" + d.getHours()).slice(-2);
-    const minutes = ("0" + d.getMinutes()).slice(-2);
-    return `${day}/${month}/${year} at ${hours}:${minutes}`;
+    if (date != null) {
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = ("0" + (d.getMonth() + 1)).slice(-2);
+      const day = ("0" + d.getDate()).slice(-2);
+      const hours = ("0" + d.getHours()).slice(-2);
+      const minutes = ("0" + d.getMinutes()).slice(-2);
+      return `${day}/${month}/${year} at ${hours}:${minutes}`;
+    }
+    return 'User not log in yet'
   },
   setItemsPerPage: 10
 };

@@ -46,7 +46,6 @@ const save = async () => {
       ? await userStore.updateUser(user)
       : await userStore.createUser(user);
 
-    console.log(result);
     if (result == true) {
       router.push({ name: USERS_ROUTES.LIST });
 

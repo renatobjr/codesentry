@@ -1,6 +1,5 @@
 import { useAuthStore } from "@/store/auth";
 import api from "@/utils/api";
-import { storeToRefs } from "pinia";
 
 const BASE_URL = 'auth';
 
@@ -19,34 +18,55 @@ const authService = {
 
     if(response.status == 200) {
       localStorage.setItem(process.env.SESSION_TOKEN, response.data.token)
+      useAuthStore().setLoginData(response.data.user, response.data.token);
+      return true;
     }
-    return response;
+    return response.data;
   },
   verifyCode: async (data) => {
     const response = await api.post(`${BASE_URL}/verify-code`, { ...data })
 
     if (response.status == 200) {
-      localStorage.setItem(process.env.PASSWORD_TOKEN, response.data.token)
+      localStorage.setItem(process.env.RECOVERY_TOKEN, response.data.token)
+      return true;
     }
-    return response;
+    return response.data;
   },
   resendCode: async (data) => {
     const response = await api.post(`${BASE_URL}/resend-code`, { ...data });
-    return response;
+    if (response.status == 200) {
+      localStorage.setItem(process.env.RECOVERY_TOKEN, response.data.token)
+      return true;
+    }
+    return response.data;
   },
   setPassword: async (data) => {
-    const token = localStorage.getItem(process.env.PASSWORD_TOKEN);
+    const token = localStorage.getItem(process.env.RECOVERY_TOKEN);
 
     const response = await api.post(`${BASE_URL}/set-password`, { ...data, token });
 
     if (response.status == 200) {
-      localStorage.removeItem(process.env.PASSWORD_TOKEN);
+      localStorage.removeItem(process.env.RECOVERY_TOKEN);
+      return true;
     }
-    return response;
+    return false;
   },
   verifyEmail: async (email) => {
     const response = await api.post(`${BASE_URL}/verify-email`, { email })
-    return response;
+
+    if (response.status == 200) {
+      localStorage.setItem(process.env.RECOVERY_TOKEN, response.data.token)
+      return true;
+    }
+    return response.data;
+  },
+  subscribe: async (data) => {
+    const response = await api.post(`${BASE_URL}/subscribe`, { ...data });
+
+    if (response.status == 200) {
+      return true;
+    }
+    return response.data;
   },
   check: async () => {
     const session = localStorage.getItem(process.env.SESSION_TOKEN);

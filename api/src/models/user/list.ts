@@ -14,10 +14,11 @@ import User from "../../schemas/user";
 import Issue from "../../schemas/issue";
 import Project from "../../schemas/project";
 import apiResponse from "../../utils/apiResponse";
+import { status as userStatus } from "../../data/users";
 
 const list = async () => {
   try {
-    let users = await User.find({ status: { $ne: "disabled" } });
+    let users = await User.find({ status: { $ne: userStatus.DISABLED } });
     users = await Promise.all(
       users.map(async (user: any) => {
         const issues = await Issue.find({ assignedTo: user._id, relatedTo: user._id });

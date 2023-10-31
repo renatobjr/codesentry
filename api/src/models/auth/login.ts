@@ -5,28 +5,33 @@ import auth from '../../utils/auth';
 import token from '../../utils/token';
 import User from '../../schemas/user';
 import sanitize from 'mongo-sanitize';
+import { status as userStatus } from '../../data/users';
 
 const login = async (payload: loginType) => {
   try {
-    const sanitize_payload = sanitize(payload);
+    const sanitizedPayload = sanitize(payload);
     let user: getUser | null = await User.findOne({
-      email: sanitize_payload.email,
-      status: "active",
-    })
+      email: sanitizedPayload.email,
+      status: { $ne: userStatus.DISABLED },
+    });
 
-    if (!user) return apiResponse("auth/login", 400, "Something went wrong");
+    if (!user) return apiResponse("auth/login", 400, "It's not possible to login with this user.");
 
     const isValidPassword = auth.isValidPassword(
-      sanitize_payload.password,
+      sanitizedPayload.password,
       user.password
     );
 
     if (!isValidPassword)
-      return apiResponse("auth/login", 400, "Something went wrong");
+      return apiResponse("auth/login", 400, "Invalid credentials");
 
     const generatedToken = token.generate({
       _id: user._id,
     });
+
+    if (user.firstLogin) {
+      await User.updateOne({_id: user._id}, { firstLogin: false, status: userStatus.ACTIVE })
+    }
 
     const lastLogin = new Date();
     await User.updateOne({_id: user._id}, { lastLogin })

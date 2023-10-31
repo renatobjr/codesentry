@@ -15,4 +15,5 @@ export type get = {
   createdAt: Date;
   updatedAt: Date;
   lastLogin: Date;
+  firstLogin: boolean;
 }

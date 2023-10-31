@@ -11,8 +11,6 @@ const create = async (payload: createType) => {
     if (data.length != 0)
       return apiResponse("users/create", 400, "User already exists");
 
-      console.log(payload)
-
     const user = await User.create(payload);
 
     if (user) {

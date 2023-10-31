@@ -2,7 +2,6 @@
 // Only for demo purpose
 import { unsignedIssues, signedIssues } from '@/data/issues';
 
-console.log(process);
 </script>
 
 <template>

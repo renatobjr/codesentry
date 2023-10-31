@@ -23,3 +23,8 @@ export type decodedToken = {
   email: string;
   code: string;
 }
+
+export type subscribe = {
+  fullName: string;
+  subscribeEmail: string;
+}

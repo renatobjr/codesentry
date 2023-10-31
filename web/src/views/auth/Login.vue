@@ -15,17 +15,17 @@ const loginData = reactive({
 });
 
 const login = async () => {
-  const isValid = await form.value.validate();
+  const is = await form.value.validate();
 
-  if (!isValid) return;
+  if (!is.valid) return;
 
   const result = await useAuthStore().login(loginData);
 
-  if (result) {
+  if (result == true) {
     router.push({ name: DASH_ROUTES.DASHBOARD });
   } else {
     useSnackbarStore().showSnackbar({
-      message: 'Invalid credentials',
+      message: result,
       color: 'error',
     });
   }
@@ -36,7 +36,7 @@ const subscribe = () => {
 </script>
 
 <template>
-  <v-form class="mt-5" ref="form">
+  <v-form ref="form">
     <cs-card>
       <template v-slot:title>Login</template>
       <template v-slot:content>
@@ -48,6 +48,7 @@ const subscribe = () => {
           type="email"
           label="Email"
           :rules="[validator.isRequired, validator.isEmail]"
+          class="mt-8"
         ></v-text-field>
         <v-text-field
           v-model="loginData.password"

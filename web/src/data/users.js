@@ -55,11 +55,12 @@ const dataUser = {
     },
   ],
   status: {
-    WAITING_REGISTER: 'waiting registration',
-    WAITING_APPROVAL: 'waiting for approval',
-    PENDING: 'pending',
-    ACTIVE: 'active',
-    DISABLED: 'disabled'
+    WAITING_REGISTER: "waiting registration",
+    WAITING_APPROVAL: "waiting for approval",
+    APPROVED: "approved",
+    PENDING: "pending",
+    ACTIVE: "active",
+    DISABLED: "disabled",
   },
   roles: {
     ADMIN: 'admin',

@@ -25,7 +25,7 @@ export default [
     name: AUTH_ROUTES.VERIFY,
     component: () => import('@/views/auth/Verify.vue'),
     meta: {
-      origin: 'verify'
+      origin: 'recovery'
     }
   },
   {
