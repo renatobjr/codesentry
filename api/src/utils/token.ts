@@ -11,8 +11,7 @@ const token = {
   },
   verify: (token: string): tokenData | boolean => {
     if (token != undefined) {
-      const bearer = token.split(' ')[1];
-      return jwt.verify(bearer, secret) as unknown as tokenData;
+      return jwt.verify(token, secret) as unknown as tokenData;
     }
     return false;
   }

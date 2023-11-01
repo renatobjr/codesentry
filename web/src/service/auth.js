@@ -6,7 +6,7 @@ const BASE_URL = 'auth';
 async function getSession(token) {
   const response = await api.get(`${BASE_URL}/session`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `${token}`
     }
   })
   return response;
@@ -70,6 +70,7 @@ const authService = {
   },
   check: async () => {
     const session = localStorage.getItem(process.env.SESSION_TOKEN);
+    console.log(session)
     if (session) {
       const response = await getSession(session);
 

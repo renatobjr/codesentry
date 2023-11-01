@@ -6,7 +6,7 @@ import token from '../utils/token';
 
 const isAuth = async (req: any, res: any, next: any) => {
   try {
-    const tokenReceived = req.headers.authorization
+    const tokenReceived = req.headers.authorization;
     const tokenData: any = token.verify(tokenReceived);
     const user = await User.findOne({ _id: tokenData._id });
 

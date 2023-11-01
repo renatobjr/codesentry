@@ -4,7 +4,6 @@ import { decodedToken as decodedTokenType } from "../../@types/auth";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import sanitize from "mongo-sanitize";
-import { status as userStatus} from "../../data/users";
 
 const setPassword = async (payload: any) => {
   try {
@@ -29,7 +28,6 @@ const setPassword = async (payload: any) => {
       {
         password: hashPassword,
         token: null,
-        status: userStatus.WAITING_APPROVAL,
       }
     );
     return apiResponse("auth/setPassword", 200, user);
