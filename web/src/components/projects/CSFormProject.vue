@@ -1,18 +1,80 @@
 <script setup>
-// TODO: Only for development porpuses
-import userData from '@/data/users';
-import { languages, databases } from "@/data/dataProjects";
+import { ref, reactive, onBeforeMount } from 'vue';
+import validator from '@/utils/validator';
+import { useProjectStore } from '@/store/project';
+import { useUserStore } from '@/store/user';
+import { useSnackbarStore } from '@/store/snackbar';
+import { storeToRefs } from 'pinia';
+import router from '@/router';
+import { PROJECTS_ROUTES } from '@/router/projects';
 
-import { ref } from "vue";
-
-defineProps({
+const props = defineProps({
   isEdit: Boolean,
 });
 
-const users = ref(userData.mock);
-let selectedUsers = ref([]);
-let selectedlanguages = ref([]);
-let selectedDatabases = ref([]);
+onBeforeMount(async () => {
+  await userStore.listUsers();
+});
+
+const projectStore = useProjectStore();
+const userStore = useUserStore();
+const { userList } = storeToRefs(userStore);
+const project = reactive({
+  name: '',
+  description: '',
+  admin: '',
+  reporters: [],
+  assignees: [],
+  mainLanguage: '',
+  mainDatabase: '',
+})
+const form = ref()
+
+const listAdmins = () => {
+  return userList.value.filter((user) => user.role === 'admin');
+}
+
+const listReporters = () => {
+  return userList.value.filter((user) => user.role === 'reporter');
+}
+
+const listDevelopers = () => {
+  return userList.value.filter((user) => user.role === 'developer');
+}
+
+const save = async () => {
+  const is = await form.value.validate();
+
+  if (is.valid) {
+    let snackBarMessage = {};
+
+    const result = props.isEdit
+      ? console.log('update')
+      : await projectStore.createProject(project);
+
+    if (result == true) {
+      router.push({ name: PROJECTS_ROUTES.LIST });
+
+      snackBarMessage = {
+        message: props.isEdit
+          ? 'Project updated sucessfully'
+          : 'Project saved successfully',
+        color: 'success',
+      };
+    } else {
+      snackBarMessage = {
+        message: result,
+        color: 'error',
+      };
+    }
+
+    useSnackbarStore().showSnackbar(snackBarMessage);
+  }
+}
+
+const cancel = () => {
+  router.go(-1);
+}
 </script>
 
 <template>
@@ -20,45 +82,51 @@ let selectedDatabases = ref([]);
     <v-row align="center" justify="center">
       <v-col class="pa-0">
         <v-card color="panel" rounded="0" elevation="1" class="cs-header-form">
-          <span class="text-h5 text-grey-darken-5">{{
-            isEdit ? "Edit Project" : "Create a new project"
-          }}</span>
+          <span class="text-h5 text-grey-darken-5">
+            {{ isEdit ? "Edit Project" : "Create a new project" }}
+          </span>
         </v-card>
         <v-card class="bg-maingrey pa-10" rounded="0" elevation="1">
-          <v-form>
+          <v-form ref="form">
             <v-text-field
+              v-model="project.name"
               density="compact"
               variant="outlined"
-              name="projectName"
               label="Project Name"
+              :rules="[validator.isRequired]"
             ></v-text-field>
             <v-text-field
+              v-model="project.description"
               density="compact"
               variant="outlined"
-              name="Description"
               label="Description"
+              :rules="[validator.isRequired]"
+              class="mt-3"
             ></v-text-field>
-            <v-row>
+            <v-row class="mt-1">
               <v-col>
                 <v-select
+                  v-model="project.admin"
                   density="compact"
                   variant="outlined"
-                  :items="users"
+                  :items="listAdmins()"
                   item-title="name"
-                  item-value="id"
+                  item-value="_id"
                   label="Admin"
+                  :rules="[validator.isSelected]"
                 ></v-select>
               </v-col>
               <v-col>
                 <v-select
-                  v-model="selectedUsers"
+                  v-model="project.reporters"
                   density="compact"
                   variant="outlined"
-                  :items="users"
+                  :items="listReporters()"
                   item-title="name"
-                  item-value="id"
+                  item-value="_id"
                   label="Reporters"
                   multiple
+                  :rules="[validator.isSelected]"
                 >
                   <template v-slot:selection="{ item, index }">
                     <v-chip color="primary" label v-if="index < 2">
@@ -76,14 +144,15 @@ let selectedDatabases = ref([]);
               </v-col>
               <v-col>
                 <v-select
-                  v-model="selectedUsers"
+                  v-model="project.assignees"
                   density="compact"
                   variant="outlined"
-                  :items="users"
+                  :items="listDevelopers()"
                   item-title="name"
-                  item-value="id"
+                  item-value="_id"
                   label="Assignees"
                   multiple
+                  :rules="[validator.isSelected]"
                 >
                   <template v-slot:selection="{ item, index }">
                     <v-chip color="primary" label v-if="index < 2">
@@ -100,40 +169,36 @@ let selectedDatabases = ref([]);
                 </v-select>
               </v-col>
             </v-row>
-            <v-row class="mt-n5">
+            <v-row class="mt-1">
               <v-col>
-                <v-select
-                  v-model="selectedlanguages"
+                <v-text-field
+                  v-model="project.mainLanguage"
                   density="compact"
                   variant="outlined"
-                  :items="languages"
-                  item-title="name"
-                  item-value="id"
-                  label="Main languages"
-                ></v-select>
+                  label="Main language"
+                  :rules="[validator.isRequired]"
+                ></v-text-field>
               </v-col>
               <v-col>
-                <v-select
-                  v-model="selectedDatabases"
+                <v-text-field
+                  v-model="project.mainDatabase"
                   density="compact"
                   variant="outlined"
-                  :items="databases"
-                  item-title="name"
-                  item-value="id"
-                  label="Database"
-                ></v-select>
+                  label="Main database"
+                  :rules="[validator.isRequired]"
+                ></v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col>
                 <v-btn
-                  @click="$emit('save')"
+                  @click="save"
                   flat
                   class="mr-4"
                   color="primary"
                   >{{ isEdit ? "Save" : "Create" }}</v-btn
                 >
-                <v-btn @click="$emit('cancel')" flat color="warning"
+                <v-btn @click="cancel" flat color="warning"
                   >Cancel</v-btn
                 >
               </v-col>

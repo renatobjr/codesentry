@@ -22,7 +22,14 @@ const list = async () => {
     users = await Promise.all(
       users.map(async (user: any) => {
         const issues = await Issue.find({ assignedTo: user._id, relatedTo: user._id });
-        const projects = await Project.find({ admin: user._id, reporters: user._id, assignees: user._id });
+        const projects = await Project.find({
+          $or: [
+            { admin: user._id },
+            { reporters: user._id },
+            { assignees: user._id },
+          ]
+        });
+
         return {
           _id: user._id,
           name: user.name,

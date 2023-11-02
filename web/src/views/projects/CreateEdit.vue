@@ -10,14 +10,6 @@ onBeforeMount(() => {
     isEdit.value = true;
   }
 });
-
-const save = () => {
-  console.log("teste");
-};
-
-const cancel = () => {
-  router.go(-1);
-};
 </script>
 
 <template>
@@ -25,7 +17,5 @@ const cancel = () => {
 
   <cs-form-project
     :isEdit="isEdit"
-    @cancel="cancel"
-    @save="save"
   ></cs-form-project>
 </template>

@@ -1,4 +1,4 @@
-export const PROJECT_ROUTES = {
+export const PROJECTS_ROUTES = {
   LIST: 'projects',
   VIEW: 'projects-view',
   VIEW_ISSUE: 'projects-view-issue',
@@ -10,7 +10,7 @@ export const PROJECT_ROUTES = {
 export default [
   {
     path: '/projects',
-    name: PROJECT_ROUTES.LIST,
+    name: PROJECTS_ROUTES.LIST,
     component: () => import('@/views/projects/List.vue'),
     meta: {
       breadcrumb: [
@@ -21,7 +21,7 @@ export default [
   },
   {
     path: '/projects/view/:id',
-    name: PROJECT_ROUTES.VIEW,
+    name: PROJECTS_ROUTES.VIEW,
     component: () => import('@/views/projects/View.vue'),
     meta: {
       breadcrumb: [
@@ -33,7 +33,7 @@ export default [
   },
   {
     path: '/projects/edit/:idProject/issues/view/:id',
-    name: PROJECT_ROUTES.VIEW_ISSUE,
+    name: PROJECTS_ROUTES.VIEW_ISSUE,
     component: () => import('@/views/issues/View.vue'),
     meta: {
       breadcrumb: [
@@ -46,7 +46,7 @@ export default [
   },
   {
     path: '/projects/add',
-    name: PROJECT_ROUTES.ADD,
+    name: PROJECTS_ROUTES.ADD,
     component: () => import('@/views/projects/CreateEdit.vue'),
     meta: {
       breadcrumb: [
@@ -58,7 +58,7 @@ export default [
   },
   {
     path: '/projects/edit/:id',
-    name: PROJECT_ROUTES.EDIT,
+    name: PROJECTS_ROUTES.EDIT,
     component: () => import('@/views/projects/CreateEdit.vue'),
     meta: {
       breadcrumb: [
@@ -70,7 +70,7 @@ export default [
   },
   {
     path: '/projects/edit/:idProject/issues/edit/:id',
-    name: PROJECT_ROUTES.EDIT_ISSUE,
+    name: PROJECTS_ROUTES.EDIT_ISSUE,
     component: () => import('@/views/issues/CreateEdit.vue'),
     meta: {
       breadcrumb: [

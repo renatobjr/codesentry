@@ -1,15 +1,19 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import { useUserStore } from "@/store/user";
-import { useSnackbarStore } from "@/store/snackbar";
-import { USERS_ROUTES } from "@/router/users";
-import validator from "@/utils/validator";
-import router from "@/router";
-import { reactive } from "vue";
 import { onBeforeMount } from "vue";
+import { reactive } from "vue";
+import { ref } from "vue";
+import { USERS_ROUTES } from "@/router/users";
+import { useSnackbarStore } from "@/store/snackbar";
+import { useUserStore } from "@/store/user";
+import router from "@/router";
+import validator from "@/utils/validator";
 
 const props = defineProps({
   isEdit: Boolean,
+});
+
+onBeforeMount(async () => {
+  await getUser();
 });
 
 const userStore = useUserStore();
@@ -21,9 +25,6 @@ const user = reactive({
 });
 const form = ref();
 
-onBeforeMount(async () => {
-  await getUser();
-});
 
 const getUser = async () => {
   if (props.isEdit) {

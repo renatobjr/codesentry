@@ -5,6 +5,7 @@ import path from "path";
 import mongoose, { ConnectOptions } from "mongoose";
 import users from "./routes/users";
 import auth from "./routes/auth";
+import projects from "./routes/project"; 
 import dbSeed from "./models/dbSeed";
 
 require("dotenv").config({
@@ -22,8 +23,9 @@ app.get("/", (req: any, res: any) => {
 
 app.use(express.static(path.join(__dirname, "../public")));
 app
-  .use("/users", users)
   .use("/auth", auth)
+  .use("/users", users)
+  .use("/projects", projects)
 
 const mongoUrl: any =
   process.env.NODE_ENV != "development" && process.env.NODE_ENV != "test"

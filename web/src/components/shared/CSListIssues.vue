@@ -3,7 +3,7 @@ import { ref } from "vue";
 import normalize from "@/utils/normalize";
 import router from "@/router";
 import { ISSUES_ROUTES } from "@/router/issues";
-import { PROJECT_ROUTES } from "@/router/projects";
+import { PROJECTS_ROUTES } from "@/router/projects";
 
 const props = defineProps({
   header: {
@@ -25,13 +25,13 @@ const idProject = ref(router.currentRoute.value.params.id);
 
 const edit = (id) => {
   props.from === "project"
-    ? router.push({ name: PROJECT_ROUTES.EDIT_ISSUE, params: { idProject: idProject.value, id } })
+    ? router.push({ name: PROJECTS_ROUTES.EDIT_ISSUE, params: { idProject: idProject.value, id } })
     : router.push({ name: ISSUES_ROUTES.EDIT, params: { id } });
 };
 
 const view = (id) => {
   props.from === "project"
-    ? router.push({ name: PROJECT_ROUTES.VIEW_ISSUE, params: { idProject: idProject.value, id } })
+    ? router.push({ name: PROJECTS_ROUTES.VIEW_ISSUE, params: { idProject: idProject.value, id } })
     : router.push({ name: ISSUES_ROUTES.VIEW, params: { id } });
 };
 

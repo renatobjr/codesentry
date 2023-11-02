@@ -1,5 +1,5 @@
 <script setup>
-import { PROJECT_ROUTES } from "@/router/projects";
+import { PROJECTS_ROUTES } from "@/router/projects";
 import { ref } from "vue";
 
 
@@ -11,7 +11,7 @@ let dialog = ref(false);
 <template>
   <cs-header
     title="Aloha"
-    :actions="[{ title: 'New Project', route: PROJECT_ROUTES.ADD }]"
+    :actions="[{ title: 'New Project', route: PROJECTS_ROUTES.ADD }]"
   ></cs-header>
 
   <!-- TODO: needing to be moved to a store -->

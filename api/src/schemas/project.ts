@@ -28,11 +28,11 @@ const schema = new Schema({
     }],
     default: []
   },
-  mainLanguages: {
+  mainLanguage: {
     required: true,
     type: String
   },
-  database: {
+  mainDatabase: {
     required: true,
     type: String
   },

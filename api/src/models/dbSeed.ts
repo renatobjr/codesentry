@@ -13,6 +13,23 @@ const dbSeed = {
               email: "admin@codesentry.org",
               password: bcrypt.hashSync("admin", 10),
               role: "admin",
+              status: "active",
+              firstLogin: false,
+            },
+            {
+              name: "Jane Smith",
+              email: "jane.smith@codesentry,org",
+              password: bcrypt.hashSync("admin", 10),
+              role: "reporter",
+              status: "active",
+              firstLogin: false,
+            },
+            {
+              name: "John Doe",
+              email: "john@doe@codesentry.org",
+              password: bcrypt.hashSync("admin", 10),
+              role: "developer",
+              status: "active",
               firstLogin: false,
             },
             // {

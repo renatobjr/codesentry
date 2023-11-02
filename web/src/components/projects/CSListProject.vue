@@ -5,7 +5,7 @@ import { dataLegends } from "@/data/legends";
 
 import normalize from "@/utils/normalize";
 import router from "@/router";
-import { PROJECT_ROUTES } from "@/router/projects";
+import { PROJECTS_ROUTES } from "@/router/projects";
 import { ISSUES_ROUTES } from "@/router/issues";
 import { ref } from "vue";
 
@@ -17,11 +17,11 @@ let stackedValue = ref([]);
 let dataFormated = ref([]);
 
 const edit = (id) => {
-  router.push({ name: PROJECT_ROUTES.EDIT, params: { id } });
+  router.push({ name: PROJECTS_ROUTES.EDIT, params: { id } });
 };
 
 const view = (id) => {
-  router.push({ name: PROJECT_ROUTES.VIEW, params: { id } });
+  router.push({ name: PROJECTS_ROUTES.VIEW, params: { id } });
 };
 
 let stackedBar = (issues) => {
