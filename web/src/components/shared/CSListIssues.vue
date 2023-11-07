@@ -1,11 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import normalize from "@/utils/normalize";
-import router from "@/router";
 import { ISSUES_ROUTES } from "@/router/issues";
 import { PROJECTS_ROUTES } from "@/router/projects";
-import { useIssueStore } from "@/store/issue";
+import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
+import { useIssueStore } from "@/store/issue";
+import normalize from "@/utils/normalize";
+import router from "@/router";
 
 const props = defineProps({
   header: {
@@ -24,34 +24,47 @@ const props = defineProps({
 });
 
 const issueStore = useIssueStore();
-const { issuesList, isLoaded, totalIssues } = storeToRefs(issueStore);
+
+const isLoaded = ref(true);
+const issues = ref([]);
+const header = ref(props.header);
+
+const itemsPerPage = normalize.setItemsPerPage;
+let totalIssues = 0;
 
 const query = ref(props.query);
 
-const issues = ref([]);
-const itemsPerPage = ref(normalize.setItemsPerPage);
-const header = ref(props.header);
-
 onMounted(async () => {
-  await issueStore.listIssues(query.value)
+  await issueStore.listIssues(query.value);
   await loadIssues({ page: 1, itemsPerPage: 10, sortBy: [] });
 });
 
 const loadIssues = async ({ page, itemsPerPage, sortBy }) => {
-   await issueStore.fetchIssues({ page, itemsPerPage, sortBy }).then(() => {
-    issues.value = issuesList.value;
-   });
-}
+  isLoaded.value = true;
+  await issueStore
+    .fetchIssues({ page, itemsPerPage, sortBy })
+    .then(({ items, total }) => {
+      issues.value = items;
+      totalIssues = total;
+    });
+  isLoaded.value = false;
+};
 
 const edit = (id) => {
   props.from === "project"
-    ? router.push({ name: PROJECTS_ROUTES.EDIT_ISSUE, params: { idProject: idProject.value, id } })
+    ? router.push({
+        name: PROJECTS_ROUTES.EDIT_ISSUE,
+        params: { idProject: idProject.value, id },
+      })
     : router.push({ name: ISSUES_ROUTES.EDIT, params: { id } });
 };
 
 const view = (id) => {
   props.from === "project"
-    ? router.push({ name: PROJECTS_ROUTES.VIEW_ISSUE, params: { idProject: idProject.value, id } })
+    ? router.push({
+        name: PROJECTS_ROUTES.VIEW_ISSUE,
+        params: { idProject: idProject.value, id },
+      })
     : router.push({ name: ISSUES_ROUTES.VIEW, params: { id } });
 };
 </script>
@@ -67,7 +80,7 @@ const view = (id) => {
     @update:options="loadIssues"
     class="rounded bg-maingrey elevation-1"
   >
-  <template v-slot:item="{ item }">
+    <template v-slot:item="{ item }">
       <tr>
         <td>{{ item.resume }}</td>
         <td>
@@ -103,8 +116,12 @@ const view = (id) => {
         </td>
         <td>{{ item.description }}</td>
         <td class="text-center">
-          <v-icon size="small" class="mr-2" @click="edit(item.id)"> mdi-pencil </v-icon>
-          <v-icon size="small" class="mr-2" @click="view(item.id)"> mdi-eye</v-icon>
+          <v-icon size="small" class="mr-2" @click="edit(item.id)">
+            mdi-pencil
+          </v-icon>
+          <v-icon size="small" class="mr-2" @click="view(item.id)">
+            mdi-eye</v-icon
+          >
           <v-icon size="small"> mdi-delete </v-icon>
         </td>
       </tr>

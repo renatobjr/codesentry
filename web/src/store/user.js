@@ -18,7 +18,6 @@ export const useUserStore = defineStore("user", () => {
     issues: [],
   });
   let userList = ref([]);
-  let isLoaded = ref(true);
   let totalUsers = ref(0);
 
   // Define roles for users
@@ -41,31 +40,30 @@ export const useUserStore = defineStore("user", () => {
     userList.value = await userService.fetchUsers();
   }
   async function fetchUsers({ page, itemsPerPage, sortBy }) {
-    const response = await userService.fetchUsers();
-
-    if (response) {
-      totalUsers.value = response.length;
+    if (userList) {
+      totalUsers.value = userList.value.length;
 
       return new Promise((resolve) => {
         const start = (page - 1) * itemsPerPage;
         const end = start + itemsPerPage;
 
-        userList.value = response.slice();
-
         if (sortBy.length) {
-          const sortKey = sortBy[0].key;
-          const sortOrder = sortBy[0].order;
+          const sortKey = sortBy[0].key
+          const sortOrder = sortBy[0].order
           userList.value.sort((a, b) => {
-            const aValue = a[sortKey];
-            const bValue = b[sortKey];
-            return sortOrder === "desc" ? bValue - aValue : aValue - bValue;
-          });
+            const aValue = a[sortKey]
+            const bValue = b[sortKey]
+
+            if (sortOrder === 'asc') {
+              return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
+            } else {
+              return aValue > bValue ? -1 : aValue < bValue ? 1 : 0
+            }
+          })
         }
 
         const paginated = userList.value.slice(start, end);
 
-
-        isLoaded.value = false;
         resolve({
           items: paginated,
           total: userList.value.length,
@@ -95,7 +93,6 @@ export const useUserStore = defineStore("user", () => {
     deleteUser,
     fetchUser,
     fetchUsers,
-    isLoaded,
     listUsers,
     roles,
     status,

@@ -16,7 +16,6 @@ export const useIssueStore = defineStore("issue", () => {
     files: [],
   });
   let issuesList = ref([]);
-  let isLoaded = ref(true);
   let totalIssues = ref(0);
 
   // Define priority, state and reproducibilty for issues
@@ -63,15 +62,19 @@ export const useIssueStore = defineStore("issue", () => {
           const sortKey = sortBy[0].key;
           const sortOrder = sortBy[0].order;
           issuesList.value.sort((a, b) => {
-            const aValue = a[sortKey];
-            const bValue = b[sortKey];
-            return sortOrder === "desc" ? bValue - aValue : aValue - bValue;
+            const aValue = a[sortKey]
+            const bValue = b[sortKey]
+
+            if (sortOrder === 'asc') {
+              return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
+            } else {
+              return aValue > bValue ? -1 : aValue < bValue ? 1 : 0
+            }
           });
         }
 
         const paginated = issuesList.value.slice(start, end);
 
-        isLoaded.value = false;
         resolve({
           items: paginated,
           total: issuesList.value.length,
@@ -88,7 +91,6 @@ export const useIssueStore = defineStore("issue", () => {
     fetchIssues,
     issue,
     issuesList,
-    isLoaded,
     totalIssues,
     priority,
     state,

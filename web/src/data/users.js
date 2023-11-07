@@ -43,8 +43,12 @@ const dataUser = {
     { title: "Status", key: "status", width: "10%" },
     { title: "Email", key: "email", width: "10%" },
     { title: "Role", key: "role", width: "10%" },
-    { title: "Resolved Issues", key: "resolved", width: "5%" },
-    { title: "Assignet Issues", key: "assinged", width: "5%" },
+    { title: "Resolved Issues", key: "issues.resolvedIssues", width: "5%" },
+    {
+      title: "Assignet Issues",
+      key: "issues.assignedTo",
+      width: "5%",
+    },
     { title: "Projects Assigned", key: "projects", width: "5%" },
     {
       title: "Actions",
@@ -63,9 +67,9 @@ const dataUser = {
     DISABLED: "disabled",
   },
   roles: {
-    ADMIN: 'admin',
-    REPORTER: 'reporter',
-    DEVELOPER: 'developer',
+    ADMIN: "admin",
+    REPORTER: "reporter",
+    DEVELOPER: "developer",
   },
-}
- export default dataUser;
+};
+export default dataUser;

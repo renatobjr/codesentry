@@ -11,23 +11,30 @@ import projectData from "@/data/projects";
 import router from "@/router";
 
 const projectStore = useProjectStore();
-const { projectList, isLoaded, totalProjects } = storeToRefs(projectStore);
 
+const isLoaded = ref(true);
 const projects = ref([]);
-const itemsPerPage = ref(normalize.setItemsPerPage);
 const header = ref([projectData.header]);
 
 let stackedValue = ref([]);
 let dataFormated = ref([]);
 
+const itemsPerPage = normalize.setItemsPerPage;
+let totalProjects = 0;
+
+
 onMounted(async () => {
+  await projectStore.listProjects();
   await loadProjects({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
 });
 
 const loadProjects = async ({ page, itemsPerPage, sortBy }) => {
-  await projectStore.fetchProjects({ page, itemsPerPage, sortBy }).then(() => {
-    projects.value = projectList.value;
+  isLoaded.value = true;
+  await projectStore.fetchProjects({ page, itemsPerPage, sortBy }).then(({ items, total }) => {
+    projects.value = items;
+    totalProjects = total;
   });
+  isLoaded.value = false;
 }
 
 const edit = (id) => {

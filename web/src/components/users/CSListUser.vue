@@ -1,34 +1,41 @@
 <script setup>
-import { useUserStore } from "@/store/user";
 import { ref, onMounted } from "vue";
-import { storeToRefs } from "pinia";
-import { USERS_ROUTES } from "@/router/users";
 import { useDialogStore } from "@/store/dialog";
+import { USERS_ROUTES } from "@/router/users";
+import { useUserStore } from "@/store/user";
 import normalize from "@/utils/normalize";
 import router from "@/router";
 import userData from "@/data/users";
 
 const userStore = useUserStore();
-const { userList, isLoaded, totalUsers } = storeToRefs(userStore);
 
+const isLoaded = ref(true);
 const users = ref([]);
-const itemsPerPage = ref(normalize.setItemsPerPage);
 const header = ref([userData.header]);
 
+const itemsPerPage = normalize.setItemsPerPage;
+let totalUsers = 0;
 
 onMounted(async () => {
+  await userStore.listUsers();
   await loadUsers({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
 });
 
 const loadUsers = async ({ page, itemsPerPage, sortBy }) => {
-  // TODO: need to fix sorting
-  await userStore.fetchUsers({ page, itemsPerPage, sortBy }).then(() => {
-    users.value = userList.value;
-  });
+  isLoaded.value = true;
+  await userStore
+    .fetchUsers({ page, itemsPerPage, sortBy })
+    .then(({ items, total }) => {
+      users.value = items;
+      totalUsers = total;
+    });
+  isLoaded.value = false;
 };
 
 const countUserPending = () => {
-  return users.value.filter((user) => user.status == userData.status.WAITING_APPROVAL).length;
+  return users.value.filter(
+    (user) => user.status == userData.status.WAITING_APPROVAL
+  ).length;
 };
 
 const edit = (id) => {
@@ -64,7 +71,6 @@ const approve = async (id) => {
     loadUsers({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
   });
 };
-
 </script>
 
 <template>
@@ -76,7 +82,8 @@ const approve = async (id) => {
     elevation="1"
   >
     <v-banner-text>
-      You have <strong>{{ countUserPending() }}</strong> pending user to approve.
+      You have <strong>{{ countUserPending() }}</strong> pending user to
+      approve.
     </v-banner-text>
   </v-banner>
 
@@ -84,12 +91,12 @@ const approve = async (id) => {
     <v-data-table-server
       v-model:items-per-page="itemsPerPage"
       :headers="header"
-      item-value="name"
-      :items="users"
       :items-length="totalUsers"
+      :items="users"
       :loading="isLoaded"
-      @update:options="loadUsers"
+      item-value="name"
       class="rounded bg-maingrey elevation-1"
+      @update:options="loadUsers"
     >
       <template v-slot:item="{ item }">
         <tr>
@@ -100,7 +107,12 @@ const approve = async (id) => {
             <span>{{ item.name }}</span>
           </td>
           <td>
-            <v-chip class="text-capitalize" variant="flat" label :color="normalize.setUserStatus(item.status)">
+            <v-chip
+              class="text-capitalize"
+              variant="flat"
+              label
+              :color="normalize.setUserStatus(item.status)"
+            >
               {{ item.status }}
             </v-chip>
           </td>
@@ -111,10 +123,14 @@ const approve = async (id) => {
             <span class="text-capitalize">{{ item.role }}</span>
           </td>
           <td>
-            <v-chip variant="flat" label color="solved"> {{ item.issues.resolvedIssues.length }}</v-chip>
+            <v-chip variant="flat" label color="solved">
+              {{ item.issues.resolvedIssues.length }}</v-chip
+            >
           </td>
           <td>
-            <v-chip variant="flat" label color="open">{{ item.issues.assignedTo.length }}</v-chip>
+            <v-chip variant="flat" label color="open">{{
+              item.issues.assignedTo.length
+            }}</v-chip>
           </td>
           <td>
             <v-chip variant="flat" label color="primary">{{
@@ -128,10 +144,20 @@ const approve = async (id) => {
             <v-icon @click="view(item._id)" size="small" class="mr-2">
               mdi-eye</v-icon
             >
-            <v-icon @click="remove(item._id)" size="small" class="mr-2"> mdi-delete </v-icon>
+            <v-icon @click="remove(item._id)" size="small" class="mr-2">
+              mdi-delete
+            </v-icon>
             <!-- Icons loop -->
-            <v-icon v-if="item.status == userData.status.WAITING_REGISTER" color="grey">mdi-account-check</v-icon>
-            <v-icon @click="approve(item._id)" v-else-if="item.status == userData.status.WAITING_APPROVAL">mdi-account-check</v-icon>
+            <v-icon
+              v-if="item.status == userData.status.WAITING_REGISTER"
+              color="grey"
+              >mdi-account-check</v-icon
+            >
+            <v-icon
+              @click="approve(item._id)"
+              v-else-if="item.status == userData.status.WAITING_APPROVAL"
+              >mdi-account-check</v-icon
+            >
             <v-icon v-else>mdi-email</v-icon>
           </td>
         </tr>
