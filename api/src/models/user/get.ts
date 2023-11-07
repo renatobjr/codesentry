@@ -21,8 +21,8 @@ import { status as userStatus } from "../../data/users";
 
 const get = async (id: string) => {
   try {
-    let sanitize_id = sanitize(id);
-    const user: getUser | null = await User.findOne({ _id: sanitize_id, status: {$ne: userStatus.DISABLED}}).lean();
+    let sanitizeId = sanitize(id);
+    const user: getUser | null = await User.findOne({ _id: sanitizeId, status: {$ne: userStatus.DISABLED}}).lean();
 
     if (!user) {
       return apiResponse("users/get", 400, "User not found");

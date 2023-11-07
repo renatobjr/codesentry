@@ -1,20 +1,34 @@
 <script setup>
-// Only for demo purpose
-import { dataProjects, dataHeader } from "@/data/projects";
 import { dataLegends } from "@/data/legends";
-
-import normalize from "@/utils/normalize";
-import router from "@/router";
-import { PROJECTS_ROUTES } from "@/router/projects";
 import { ISSUES_ROUTES } from "@/router/issues";
-import { ref } from "vue";
+import { PROJECTS_ROUTES } from "@/router/projects";
+import { ref, onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useDialogStore } from "@/store/dialog";
+import { useProjectStore } from "@/store/project";
+import normalize from "@/utils/normalize";
+import projectData from "@/data/projects";
+import router from "@/router";
 
+const projectStore = useProjectStore();
+const { projectList, isLoaded, totalProjects } = storeToRefs(projectStore);
+
+const projects = ref([]);
 const itemsPerPage = ref(normalize.setItemsPerPage);
-const header = ref(dataHeader);
-const projects = ref(dataProjects);
+const header = ref([projectData.header]);
 
 let stackedValue = ref([]);
 let dataFormated = ref([]);
+
+onMounted(async () => {
+  await loadProjects({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
+});
+
+const loadProjects = async ({ page, itemsPerPage, sortBy }) => {
+  await projectStore.fetchProjects({ page, itemsPerPage, sortBy }).then(() => {
+    projects.value = projectList.value;
+  });
+}
 
 const edit = (id) => {
   router.push({ name: PROJECTS_ROUTES.EDIT, params: { id } });
@@ -22,6 +36,19 @@ const edit = (id) => {
 
 const view = (id) => {
   router.push({ name: PROJECTS_ROUTES.VIEW, params: { id } });
+};
+
+const remove = async (id) => {
+  const isConfirmed = await useDialogStore().openDialog({
+    title: "Delete Project",
+    message: "Are you sure you want to delete this project?",
+  });
+
+  if (!isConfirmed) return;
+
+  await projectStore.deleteProject(id).then(() => {
+    loadProjects({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
+  });
 };
 
 let stackedBar = (issues) => {
@@ -71,21 +98,24 @@ let stackedBar = (issues) => {
         <v-data-table-server
           v-model:items-per-page="itemsPerPage"
           :headers="header"
+          item-value="name"
           :items="projects"
-          :items-length="projects.length"
-          :loading="false"
+          :items-length="totalProjects"
+          :loading="isLoaded"
+          @update:options="loadProjects"
           class="rounded elevation-1"
         >
           <template v-slot:item="{ item }">
             <tr>
               <td>{{ item.admin }}</td>
               <td>{{ item.name }}</td>
+              <td>{{ item.issues.length }}</td>
               <td>
                 <div
                   id="issuesGraph"
                   :style="{
                     'grid-template-columns': `${stackedBar(
-                      item.trackedIssues
+                      item.issues
                     )}`,
                   }"
                 >
@@ -107,13 +137,13 @@ let stackedBar = (issues) => {
                 </div>
               </td>
               <td class="text-center">
-                <v-icon size="small" @click="edit(item.id)" class="mr-2">
+                <v-icon size="small" @click="edit(item._id)" class="mr-2">
                   mdi-pencil
                 </v-icon>
-                <v-icon size="small" @click="view(item.id)" class="mr-2">
+                <v-icon size="small" @click="view(item._id)" class="mr-2">
                   mdi-eye</v-icon
                 >
-                <v-icon size="small" @click="$emit('dialog', true)">
+                <v-icon size="small" @click="remove(item._id)">
                   mdi-delete
                 </v-icon>
               </td>

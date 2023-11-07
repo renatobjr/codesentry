@@ -1,6 +1,6 @@
 <script setup>
 // Only for demo purpose
-import { dataIssues, dataHeader } from "@/data/issues";
+import dataIssues from "@/data/issues";
 
 import { ref } from "vue";
 import { ISSUES_ROUTES } from "@/router/issues";

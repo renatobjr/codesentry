@@ -1,25 +1,23 @@
 <script setup>
-// Only for demo purpose
-import { dataProjects } from "@/data/projects";
-import { dataHeader } from "@/data/issues";
-import normalize from "@/utils/normalize";
-import { ref, onBeforeMount } from "vue";
-import router from "@/router";
+import dataIssues from '@/data/issues';
+import { ref, onMounted } from 'vue';
+import { useProjectStore } from '@/store/project';
+import { storeToRefs } from 'pinia';
+import normalize from '@/utils/normalize';
+import router from '@/router';
 
+const projectStore = useProjectStore();
+const { project } = storeToRefs(projectStore);
 
-let project = ref({});
-let header = ref(dataHeader);
-
-function getProject() {
-  project.value = dataProjects.find(
-    ({ id }) => id.toString() === router.currentRoute.value.params.id
-  );
-}
-
-onBeforeMount(() => {
-  getProject();
+onMounted( async () => {
+  await getProject();
 });
 
+const getProject = async() => {
+  await projectStore.fetchProject(router.currentRoute.value.params.id);
+}
+
+let header = ref(dataIssues.header);
 </script>
 
 <template>
@@ -31,10 +29,10 @@ onBeforeMount(() => {
             <v-row>
               <v-col cols="2" align-self="center">
                 <span class="d-block text-h6">{{ project.name }}</span>
-                <span class="text-caption">Created at {{ project.createdAt }}</span>
+                <span class="text-caption">Created at {{ normalize.formatDate(project.createdAt) }}</span>
               </v-col>
               <v-col cols="10" align-self="center">
-                <v-chip variant="flat" class="d-flex float-right mr-2" label color="database">{{ project.database }}</v-chip>
+                <v-chip variant="flat" class="d-flex float-right mr-2" label color="database">{{ project.mainDatabase }}</v-chip>
                 <v-chip variant="flat" class="d-flex float-right mr-2" label color="language">{{ project.mainLanguage  }}</v-chip>
               </v-col>
             </v-row>
@@ -48,20 +46,23 @@ onBeforeMount(() => {
                   color="primary"
                   tile
                 >
-                  <span class="font-weight-bold">{{ normalize.setAvatar(project.admin )}}</span>
+                  <span class="font-weight-bold">{{ normalize.setAvatar(project.admin.name )}}</span>
                 </v-avatar>
-                {{ project.admin }} | Admin
+                {{ project.admin.name }} | Admin
               </v-list-item>
-              <v-list-item v-if="project.reporter">
-                <v-avatar
-                  size="30"
-                  class="mr-2"
-                  color="primary"
-                  tile
-                >
-                  <span class="font-weight-bold">{{ normalize.setAvatar(project.reporter )}}</span>
-                </v-avatar>
-                {{ project.reporter }} | Admin
+              <v-divider></v-divider>
+              <v-list-item v-if="project.reporters" v-for="reporter in project.reporters">
+                <div>
+                  <v-avatar
+                    size="30"
+                    class="mr-2"
+                    color="primary"
+                    tile
+                  >
+                    <span class="font-weight-bold">{{ normalize.setAvatar(reporter.name) }}</span>
+                  </v-avatar>
+                  {{ reporter.name }} | Reporters
+                </div>
               </v-list-item>
             </v-list>
           </v-card-text>
@@ -75,7 +76,7 @@ onBeforeMount(() => {
       <v-col>
         <cs-list-issues
           :header="header"
-          :issues="project.trackedIssues"
+          :query="{ projectId: router.currentRoute.value.params.id }"
           from="project"
         ></cs-list-issues>
       </v-col>

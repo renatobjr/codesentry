@@ -39,6 +39,7 @@ export const useUserStore = defineStore("user", () => {
   // Actions
   async function listUsers() {
     userList.value = await userService.fetchUsers();
+    console.log(userList.value);
   }
   async function fetchUsers({ page, itemsPerPage, sortBy }) {
     const response = await userService.fetchUsers();

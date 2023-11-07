@@ -84,9 +84,9 @@ const approve = async (id) => {
     <v-data-table-server
       v-model:items-per-page="itemsPerPage"
       :headers="header"
+      item-value="name"
       :items="users"
       :items-length="totalUsers"
-      item-value="name"
       :loading="isLoaded"
       @update:options="loadUsers"
       class="rounded bg-maingrey elevation-1"
@@ -111,10 +111,10 @@ const approve = async (id) => {
             <span class="text-capitalize">{{ item.role }}</span>
           </td>
           <td>
-            <v-chip variant="flat" label color="solved">0</v-chip>
+            <v-chip variant="flat" label color="solved"> {{ item.issues.resolvedIssues.length }}</v-chip>
           </td>
           <td>
-            <v-chip variant="flat" label color="open">0</v-chip>
+            <v-chip variant="flat" label color="open">{{ item.issues.assignedTo.length }}</v-chip>
           </td>
           <td>
             <v-chip variant="flat" label color="primary">{{

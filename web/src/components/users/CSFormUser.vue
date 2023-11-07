@@ -1,7 +1,5 @@
 <script setup>
-import { onBeforeMount } from "vue";
-import { reactive } from "vue";
-import { ref } from "vue";
+import { onBeforeMount, reactive, ref } from "vue";
 import { USERS_ROUTES } from "@/router/users";
 import { useSnackbarStore } from "@/store/snackbar";
 import { useUserStore } from "@/store/user";

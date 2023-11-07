@@ -1,5 +1,5 @@
 <script setup>
-import { dataHeader, dataIssues } from "@/data/issues";
+import dataIssues from "@/data/issues";
 import { ref, onMounted } from "vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
@@ -17,7 +17,7 @@ const getUser = async () => {
   await userStore.fetchUser(router.currentRoute.value.params.id);
 };
 
-let header = ref(dataHeader);
+let header = ref(dataIssues.header);
 </script>
 
 <template>

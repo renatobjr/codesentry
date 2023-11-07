@@ -1,6 +1,6 @@
 <script setup>
 // Only for demo purpose
-import { unsignedIssues, signedIssues } from '@/data/issues';
+// import { unsignedIssues, signedIssues } from '@/data/issues';
 
 </script>
 
@@ -13,7 +13,7 @@ import { unsignedIssues, signedIssues } from '@/data/issues';
     <cs-graphics />
 
     <!-- Table -->
-
+<!--
     <v-row justify-lg="space-between">
       <v-col lg="3" md="12" sm="12" xs="12" class="mb-4 col-datatable">
         <cs-unsigned-issues :issues="unsignedIssues"/>
@@ -21,6 +21,6 @@ import { unsignedIssues, signedIssues } from '@/data/issues';
       <v-col lg="3" md="12" sm="12" xs="12" class="mb-4 col-datatable">
         <cs-signed-issues :issues="signedIssues"/>
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>

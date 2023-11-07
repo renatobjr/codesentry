@@ -1,17 +1,19 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import normalize from "@/utils/normalize";
 import router from "@/router";
 import { ISSUES_ROUTES } from "@/router/issues";
 import { PROJECTS_ROUTES } from "@/router/projects";
+import { useIssueStore } from "@/store/issue";
+import { storeToRefs } from "pinia";
 
 const props = defineProps({
   header: {
     type: Array,
     required: true,
   },
-  issues: {
-    type: Array,
+  query: {
+    type: Object,
     required: true,
   },
   from: {
@@ -21,7 +23,25 @@ const props = defineProps({
   },
 });
 
-const idProject = ref(router.currentRoute.value.params.id);
+const issueStore = useIssueStore();
+const { issuesList, isLoaded, totalIssues } = storeToRefs(issueStore);
+
+const query = ref(props.query);
+
+const issues = ref([]);
+const itemsPerPage = ref(normalize.setItemsPerPage);
+const header = ref(props.header);
+
+onMounted(async () => {
+  await issueStore.listIssues(query.value)
+  await loadIssues({ page: 1, itemsPerPage: 10, sortBy: [] });
+});
+
+const loadIssues = async ({ page, itemsPerPage, sortBy }) => {
+   await issueStore.fetchIssues({ page, itemsPerPage, sortBy }).then(() => {
+    issues.value = issuesList.value;
+   });
+}
 
 const edit = (id) => {
   props.from === "project"
@@ -34,22 +54,22 @@ const view = (id) => {
     ? router.push({ name: PROJECTS_ROUTES.VIEW_ISSUE, params: { idProject: idProject.value, id } })
     : router.push({ name: ISSUES_ROUTES.VIEW, params: { id } });
 };
-
-const itemsPerPage = ref(10);
 </script>
 
 <template>
   <v-data-table-server
     v-model:items-per-page="itemsPerPage"
     :headers="header"
-    :items="issues"
-    :items-length="issues.length"
     item-value="name"
+    :items="issues"
+    :items-length="totalIssues"
+    :loading="isLoaded"
+    @update:options="loadIssues"
     class="rounded bg-maingrey elevation-1"
   >
-    <template v-slot:item="{ item }">
+  <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.id }}</td>
+        <td>{{ item.resume }}</td>
         <td>
           <v-icon
             style="margin-left: -1.5px"
@@ -60,7 +80,7 @@ const itemsPerPage = ref(10);
           >
         </td>
         <td>
-          <v-icon :class="`${item.state}-icon`">mdi-square-rounded</v-icon>
+          <v-icon :class="`${item.state}-icon mr-2`">mdi-square-rounded</v-icon>
           <span class="text-capitalize">{{
             normalize.formatTags(item.state)
           }}</span>
@@ -71,8 +91,8 @@ const itemsPerPage = ref(10);
         <td class="text-center">
           {{ item.notes.length }}
         </td>
-        <td>{{ item.createdAt }}</td>
-        <td>{{ item.updatedAt }}</td>
+        <td>{{ normalize.formatDate(item.createdAt) }}</td>
+        <td>{{ normalize.formatDate(item.updatedAt) }}</td>
         <td>
           <v-chip label color="primary"
             >{{

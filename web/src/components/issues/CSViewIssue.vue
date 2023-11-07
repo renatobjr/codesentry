@@ -1,6 +1,6 @@
 <script setup>
 // Only for demo purpose
-import { dataIssues } from "@/data/issues";
+import dataIssues from "@/data/issues";
 import normalize from "@/utils/normalize";
 
 import { ref, onBeforeMount } from "vue";

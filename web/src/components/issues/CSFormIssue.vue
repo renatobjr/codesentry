@@ -1,22 +1,61 @@
 <script setup>
-// TODO: Only for development porpuses
-import userData from "@/data/users";
-import { priority, reproducibility, states } from "@/data/dataProjects";
-import { dataIssues } from "@/data/issues";
+import { ref, reactive, onBeforeMount } from "vue";
+import { storeToRefs } from "pinia";
+import { useIssueStore } from "@/store/issue";
+import { useSnackbarStore } from "@/store/snackbar";
+import { useUserStore } from "@/store/user";
+import { useProjectStore } from "@/store/project";
+import dataUser from "@/data/users";
+import router from "@/router";
+import validator from "@/utils/validator";
 
-import { ref } from "vue";
-
-let files = ref([]);
-
-const users = ref(userData.mock);
-const selectedPriority = ref(priority);
-const selectedReproducibility = ref(reproducibility);
-const selectedState = ref(states);
-const selectedIssue = ref(dataIssues);
-
-defineProps({
+const props = defineProps({
   isEdit: Boolean,
 });
+
+
+onBeforeMount(async () => {
+  await userStore.listUsers();
+  await issueStore.listIssues();
+  await projectStore.listProjects();
+});
+
+const issueStore = useIssueStore();
+const userStore = useUserStore();
+const projectStore = useProjectStore();
+const { userList } = storeToRefs(userStore);
+const { projectList } = storeToRefs(projectStore);
+const issue = reactive({
+  priority: "",
+  reproducibility: "",
+  state: "",
+  project: "",
+  resume: "",
+  description: "",
+  stepsToReproduce: "",
+  assignedTo: '',
+  uploadFiles: [],
+});
+const form = ref();
+
+const listDevelopers = () => {
+  return userList.value.filter((user) => user.role === dataUser.roles.DEVELOPER);
+};
+
+const save = async () => {
+  const is = await form.value.validate();
+
+  if (is.valid) {
+    const result = props.isEdit
+      // ? await issueStore.updateIssue(issue)
+      ? console.log("update issue")
+      : await issueStore.createIssue(issue);
+  };
+}
+
+const cancel = () => {
+  router.go(-1);
+}
 </script>
 
 <template>
@@ -29,103 +68,115 @@ defineProps({
           }}</span>
         </v-card>
         <v-card color="maingrey" rounded="0" elevation="1" class="pa-10">
-          <v-form>
+          <v-form ref="form">
             <v-row>
               <v-col>
                 <v-select
+                  v-model="issue.priority"
                   density="compact"
                   variant="outlined"
-                  :items="selectedPriority"
+                  :items="issueStore.priority"
                   item-title="name"
-                  item-value="id"
+                  item-value="value"
                   label="Priority"
+                  :rules="[validator.isSelected]"
                 ></v-select>
               </v-col>
               <v-col>
                 <v-select
+                  v-model="issue.reproducibility"
                   density="compact"
                   variant="outlined"
-                  :items="selectedReproducibility"
+                  :items="issueStore.reproducibility"
                   item-title="name"
-                  item-value="id"
+                  item-value="value"
                   label="Reproducibility"
+                  :rules="[validator.isSelected]"
                 ></v-select>
               </v-col>
             </v-row>
-            <v-row v-if="isEdit" class="mt-n6">
+            <v-row class="mt-1">
               <v-col>
                 <v-select
+                  v-model="issue.state"
                   density="compact"
                   variant="outlined"
-                  :items="selectedState"
+                  :items="issueStore.state"
                   item-title="name"
-                  item-value="id"
+                  item-value="value"
                   label="State"
+                  :rules="[validator.isSelected]"
                 >
                   <template v-slot:item="{ props, item }">
                     <v-list-item v-bind="props">
                       <template v-slot:prepend>
-                        <v-icon :color="item.raw.class"
+                        <v-icon :color="item.value"
                           >mdi-square-rounded</v-icon
                         >
                       </template>
                     </v-list-item>
+                  </template>
+                  <template v-slot:selection="{ item }">
+                    <v-chip v-if="item.title != ''" variant="flat" :color="item.value" label>
+                      <span>{{ item.title }}</span>
+                    </v-chip>
                   </template>
                 </v-select>
               </v-col>
               <v-col>
                 <v-select
+                  v-model="issue.project"
                   density="compact"
                   variant="outlined"
-                  :items="selectedIssue"
-                  item-title="resume"
-                  item-value="id"
-                  label="Relataed to"
-                >
-                  <template v-slot:item="{ props, item }">
-                    <v-list-item v-bind="props" :tilte="item.raw.resume">
-                      <template v-slot:prepend>
-                        <v-icon :color="item.raw.state"
-                          >mdi-square-rounded</v-icon
-                        >
-                      </template>
-                    </v-list-item>
-                  </template>
-                </v-select>
+                  :items="projectList"
+                  item-title="name"
+                  item-value="_id"
+                  label="Project"
+                  :rules="[validator.isSelected]"
+                ></v-select>
               </v-col>
             </v-row>
             <v-text-field
+              v-model="issue.resume"
               density="compact"
               variant="outlined"
               name="resume"
               label="Resume"
+              class="mt-3"
+              :rules="[validator.isRequired]"
             ></v-text-field>
             <v-textarea
+              v-model="issue.description"
               density="compact"
               variant="outlined"
               name="issusDescription"
               label="Description"
+              class="mt-3"
+              :rules="[validator.isRequired]"
             ></v-textarea>
             <v-textarea
+              v-model="issue.stepsToReproduce"
               density="compact"
               variant="outlined"
               name="stepsToReproduce"
               label="Steps to reproduce"
+              class="mt-3"
             ></v-textarea>
-            <v-row>
+            <v-row class="mt-1">
               <v-col>
                 <v-select
+                  v-model="issue.assignedTo"
                   density="compact"
                   variant="outlined"
-                  :items="users"
+                  :items="listDevelopers()"
                   item-title="name"
-                  item-value="id"
+                  item-value="_id"
                   label="Assigned to"
                 ></v-select>
               </v-col>
               <v-col>
                 <v-file-input
-                  v-model="files"
+                  v-model="issue.uploadFiles"
                   density="compact"
                   variant="outlined"
                   color="primary"
@@ -135,6 +186,7 @@ defineProps({
                   placeholder="Select your files"
                   prepend-icon="mdi-paperclip"
                   :show-size="1000"
+                  :accept="['image/png', 'image/jpeg', 'image/bmp, image/jpg']"
                 >
                   <template v-slot:selection="{ fileNames }">
                     <template
@@ -155,7 +207,7 @@ defineProps({
                         v-else-if="index === 2"
                         class="ml-2 text-black text-caption align-self-center"
                       >
-                        +{{ files.length - 2 }} File(s)
+                        +{{ issue.uploadFiles.length - 2 }} File(s)
                       </span>
                     </template>
                   </template>
@@ -181,41 +233,17 @@ defineProps({
                   <span>Lorem ipsum</span>
                 </v-col>
               </v-row>
-              <!-- <div v-for="note in issue.notes">
-                <v-row align="start" class="pa-4">
-                  <v-col cols="1" align-self="center">
-                    <v-avatar color="primary" size="32" class="font-weight-bold mr-2">
-                      {{ normalize.setAvatar(issue.assignedTo) }}
-                    </v-avatar>
-                  </v-col>
-                  <v-col cols="1" align-self="center" class="ml-n16">
-                    <span class="d-block">{{ issue.assignedTo }}</span>
-                    <span  class="text-caption">Posted in 21/09/2000</span>
-                  </v-col>
-                  <v-col cols="9" align-self="center">
-                    <span >{{ note.content }}</span>
-                  </v-col>
-                </v-row>
-                <v-divider></v-divider>
-              </div> -->
             </v-card>
-            <v-textarea
-              v-if="isEdit"
-              density="compact"
-              variant="outlined"
-              name="note"
-              label="Add Note"
-            ></v-textarea>
             <v-row>
               <v-col>
                 <v-btn
-                  @click="$emit('save')"
+                  @click="save"
                   flat
                   class="mr-4"
                   color="primary"
                   >{{ isEdit ? "Save" : "Create" }}</v-btn
                 >
-                <v-btn @click="$emit('cancel')" flat color="warning"
+                <v-btn @click="cancel" flat color="warning"
                   >Cancel</v-btn
                 >
               </v-col>

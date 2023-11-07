@@ -7,6 +7,7 @@ import { useSnackbarStore } from '@/store/snackbar';
 import { storeToRefs } from 'pinia';
 import router from '@/router';
 import { PROJECTS_ROUTES } from '@/router/projects';
+import dataUser from '@/data/users';
 
 const props = defineProps({
   isEdit: Boolean,
@@ -14,6 +15,7 @@ const props = defineProps({
 
 onBeforeMount(async () => {
   await userStore.listUsers();
+  await getProject();
 });
 
 const projectStore = useProjectStore();
@@ -30,16 +32,30 @@ const project = reactive({
 })
 const form = ref()
 
+const getProject = async () => {
+  if (props.isEdit) {
+    await projectStore.fetchProject(router.currentRoute.value.params.id);
+
+    project.name = projectStore.project.name;
+    project.description = projectStore.project.description;
+    project.admin = projectStore.project.admin;
+    project.reporters = projectStore.project.reporters;
+    project.assignees = projectStore.project.assignees;
+    project.mainLanguage = projectStore.project.mainLanguage;
+    project.mainDatabase = projectStore.project.mainDatabase;
+  }
+}
+
 const listAdmins = () => {
-  return userList.value.filter((user) => user.role === 'admin');
+  return userList.value.filter((user) => user.role === dataUser.roles.ADMIN);
 }
 
 const listReporters = () => {
-  return userList.value.filter((user) => user.role === 'reporter');
+  return userList.value.filter((user) => user.role === dataUser.roles.REPORTER);
 }
 
 const listDevelopers = () => {
-  return userList.value.filter((user) => user.role === 'developer');
+  return userList.value.filter((user) => user.role === dataUser.roles.DEVELOPER);
 }
 
 const save = async () => {
@@ -49,7 +65,7 @@ const save = async () => {
     let snackBarMessage = {};
 
     const result = props.isEdit
-      ? console.log('update')
+      ? await projectStore.updateProject({id: router.currentRoute.value.params.id, project: project})
       : await projectStore.createProject(project);
 
     if (result == true) {

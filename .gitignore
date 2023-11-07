@@ -1,7 +1,11 @@
+# Node modules
 .DS_Store
 /api/node_modules/
 /web/node_modules/
 /dist
+
+# Public
+/api/public/
 
 # local env files
 /api/.env
