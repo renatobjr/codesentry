@@ -12,7 +12,6 @@ const create = async (payload: any) => {
     const issue = await Issue.create(sanitizedPayload);
     return apiResponse('issue/create', 200, issue);
   } catch (error: any) {
-    console.log(error)
     return apiResponse('issue/create', 400, error.mensage)
   }
 }

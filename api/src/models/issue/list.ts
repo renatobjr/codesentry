@@ -9,7 +9,6 @@ const list = async (options: any) => {
         'project': options.projectId
       }
     }
-    console.log(options)
     const issues = await Issue.find(options);
     return apiResponse("issues/list", 200, issues);
   } catch (error: any) {

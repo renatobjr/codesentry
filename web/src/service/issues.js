@@ -23,7 +23,6 @@ const issueService = {
     if (upload) data.attechedFiles = upload;
 
     const result = await api.post(`${BASE_URL}/create`, data);
-    console.log(result)
     if (result.status == 200) {
       return true;
     }

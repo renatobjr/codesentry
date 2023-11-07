@@ -13,7 +13,6 @@ export const put = async (url, data) => {
 }
 
 export const get = async (url, params) => {
-  console.log(params)
   const response = await axios.get(`${BASE_URL}/${url}`, params);
   return response.data;
 }

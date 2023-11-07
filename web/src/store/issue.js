@@ -50,7 +50,6 @@ export const useIssueStore = defineStore("issue", () => {
   // Actions
   async function listIssues(options) {
     issuesList.value = await issueService.fetchIssues(options);
-    console.log(issuesList)
   };
   async function fetchIssues({ page, itemsPerPage, sortBy }) {
     if (issuesList) {
