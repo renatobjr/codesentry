@@ -1,6 +1,8 @@
 import $axios from "axios";
 import { useAuthStore } from "@/store/auth";
 import { storeToRefs } from "pinia";
+import router from "@/router";
+import { AUTH_ROUTES } from "@/router/auth";
 
 const axios = $axios.create({
   base_url: process.env.URL_API,
@@ -25,6 +27,8 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       const store = useAuthStore();
       store.logout();
+
+      router.push({ name: AUTH_ROUTES.LOGIN });
     }
     return Promise.reject(error);
   }

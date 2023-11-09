@@ -10,7 +10,7 @@ const files = {
     return path.extname(filename);
   },
   getPublicPath: (filename: string) => {
-    return path.join(__dirname, '../../public', filename);
+    return path.join(__dirname, '../../public/files', filename);
   },
   getFileSize: (filename: string) => {
     return fs.statSync(filename).size;

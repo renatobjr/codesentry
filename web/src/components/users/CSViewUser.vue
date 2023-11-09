@@ -90,8 +90,8 @@ let header = ref(dataIssues.header);
         <!-- TODO: Remeber to refactor de issues list -->
         <cs-list-issues
           :header="header"
-          :issues="user.issues"
-          from="project"
+          :query="{ userId: router.currentRoute.value.params.id }"
+          from="users"
         ></cs-list-issues>
       </v-col>
     </v-row>

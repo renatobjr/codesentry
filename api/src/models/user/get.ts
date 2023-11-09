@@ -18,6 +18,8 @@ import apiResponse from "../../utils/apiResponse";
 import { get as getUser }from "../../@types/user";
 import sanitize from "mongo-sanitize";
 import { status as userStatus } from "../../data/users";
+import { status as issueStatus } from "../../data/issues";
+import Project from "../../schemas/project";
 
 const get = async (id: string) => {
   try {
@@ -28,7 +30,33 @@ const get = async (id: string) => {
       return apiResponse("users/get", 400, "User not found");
     }
 
-    user.issues = await Issue.find({ assignedTo: user._id, relatedTo: user._id });
+    user.issues = {
+      assignedTo: [],
+      resolvedIssues: [],
+    };
+    const dataIssues = await Issue.find({
+      assignedTo: user._id,
+    });
+    
+    dataIssues.forEach((issue: Issue) => {
+      if (issue.state === issueStatus.ASSIGNED) {
+        user.issues.assignedTo.push(issue);
+      }
+      if (
+        issue.state === issueStatus.SOLVED ||
+        issue.state === issueStatus.CLOSED
+      ) {
+        user.issues.resolvedIssues.push(issue);
+      }
+    })
+
+    user.projects = await Project.find({
+      $or: [
+        { admin: user._id },
+        { reporters: user._id },
+        { assignees: user._id },
+      ],
+    });
     
     return apiResponse('users/get', 200, user);
   } catch (error: any) {

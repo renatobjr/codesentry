@@ -6,14 +6,21 @@ import issueService from "@/service/issues";
 export const useIssueStore = defineStore("issue", () => {
   // Reactive state
   let issue = ref({
-    _id: null,
-    priority: "",
-    reproducibility: "",
+    _id: "",
     resume: "",
     description: "",
+    project: {},
     stepsToReproduce: "",
-    assignedTo: "",
-    files: [],
+    priority: "",
+    reproducibility: "",
+    state: "",
+    relatedTo: [],
+    reporter: [],
+    assignedTo: [],
+    attachedFiles: [],
+    notes: [],
+    createdAt: "",
+    updatedAt: "",
   });
   let issuesList = ref([]);
   let totalIssues = ref(0);
@@ -62,13 +69,13 @@ export const useIssueStore = defineStore("issue", () => {
           const sortKey = sortBy[0].key;
           const sortOrder = sortBy[0].order;
           issuesList.value.sort((a, b) => {
-            const aValue = a[sortKey]
-            const bValue = b[sortKey]
+            const aValue = a[sortKey];
+            const bValue = b[sortKey];
 
-            if (sortOrder === 'asc') {
-              return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
+            if (sortOrder === "asc") {
+              return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
             } else {
-              return aValue > bValue ? -1 : aValue < bValue ? 1 : 0
+              return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
             }
           });
         }
@@ -81,22 +88,35 @@ export const useIssueStore = defineStore("issue", () => {
         });
       });
     }
-  }
-  async function createIssue(data) {
-    await issueService.createIssue(data);
+  };
+  async function fetchIssue(id) {
+    issue.value = await issueService.fecthIssue(id);
+  };
+  async function createIssue(issue) {
+    return await issueService.createIssue(issue);
+  };
+  async function updateIssue(issue) {
+    return await issueService.updateIssue(issue);
+  };
+
+  async function deleteIssue(id) {
+    return await issueService.deleteIssue(id);
   }
 
   return {
     createIssue,
+    deleteIssue,
+    fetchIssue,
     fetchIssues,
     issue,
     issuesList,
-    totalIssues,
+    listIssues,
     priority,
-    state,
     reproducibility,
-    listIssues
-  }
+    state,
+    totalIssues,
+    updateIssue,
+  };
 });
 
 if (import.meta.hot) {

@@ -141,6 +141,20 @@ a {
   border-radius: 5px;
 }
 
+.cs-thumbs {
+  border: thin solid #9E9E9E;
+  border-radius: 1%;
+}
+
+.cs-hover-img-filter {
+  filter: grayscale(100%);
+}
+
+.cs-hover-btn-none {
+  opacity: 0;
+  transition: 1 .4s ease-in-out;
+}
+
 .col-datatable {
   padding: 0 !important;
 }

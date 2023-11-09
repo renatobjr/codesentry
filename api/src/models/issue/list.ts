@@ -6,9 +6,16 @@ const list = async (options: any) => {
     
     if (options.projectId) {
       options = {
-        'project': options.projectId
+        project: options.projectId
       }
     }
+
+    if (options.userId) {
+      options = {
+        assignedTo: options.userId,
+      };
+    }
+
     const issues = await Issue.find(options);
     return apiResponse("issues/list", 200, issues);
   } catch (error: any) {

@@ -11,7 +11,10 @@ export type get = {
   email: string;
   role: string;
   projects: string[];
-  issues: string[];
+  issues: {
+    assignedTo: Object[];
+    resolvedIssues: Object[];
+  };
   createdAt: Date;
   updatedAt: Date;
   lastLogin: Date;

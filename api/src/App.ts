@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(
   multer({
-    dest: path.join(__dirname, "../public"),
+    dest: path.join(__dirname, "../public/files"),
     limits: {
       fieldSize: 1024 * 100,
     },

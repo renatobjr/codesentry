@@ -33,6 +33,7 @@ interface Issue extends Document {
   priority: Priority;
   reproducibility: Reproducibility;
   state: State;
+  reporter: string;
   assignedTo: string[];
   relatedTo: string[];
   attechedFiles: string[];
@@ -75,6 +76,11 @@ const schema = new Schema(
       type: String,
       enum: state,
       default: "unsigned",
+    },
+    reporter: {
+      required: false,
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
     assignedTo: {
       required: false,

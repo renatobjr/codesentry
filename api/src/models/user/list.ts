@@ -61,7 +61,6 @@ const list = async () => {
         };
       })
     );
-
     return apiResponse("users/list", 200, users);
   } catch (error: any) {
     return apiResponse("users/list", 400, error.message);

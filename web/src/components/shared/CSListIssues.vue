@@ -2,7 +2,7 @@
 import { ISSUES_ROUTES } from "@/router/issues";
 import { PROJECTS_ROUTES } from "@/router/projects";
 import { ref, onMounted } from "vue";
-import { storeToRefs } from "pinia";
+import { useDialogStore } from "@/store/dialog";
 import { useIssueStore } from "@/store/issue";
 import normalize from "@/utils/normalize";
 import router from "@/router";
@@ -67,6 +67,19 @@ const view = (id) => {
       })
     : router.push({ name: ISSUES_ROUTES.VIEW, params: { id } });
 };
+
+const remove = async (id) => {
+  const isConfirmed = await useDialogStore().openDialog({
+    title: "Delete Issue",
+    message: "Are you sure you want to delete this issue?",
+  });
+
+  if (!isConfirmed) return;
+
+  await issueStore.deleteIssue(id).then(() => {
+    loadIssues({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
+  });
+}
 </script>
 
 <template>
@@ -116,13 +129,13 @@ const view = (id) => {
         </td>
         <td>{{ item.description }}</td>
         <td class="text-center">
-          <v-icon size="small" class="mr-2" @click="edit(item.id)">
+          <v-icon size="small" class="mr-2" @click="edit(item._id)">
             mdi-pencil
           </v-icon>
-          <v-icon size="small" class="mr-2" @click="view(item.id)">
+          <v-icon size="small" class="mr-2" @click="view(item._id)">
             mdi-eye</v-icon
           >
-          <v-icon size="small"> mdi-delete </v-icon>
+          <v-icon size="small" @click="remove(item._id)"> mdi-delete </v-icon>
         </td>
       </tr>
     </template>

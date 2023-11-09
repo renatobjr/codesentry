@@ -81,6 +81,16 @@ const normalize = {
     }
     return 'User not log in yet'
   },
+  formatFileSize: (size, decimals = 2) => {
+    if (size === 0) return "0 Bytes";
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+
+    const i = Math.floor(Math.log(size) / Math.log(k));
+    return parseFloat((size / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  },
   setItemsPerPage: 10
 };
 

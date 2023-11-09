@@ -11,8 +11,8 @@ const drawer = ref(true);
 const links = [
   { name: "Dashboard", path: "/dashboard", icon: "mdi-view-dashboard" },
   { name: "Projects", path: "/projects", icon: "mdi-briefcase" },
-  { name: "Issues", path: "/issues", icon: "mdi-bug" },
   { name: "Users", path: "/users", icon: "mdi-account-group" },
+  { name: "Issues", path: "/issues", icon: "mdi-bug" },
   // { name: "settings", path: "/settings", icon: "mdi-cog" },
 ];
 

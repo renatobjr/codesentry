@@ -3,7 +3,6 @@ import { dataLegends } from "@/data/legends";
 import { ISSUES_ROUTES } from "@/router/issues";
 import { PROJECTS_ROUTES } from "@/router/projects";
 import { ref, onMounted } from "vue";
-import { storeToRefs } from "pinia";
 import { useDialogStore } from "@/store/dialog";
 import { useProjectStore } from "@/store/project";
 import normalize from "@/utils/normalize";
@@ -21,7 +20,6 @@ let dataFormated = ref([]);
 
 const itemsPerPage = normalize.setItemsPerPage;
 let totalProjects = 0;
-
 
 onMounted(async () => {
   await projectStore.listProjects();
