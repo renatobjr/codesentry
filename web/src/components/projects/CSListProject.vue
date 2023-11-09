@@ -51,7 +51,8 @@ const remove = async (id) => {
 
   if (!isConfirmed) return;
 
-  await projectStore.deleteProject(id).then(() => {
+  await projectStore.deleteProject(id).then( async () => {
+    await projectStore.listProjects();
     loadProjects({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
   });
 };

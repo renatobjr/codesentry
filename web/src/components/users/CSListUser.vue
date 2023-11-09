@@ -54,7 +54,8 @@ const remove = async (id) => {
 
   if (!isConfirmed) return;
 
-  await userStore.deleteUser(id).then(() => {
+  await userStore.deleteUser(id).then( async () => {
+    await userStore.listUsers();
     loadUsers({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
   });
 };
@@ -67,7 +68,8 @@ const approve = async (id) => {
 
   if (!isConfirmed) return;
 
-  await userStore.approveUser(id).then(() => {
+  await userStore.approveUser(id).then( async () => {
+    await userStore.listUsers();
     loadUsers({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
   });
 };

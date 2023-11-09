@@ -76,7 +76,8 @@ const remove = async (id) => {
 
   if (!isConfirmed) return;
 
-  await issueStore.deleteIssue(id).then(() => {
+  await issueStore.deleteIssue(id).then( async () => {
+    await issueStore.listIssues(query.value);
     loadIssues({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
   });
 }
