@@ -26,10 +26,11 @@ Go to the project directory
   cd codesentry
 ~~~
 
-Install dependencies  
+For fisrt time running the follow commands:
 
-~~~bash  
-npm install
+~~~bash
+docker-compose run web npm ci
+docker-compose run api npm ci
 ~~~
 
 Run Docker  
