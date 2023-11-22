@@ -19,13 +19,14 @@ const cancel = () => {
 
 <template>
   <!-- Dailog -->
-  <v-dialog v-model="dialog.isOpen" width="500">
+  <v-dialog v-model="dialog.isOpen" :width="dialog.type === 'text' ? '500' : '80%' ">
     <v-card :title="dialog.title">
-      <v-card-text>
+      <v-card-text v-if="dialog.type == 'text'">
         {{ dialog.message }}
       </v-card-text>
+      <v-img v-else aspect-ratio="1" cover :src="dialog.message"/>
 
-      <v-card-actions>
+      <v-card-actions v-if="dialog.showActions">
         <v-spacer></v-spacer>
 
         <v-btn

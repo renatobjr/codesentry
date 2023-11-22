@@ -7,14 +7,16 @@ const create = async (payload: any, currentUser: any) => {
   try {
     const sanitizedPayload = sanitize(payload);
 
-    if (sanitizedPayload.assignedTo.length === 0) sanitizedPayload.assignedTo = undefined;
+    sanitizedPayload.assignedTo.length === 0
+      ? (sanitizedPayload.assignedTo = undefined)
+      : (sanitizedPayload.state = "open");
     sanitizedPayload.reporter = currentUser._id;
-    
+
     const issue = await Issue.create(sanitizedPayload);
-    return apiResponse('issue/create', 200, issue);
+    return apiResponse("issue/create", 200, issue);
   } catch (error: any) {
-    return apiResponse('issue/create', 400, error)
+    return apiResponse("issue/create", 400, error);
   }
-}
+};
 
 export default create;

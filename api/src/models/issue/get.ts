@@ -15,7 +15,28 @@ const get = async (id: String) => {
       "name"
     );
     issue.reporter = await User.findOne({ _id: issue.reporter }).select("name");
+    issue.assignedTo = await User.findOne({ _id: issue.assignedTo }).select("name");
 
+    let notes = await Promise.all(
+      issue.notes.map(async (note: any) => {
+        note.postedBy = await User.findOne({ _id: note.postedBy }).select("name");
+        return {
+          content: note.content,
+          postedBy: note.postedBy,
+          postedAt: note.postedAt, 
+        }
+      })
+    //   issue.notes.map( async (note: any) => {
+    //   note.postedBy = await User.findOne({ _id: note.postedBy }).select("name");
+    //   return {
+    //     content: note.content,
+    //     postedBy: note.postedBy,
+    //     createdAt: note.createdAt,
+    //   }
+    // });
+    ); 
+    issue.notes = notes;
+    console.log(notes)
     return apiResponse("issue/get", 200, issue);
   } catch (error: any) {
     return apiResponse("issue/get", 400, error.message);

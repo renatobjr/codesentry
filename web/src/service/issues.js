@@ -1,4 +1,5 @@
 import api from "@/utils/api";
+import { useIssueStore } from "@/store/issue";
 import fileService from "./file";
 
 const BASE_URL = 'issues';
@@ -40,9 +41,28 @@ const issueService = {
     }
     return result.data;
   },
+  appendNote: async (id, data) => {
+    const result = await api.put(`${BASE_URL}/notes/add/${id}`, data);
+
+    if (result.status == 200) {
+      return result.data;
+    }
+    return result.data;
+  },
+  appendFiles: async (id, data) => {
+    let upload = await fileService.upload(data.value)
+    if (!upload) return false;
+
+    const result = await api.put(`${BASE_URL}/files/add/${id}`, upload);
+    if (result.status == 200) {
+      return true;
+    }
+    return result.data;
+  },
   deleteIssue: async (id) => {
     const result = await api.post(`${BASE_URL}/remove/${id}`);
     if (result.status == 200) {
+
       return true;
     }
     return result.data;

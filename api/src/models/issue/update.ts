@@ -8,7 +8,6 @@ const update = async (id: string, payload: any) => {
     const issue = await Issue.findById(sanitizedId);
 
     if (!issue) return apiResponse("issues/update", 400, "Issue not found");
-
     
     payload.issue.previewFiles = payload.issue.previewFiles.filter(
       (file:any) => !Object.keys(file).includes('preview')

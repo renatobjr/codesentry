@@ -98,12 +98,19 @@ export const useIssueStore = defineStore("issue", () => {
   async function updateIssue(issue) {
     return await issueService.updateIssue(issue);
   };
-
+  async function appendNote(note) {
+    return await issueService.appendNote(issue.value._id, note);
+  }
+  async function appendFiles(files) {
+    return await issueService.appendFiles(issue.value._id, files)
+  }
   async function deleteIssue(id) {
     return await issueService.deleteIssue(id);
   }
 
   return {
+    appendNote,
+    appendFiles,
     createIssue,
     deleteIssue,
     fetchIssue,

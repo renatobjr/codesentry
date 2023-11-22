@@ -37,7 +37,7 @@ interface Issue extends Document {
   assignedTo: string[];
   relatedTo: string[];
   attechedFiles: string[];
-  notes: string[];
+  notes: Object[];
 }
 
 const schema = new Schema(

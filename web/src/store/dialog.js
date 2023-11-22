@@ -5,14 +5,18 @@ export const useDialogStore = defineStore('dialog', () => {
   let resolved;
   const dialog = ref({
     isOpen: false,
+    showActions: true,
     title: null,
     message: null,
+    type: null
   })
 
-  const openDialog = ({ title, message}) => {
+  const openDialog = ({ title, message, showActions = true, type = 'text' }) => {
     dialog.value.isOpen = true
+    dialog.value.showActions = showActions
     dialog.value.title = title
     dialog.value.message = message
+    dialog.value.type = type
 
     return new Promise((resolve) => {
       resolved = resolve;

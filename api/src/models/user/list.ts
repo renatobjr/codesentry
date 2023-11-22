@@ -24,21 +24,20 @@ const list = async () => {
     users = await Promise.all(
       users.map(async (user: any) => {
         const dataIssues = await Issue.find({
-          $or: [{ assignedTo: user._id }],
+          assignedTo: user._id,
         });
-        const issues: { assignedTo: Issue[]; resolvedIssues: Issue[] } = {
-          assignedTo: [],
-          resolvedIssues: [],
+        const issues: { assignedTo: number; resolvedIssues: number } = {
+          assignedTo: 0,
+          resolvedIssues: 0,
         };
         dataIssues.forEach((issue: Issue) => {
-          if (issue.state === issueStatus.ASSIGNED) {
-            issues.assignedTo.push(issue);
-          }
           if (
             issue.state === issueStatus.SOLVED ||
             issue.state === issueStatus.CLOSED
           ) {
-            issues.resolvedIssues.push(issue);
+            // issues.resolvedIssues.push(issue);
+          } else {
+            issues.assignedTo += 1;
           }
         });
         const projects = await Project.find({
@@ -61,6 +60,7 @@ const list = async () => {
         };
       })
     );
+    console.log(users);
     return apiResponse("users/list", 200, users);
   } catch (error: any) {
     return apiResponse("users/list", 400, error.message);

@@ -1,12 +1,28 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useIssueStore } from "@/store/issue";
+import { useAuthStore } from "@/store/auth";
+import { useSnackbarStore } from "@/store/snackbar";
+import { useDialogStore } from "@/store/dialog";
 import { storeToRefs } from "pinia";
+import validator from "@/utils/validator";
 import normalize from "@/utils/normalize";
 import router from "@/router";
+import { computed } from "vue";
+import { watch } from "vue";
 
 const issueStore = useIssueStore();
+const authStore = useAuthStore();
+
 const { issue } = storeToRefs(issueStore);
+const { loggedUser } = storeToRefs(authStore);
+const urlAPI = process.env.URL_API;
+const isThumbed = ref(true);
+// Notes
+const noteContent = ref("");
+const uploadedFiles = ref([]);
+const sendingNote = ref(false);
+const sendingImg = ref(false);
 
 onMounted(async () => {
   await getIssue();
@@ -16,8 +32,90 @@ const getIssue = async () => {
   await issueStore.fetchIssue(router.currentRoute.value.params.id);
 };
 
-const urlAPI = process.env.URL_API;
-const isThumbed = ref(true);
+const appendNote = async () => {
+  sendingNote.value = true;
+  await issueStore
+    .appendNote({
+      content: noteContent.value,
+      postedBy: loggedUser.value._id,
+      postedAt: new Date(),
+    })
+    .then((data) => {
+      sendingNote.value = false;
+      // Show snack
+      useSnackbarStore().showSnackbar({
+        message: "Note appended successfully",
+        color: "success",
+      });
+      console.log(data);
+      issue.value.notes.push(data);
+    })
+    .catch((err) => {
+      sendingNote.value = false;
+      // Show snack
+      useSnackbarStore().showSnackbar({
+        message: err.message,
+        color: "error",
+      });
+    });
+};
+
+const appendFiles = async () => {
+  sendingImg.value = true;
+  await issueStore
+    .appendFiles(uploadedFiles)
+    .then((data) => {
+      sendingImg.value = false;
+      // Show snack
+      useSnackbarStore().showSnackbar({
+        message: "Files appended successfully",
+        color: "success",
+      });
+    })
+    .catch((err) => {
+      // Show snack
+      useSnackbarStore().showSnackbar({
+        message: err.message,
+        color: "error",
+      });
+    });
+};
+
+const addPreview = () => {
+  uploadedFiles.value.forEach((file) => {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      issue.value.attachedFiles.push({
+        filename: file.name,
+        originalname: file.name,
+        size: file.size,
+        preview: URL.createObjectURL(file),
+      });
+    };
+
+    reader.readAsDataURL(file);
+  });
+};
+
+const fileUrl = (file) => {
+  return file.preview ? file.preview : `${urlAPI}/files/${file.filename}`;
+};
+
+const showImg = (file) => {
+  console.log(file);
+  const url = fileUrl(file);
+  useDialogStore().openDialog({
+    title: file.originalname,
+    message: url,
+    showActions: false,
+    type: "img",
+  });
+};
+
+const removeFile = (file) => {
+  console.log(file)
+}
 </script>
 
 <template>
@@ -120,20 +218,22 @@ const isThumbed = ref(true);
 
     <!-- Notes -->
     <v-card class="mt-4" elevation="1" roudedn-lg>
-      <v-card-title class="bg-panel">
-        Notes
-        <v-btn flat class="float-right" color="primary">Add note</v-btn>
-      </v-card-title>
+      <v-card-title class="bg-panel"> Notes </v-card-title>
       <div v-if="issue.notes" v-for="note in issue.notes">
         <v-row align="start" class="pa-4">
           <v-col cols="1" align-self="center">
             <v-avatar color="primary" size="32" class="font-weight-bold mr-2">
-              {{ normalize.setAvatar(issue.assignedTo) }}
+              {{ normalize.setAvatar(note.postedBy.name) }}
             </v-avatar>
           </v-col>
-          <v-col cols="1" align-self="center" class="ml-n16">
-            <span class="d-block">{{ issue.assignedTo }}</span>
-            <span class="text-caption">Posted in 21/09/2000</span>
+          <v-col cols="2" align-self="center" class="ml-n16">
+            <span class="d-block">{{
+              note.postedBy.name || loggedUser.name
+            }}</span>
+            <span class="text-caption"
+              >Posted in
+              {{ normalize.formatDate(note.postedAt) || "Posted now" }}</span
+            >
           </v-col>
           <v-col cols="9" align-self="center">
             <span>{{ note.content }}</span>
@@ -141,6 +241,30 @@ const isThumbed = ref(true);
         </v-row>
         <v-divider></v-divider>
       </div>
+      <v-divider></v-divider>
+      <v-row class="ma-0">
+        <v-col>
+          <v-text-field
+            v-model="noteContent"
+            density="compact"
+            variant="outlined"
+            label="Add a note"
+            class="mt-4"
+            :rules="[validator.isRequired]"
+          ></v-text-field>
+        </v-col>
+        <v-col align-self="center">
+          <v-btn
+            :disabled="noteContent.length == 0"
+            flat
+            class="mb-1"
+            color="primary"
+            :loading="sendingNote"
+            @click="appendNote"
+            >Append a note</v-btn
+          >
+        </v-col>
+      </v-row>
     </v-card>
 
     <!-- Files -->
@@ -157,91 +281,107 @@ const isThumbed = ref(true);
         ></v-switch>
       </v-card-title>
       <!-- Thumbtype -->
-      <v-row v-if="isThumbed" class="pa-4">
-        <v-col v-for="file in issue.attachedFiles" cols="3" class="">
-          <span class="text-caption"
-            >{{ file.originalname }} ({{
-              normalize.formatFileSize(file.size)
-            }})</span
-          >
-          <v-dialog>
-            <template v-slot:activator="{ props }">
-              <v-img
+      <div v-if="issue.attachedFiles.length > 0">
+        <v-row v-if="isThumbed" class="pa-4">
+          <v-col v-for="file in issue.attachedFiles" cols="2">
+            <v-hover v-slot="{ isHovering, props }">
+              <v-card
+                :elevation="isHovering ? 8 : 2"
+                :class="{ 'on-hover': isHovering }"
                 v-bind="props"
-                class="cs-thumbs"
-                :src="`${urlAPI}/files/${file.filename}`"
-                aspect-ratio="1"
-                cover
-              />
-            </template>
-
-            <template v-slot:default="{ isActive }">
-              <v-card>
-                <v-card-title>{{ file.originalname }}</v-card-title>
-                <v-card-text>
-                  <v-img
-                    :src="`${urlAPI}/files/${file.filename}`"
-                    cover
-                  ></v-img>
-                </v-card-text>
+              >
+                <v-img
+                  :class="{ 'cs-hover-img-filter': isHovering }"
+                  :src="fileUrl(file)"
+                  aspect-ratio="1"
+                  cover
+                  @click="showImg(file)"
+                />
+                <div
+                  style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                  "
+                >
+                  <v-btn
+                    :class="{ 'cs-hover-btn-none': !isHovering }"
+                    color="error"
+                    icon="mdi-image-remove"
+                    elevation="2"
+                    small
+                    @click="removeFile(file)"
+                  ></v-btn>
+                </div>
               </v-card>
-            </template>
-          </v-dialog>
-        </v-col>
-      </v-row>
-      <!-- columntype -->
-      <div v-else v-for="file in issue.attachedFiles">
-        <v-row align="start" class="pa-4">
-          <v-col align-self="center">
-            <span class="text-caption"
-              >{{ file.originalname }} ({{
-                normalize.formatFileSize(file.size)
-              }})</span
-            >
-            <v-img :src="`${urlAPI}/files/${file.filename}`"></v-img>
+            </v-hover>
           </v-col>
         </v-row>
+        <!-- columntype -->
+        <div v-else v-for="file in issue.attachedFiles">
+          <v-row align="start" class="pa-4">
+            <v-col align-self="center">
+              <span class="text-caption"
+                >{{ file.originalname }} ({{
+                  normalize.formatFileSize(file.size)
+                }})</span
+              >
+              <v-img :src="fileUrl(file)"></v-img>
+            </v-col>
+          </v-row>
+        </div>
       </div>
       <v-divider></v-divider>
       <v-row class="ma-0">
-        <v-col >
+        <v-col>
           <v-file-input
-          density="compact"
-          variant="outlined"
-          color="primary"
-          counter
-          label="File input"
-          multiple
-          placeholder="Select your files"
-          prepend-icon="mdi-paperclip"
-          :show-size="1000"
-          :accept="['image/png', 'image/jpeg', 'image/bmp, image/jpg']"
-          class="mt-4"
-        >
-          <template v-slot:selection="{ fileNames }">
-            <template v-for="(fileName, index) in fileNames" :key="fileName">
-              <v-chip
-                v-if="index < 2"
-                color="primary"
-                label
-                size="small"
-                class="me-2"
-              >
-                {{ fileName }}
-              </v-chip>
+            v-model="uploadedFiles"
+            density="compact"
+            variant="outlined"
+            color="primary"
+            counter
+            label="File input"
+            multiple
+            placeholder="Select your files"
+            prepend-icon="mdi-paperclip"
+            :show-size="1000"
+            :accept="['image/png', 'image/jpeg', 'image/bmp, image/jpg']"
+            class="mt-4"
+            @change="addPreview()"
+          >
+            <template v-slot:selection="{ fileNames }">
+              <template v-for="(fileName, index) in fileNames" :key="fileName">
+                <v-chip
+                  v-if="index < 2"
+                  color="primary"
+                  label
+                  size="small"
+                  class="me-2"
+                >
+                  {{ fileName }}
+                </v-chip>
 
-              <span
-                v-else-if="index === 2"
-                class="ml-2 text-black text-caption align-self-center"
-              >
-                +{{ issue.uploadFiles.length - 2 }} File(s)
-              </span>
+                <span
+                  v-else-if="index === 2"
+                  class="ml-2 text-black text-caption align-self-center"
+                >
+                  +{{ uploadedFiles.length - 2 }} File(s)
+                </span>
+              </template>
             </template>
-          </template>
-        </v-file-input>
+          </v-file-input>
         </v-col>
         <v-col align-self="center">
-          <v-btn flat class="mb-1" color="primary">Send a new file</v-btn>
+          <v-btn
+            flat
+            class="mb-1"
+            color="primary"
+            @click="appendFiles"
+            :disabled="uploadedFiles.length == 0"
+            :loading="sendingImg"
+            >append files</v-btn
+          >
         </v-col>
       </v-row>
     </v-card>

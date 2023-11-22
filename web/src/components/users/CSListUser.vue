@@ -126,12 +126,12 @@ const approve = async (id) => {
           </td>
           <td>
             <v-chip variant="flat" label color="solved">
-              {{ item.issues.resolvedIssues.length }}</v-chip
+              {{ item.issues.resolvedIssues }}</v-chip
             >
           </td>
           <td>
             <v-chip variant="flat" label color="open">{{
-              item.issues.assignedTo.length
+              item.issues.assignedTo
             }}</v-chip>
           </td>
           <td>
