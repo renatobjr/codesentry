@@ -35,3 +35,6 @@ pnpm-debug.log*
 
 #TODO List
 TODO.md
+
+# Package.json
+package-lock.json
