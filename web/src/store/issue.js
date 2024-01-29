@@ -100,17 +100,21 @@ export const useIssueStore = defineStore("issue", () => {
   };
   async function appendNote(note) {
     return await issueService.appendNote(issue.value._id, note);
-  }
+  };
   async function appendFiles(files) {
     return await issueService.appendFiles(issue.value._id, files)
+  };
+  async function removeFile(file) {
+    return await issueService.removeFile(issue.value._id, file)
   }
   async function deleteIssue(id) {
     return await issueService.deleteIssue(id);
-  }
+  };
 
   return {
     appendNote,
     appendFiles,
+    removeFile,
     createIssue,
     deleteIssue,
     fetchIssue,

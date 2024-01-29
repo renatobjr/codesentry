@@ -187,9 +187,9 @@ watch(
                 ></v-select>
               </v-col>
             </v-row>
-            <v-row v-if="isEdit" class="mt-n2">
+            <v-row class="mt-n2">
               <v-col>
-                <v-select
+                <v-select v-if="isEdit"
                   v-model="issue.state"
                   density="compact"
                   variant="outlined"
@@ -245,7 +245,7 @@ watch(
               class="mt-3"
             ></v-textarea>
             <v-row class="mt-1">
-              <v-col>
+              <v-col v-if="isEdit">
                 <v-select
                   v-model="issue.assignedTo"
                   density="compact"

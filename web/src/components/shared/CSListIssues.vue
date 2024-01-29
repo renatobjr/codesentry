@@ -54,7 +54,7 @@ const edit = (id) => {
   props.from === "project"
     ? router.push({
         name: PROJECTS_ROUTES.EDIT_ISSUE,
-        params: { idProject: idProject.value, id },
+        params: { idProject: query.value.projectId, id },
       })
     : router.push({ name: ISSUES_ROUTES.EDIT, params: { id } });
 };
@@ -63,7 +63,7 @@ const view = (id) => {
   props.from === "project"
     ? router.push({
         name: PROJECTS_ROUTES.VIEW_ISSUE,
-        params: { idProject: idProject.value, id },
+        params: { idProject: query.value.projectId, id },
       })
     : router.push({ name: ISSUES_ROUTES.VIEW, params: { id } });
 };

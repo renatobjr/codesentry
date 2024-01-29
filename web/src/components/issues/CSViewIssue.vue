@@ -47,7 +47,6 @@ const appendNote = async () => {
         message: "Note appended successfully",
         color: "success",
       });
-      console.log(data);
       issue.value.notes.push(data);
     })
     .catch((err) => {
@@ -64,7 +63,7 @@ const appendFiles = async () => {
   sendingImg.value = true;
   await issueStore
     .appendFiles(uploadedFiles)
-    .then((data) => {
+    .then(() => {
       sendingImg.value = false;
       // Show snack
       useSnackbarStore().showSnackbar({
@@ -103,7 +102,6 @@ const fileUrl = (file) => {
 };
 
 const showImg = (file) => {
-  console.log(file);
   const url = fileUrl(file);
   useDialogStore().openDialog({
     title: file.originalname,
@@ -113,8 +111,13 @@ const showImg = (file) => {
   });
 };
 
-const removeFile = (file) => {
-  console.log(file)
+const removeFile = async (file) => {
+  if (!file.preview)
+    await issueStore.removeFile(file);
+
+  issue.value.attachedFiles = issue.value.attachedFiles.filter(
+    (f) => f.filename !== file.filename
+  );
 }
 </script>
 

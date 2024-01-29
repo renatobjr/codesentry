@@ -59,6 +59,14 @@ const issueService = {
     }
     return result.data;
   },
+  removeFile: async (id, data) => {
+    console.log(data)
+    const result = await api.post(`${BASE_URL}/files/delete/${id}`, data);
+    if (result.status == 200) {
+      return true;
+    }
+    return result.data;
+  },
   deleteIssue: async (id) => {
     const result = await api.post(`${BASE_URL}/remove/${id}`);
     if (result.status == 200) {

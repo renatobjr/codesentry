@@ -32,7 +32,7 @@ export default [
     },
   },
   {
-    path: '/projects/edit/:idProject/issues/view/:id',
+    path: '/projects/:idProject/issues/view/:id',
     name: PROJECTS_ROUTES.VIEW_ISSUE,
     component: () => import('@/views/issues/View.vue'),
     meta: {
@@ -69,7 +69,7 @@ export default [
     },
   },
   {
-    path: '/projects/edit/:idProject/issues/edit/:id',
+    path: '/projects/:idProject/issues/edit/:id',
     name: PROJECTS_ROUTES.EDIT_ISSUE,
     component: () => import('@/views/issues/CreateEdit.vue'),
     meta: {
