@@ -1,3 +1,5 @@
+import { RouteMeta } from "../@types/layouts";
+
 export const DASH_ROUTES = {
   DASHBOARD: "dashboard",
 };
@@ -18,8 +20,8 @@ export default [
   route["meta"] = {
     ...route["meta"],
     active: '/dashboard',
-    layout: "base",
+    layout: "Base",
     requiresAuth: true,
-  };
+  } as RouteMeta;
   return route;
 });

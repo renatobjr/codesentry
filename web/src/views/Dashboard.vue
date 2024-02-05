@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 // Only for demo purpose
 // import { unsignedIssues, signedIssues } from '@/data/issues';
 

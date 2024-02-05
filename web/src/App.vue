@@ -4,23 +4,30 @@
   </component>
 </template>
 
-<script setup>
-  import { useRoute, RouterView } from 'vue-router';
-  import { computed, onBeforeMount } from 'vue';
-  import Base from './layouts/default/Base.vue';
-  import Login from './layouts/default/Login.vue';
+<script lang="ts" setup>
+import { computed, onBeforeMount } from "vue";
+import {
+  useRoute,
+  RouterView,
+  RouteLocationNormalizedLoaded,
+} from "vue-router";
 
-  let route;
-  onBeforeMount(() => {
-    route = useRoute();
-  })
+import LayoutTypes from "./@types/layouts";
 
-  const layout = computed(() => {
-    let currentLayout = Login;
-    if (route.meta.layout === 'base') {
-      currentLayout = Base;
-    }
+import Base from "./layouts/default/Base.vue";
+import Login from "./layouts/default/Login.vue";
 
-    return currentLayout;
-  })
+let route: RouteLocationNormalizedLoaded;
+onBeforeMount(() => {
+  route = useRoute();
+});
+
+const layout = computed(() => {
+  let currentLayout = Login;
+  if ((route.meta.layout as LayoutTypes) === "Base") {
+    currentLayout = Base;
+  }
+
+  return currentLayout;
+});
 </script>

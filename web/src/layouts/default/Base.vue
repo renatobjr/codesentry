@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { AUTH_ROUTES } from "@/router/auth";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
@@ -18,17 +18,17 @@ const links = [
 
 let route = useRoute();
 
-const isActive = (path) => {
+const isActive = (path: string) => {
   return route.meta.active === path;
 };
 
-const navigateTo = (path) => {
+const navigateTo = (path: string) => {
   router.push({ path });
 };
 
 const logout = () => {
   useAuthStore().logout();
-  router.push({ name: AUTH_ROUTES.LOGIN })
+  router.push({ name: AUTH_ROUTES.LOGIN });
 };
 </script>
 
@@ -42,10 +42,11 @@ const logout = () => {
       class="bg-primary"
     >
       <v-list>
-        <v-list-item
-        >
+        <v-list-item>
           <template v-slot:prepend>
-            <v-avatar class="font-weight-bold ml-n3" color="white" :size="32">{{ normalize.setAvatar('James Franco') }}</v-avatar>
+            <v-avatar class="font-weight-bold ml-n3" color="white" :size="32">{{
+              normalize.setAvatar("James Franco")
+            }}</v-avatar>
           </template>
           <template v-slot:title>
             <span>James Franco</span>
@@ -54,11 +55,23 @@ const logout = () => {
       </v-list>
       <v-divider></v-divider>
       <v-list density="comfortable" nav>
-        <v-list-item v-for="link in links" :active="isActive(link.path)" :prepend-icon="link.icon" :title="link.name" :value="link.name" base-color="white" @click="navigateTo(link.path)"></v-list-item>
-        <v-list-item prepend-icon="mdi-logout" title="Logout" @click="logout"></v-list-item>
+        <v-list-item
+          v-for="link in links"
+          :active="isActive(link.path)"
+          :prepend-icon="link.icon"
+          :title="link.name"
+          :value="link.name"
+          base-color="white"
+          @click="navigateTo(link.path)"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-logout"
+          title="Logout"
+          @click="logout"
+        ></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
-    <slot></slot>
+    <slot />
   </default-view>
 </template>
