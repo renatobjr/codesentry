@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   web:
     build:
@@ -23,18 +23,20 @@ services:
     working_dir: /var/www
     ports:
       - 3000:3000
+    depends_on:
+      - mongo
     volumes:
       - ./api:/var/www
     networks:
       - codesentry-network
-    
+
   mongo:
     image: mongo:4.4.8-focal
     container_name: codesentry-mongo
     ports:
       - 27017:27017
     volumes:
-      - './mongo/:/data/db'
+      - "./mongo/:/data/db"
     networks:
       - codesentry-network
     environment:
@@ -48,13 +50,14 @@ services:
     ports:
       - 27018:27017
     volumes:
-      - './mongo/test:/data/db'
+      - "./mongo/test:/data/db"
     networks:
       - codesentry-network
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: codesentry
+
 networks:
   codesentry-network:
     driver: bridge
