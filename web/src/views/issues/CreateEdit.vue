@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { ref, onBeforeMount } from "vue";
 import router from "@/router";
 
@@ -12,9 +12,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <cs-header title="New Issue"></cs-header>
+  <cs-header title="New Issue" />
 
-  <cs-form-issue
-    :isEdit="isEdit"
-  ></cs-form-issue>
+  <cs-form-issue :isEdit="isEdit" />
 </template>

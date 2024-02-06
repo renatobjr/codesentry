@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { AUTH_ROUTES } from "@/router/auth";
 import { ref, onBeforeMount, watch, computed } from "vue";
 import { useAuthStore } from "@/store/auth";
@@ -25,7 +25,7 @@ const remainingTime = computed(() => {
   return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 });
 
-const nextInput = (index, event) => {
+const nextInput = (index: any, event: any) => {
   const pinLength = pin.value.digit.filter(
     (index) => index != undefined
   ).length;
@@ -54,13 +54,13 @@ const startTimer = () => {
 
 watch(timeLeft, (time) => {
   if (time === 0) {
-    clearInterval(timerInterval);
+    // clearInterval(timerInterval); // this var doesn't exist anywhere
     isTimerRunning.value = false;
   }
 });
 
 const verifyCode = async () => {
-  let token = "";
+  let token: any = "";
   const pinCode = pin.value.digit.join("");
   const origin = route.meta.origin;
 
@@ -84,8 +84,8 @@ const verifyCode = async () => {
 };
 
 const resend = async () => {
-  let snackbar = {};
-  let token = "";
+  let snackbar: any = {};
+  let token: any = "";
   const origin = route.meta.origin;
 
   origin === AUTH_ROUTES.REGISTER

@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { AUTH_ROUTES } from "@/router/auth";
 import { reactive } from "vue";
 import { ref } from "vue";
@@ -9,12 +9,12 @@ import validator from "@/utils/validator";
 
 const form = ref();
 const subscribeData = reactive({
-  fullName: '',
+  fullName: "",
   subscribeEmail: "",
 });
 
 const subscribe = async () => {
-  let snackbar = {};
+  let snackbar: any = {};
   const is = await form.value.validate();
 
   if (!is.valid) return;
@@ -66,7 +66,12 @@ const back = () => {
         ></v-text-field>
       </template>
       <template v-slot:actions>
-        <v-btn @click="subscribe" class="cs-btn-login" variant="flat" block color="primary"
+        <v-btn
+          @click="subscribe"
+          class="cs-btn-login"
+          variant="flat"
+          block
+          color="primary"
           >Subscribe</v-btn
         >
         <v-btn

@@ -1,9 +1,3 @@
-<template>
-  <component :is="layout">
-    <RouterView />
-  </component>
-</template>
-
 <script lang="ts" setup>
 import { computed, onBeforeMount } from "vue";
 import {
@@ -31,3 +25,9 @@ const layout = computed(() => {
   return currentLayout;
 });
 </script>
+
+<template>
+  <component :is="layout">
+    <RouterView />
+  </component>
+</template>

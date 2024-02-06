@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { AUTH_ROUTES } from "@/router/auth";
 import { DASH_ROUTES } from "@/router/dashboard";
 import { RouterLink } from "vue-router";

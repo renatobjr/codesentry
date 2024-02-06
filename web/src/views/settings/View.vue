@@ -1,6 +1,3 @@
-<script setup></script>
-
 <template>
-<cs-header title="Dashboard"></cs-header>
-
+  <cs-header title="Dashboard" />
 </template>

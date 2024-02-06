@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { AUTH_ROUTES } from "@/router/auth";
 import { ref, reactive, onBeforeMount } from "vue";
 import { useSnackbarStore } from "@/store/snackbar";

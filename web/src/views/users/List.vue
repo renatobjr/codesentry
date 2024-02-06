@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { USERS_ROUTES } from "@/router/users";
 </script>
 
@@ -6,7 +6,7 @@ import { USERS_ROUTES } from "@/router/users";
   <cs-header
     title="Users"
     :actions="[{ title: 'New user', route: USERS_ROUTES.ADD }]"
-  ></cs-header>
+  />
 
   <cs-list-user />
 </template>
