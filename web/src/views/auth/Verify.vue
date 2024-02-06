@@ -120,7 +120,7 @@ const backToLogin = () => {
 </script>
 
 <style>
-.v-field__input {
+.form-verify .v-field__input {
   align-items: flex-start;
   display: flex;
   padding: 0px;
@@ -133,7 +133,7 @@ const backToLogin = () => {
 </style>
 
 <template>
-  <v-form ref="form">
+  <v-form ref="form" class="form-verify">
     <cs-card>
       <template v-slot:title>Verify code</template>
       <template v-slot:content>
