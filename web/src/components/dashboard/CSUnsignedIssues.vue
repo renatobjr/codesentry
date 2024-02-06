@@ -1,14 +1,11 @@
-<script setup>
+<script lang="ts" setup>
 // For development porpuse remeber to create an endpoint to get unsigned issues
 import normalize from "@/utils/normalize";
 
-defineProps({
-  issues: {
-    type: Object,
-    required: false,
-  },
-});
-const countUnsignedIssues = (issues) => {
+defineProps<{
+  issues?: any[];
+}>();
+const countUnsignedIssues = (issues: any) => {
   return issues.length;
 };
 

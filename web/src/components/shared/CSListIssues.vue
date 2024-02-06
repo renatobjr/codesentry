@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { ISSUES_ROUTES } from "@/router/issues";
 import { PROJECTS_ROUTES } from "@/router/projects";
 import { ref, onMounted } from "vue";
@@ -27,7 +27,7 @@ const issueStore = useIssueStore();
 
 const isLoaded = ref(true);
 const issues = ref([]);
-const header = ref(props.header);
+const header = ref<any>(props.header);
 
 const itemsPerPage = normalize.setItemsPerPage;
 let totalIssues = 0;
@@ -39,18 +39,18 @@ onMounted(async () => {
   await loadIssues({ page: 1, itemsPerPage: 10, sortBy: [] });
 });
 
-const loadIssues = async ({ page, itemsPerPage, sortBy }) => {
+const loadIssues = async ({ page, itemsPerPage, sortBy }: any) => {
   isLoaded.value = true;
   await issueStore
     .fetchIssues({ page, itemsPerPage, sortBy })
-    .then(({ items, total }) => {
+    .then(({ items, total }: any) => {
       issues.value = items;
       totalIssues = total;
     });
   isLoaded.value = false;
 };
 
-const edit = (id) => {
+const edit = (id:any) => {
   props.from === "project"
     ? router.push({
         name: PROJECTS_ROUTES.EDIT_ISSUE,
@@ -59,7 +59,7 @@ const edit = (id) => {
     : router.push({ name: ISSUES_ROUTES.EDIT, params: { id } });
 };
 
-const view = (id) => {
+const view = (id:any) => {
   props.from === "project"
     ? router.push({
         name: PROJECTS_ROUTES.VIEW_ISSUE,
@@ -68,7 +68,7 @@ const view = (id) => {
     : router.push({ name: ISSUES_ROUTES.VIEW, params: { id } });
 };
 
-const remove = async (id) => {
+const remove = async (id:any) => {
   const isConfirmed = await useDialogStore().openDialog({
     title: "Delete Issue",
     message: "Are you sure you want to delete this issue?",
@@ -76,11 +76,11 @@ const remove = async (id) => {
 
   if (!isConfirmed) return;
 
-  await issueStore.deleteIssue(id).then( async () => {
+  await issueStore.deleteIssue(id).then(async () => {
     await issueStore.listIssues(query.value);
     loadIssues({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
   });
-}
+};
 </script>
 
 <template>

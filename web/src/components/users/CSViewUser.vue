@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import dataIssues from "@/data/issues";
 import { ref, onMounted } from "vue";
 import { useUserStore } from "@/store/user";

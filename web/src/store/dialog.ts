@@ -25,8 +25,8 @@ export const useDialogStore = defineStore("dialog", () => {
   }: {
     title: undefined | string;
     message: undefined | string;
-    showActions: boolean;
-    type: string;
+    showActions?: boolean;
+    type?: string;
   }) => {
     dialog.value.isOpen = true;
     dialog.value.showActions = showActions;
