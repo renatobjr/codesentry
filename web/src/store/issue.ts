@@ -2,6 +2,7 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 import { ref } from "vue";
 import dataIssues from "@/data/issues";
 import issueService from "@/service/issues";
+import { IssuePriorityType } from "../@types/issue";
 
 export const useIssueStore = defineStore("issue", () => {
   // Reactive state

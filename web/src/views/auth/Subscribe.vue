@@ -53,7 +53,7 @@ const back = () => {
           label="Full name"
           :rules="[validator.isRequired]"
           class="mt-8"
-        ></v-text-field>
+        />
         <v-text-field
           v-model="subscribeData.subscribeEmail"
           variant="outlined"
@@ -63,7 +63,7 @@ const back = () => {
           label="Email"
           :rules="[validator.isRequired, validator.isEmail]"
           class="mt-3"
-        ></v-text-field>
+        />
       </template>
       <template v-slot:actions>
         <v-btn

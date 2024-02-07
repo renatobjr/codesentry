@@ -146,7 +146,7 @@ const backToLogin = () => {
               type="text"
               maxLength="1"
               @input="nextInput(index, $event)"
-            ></v-text-field>
+            />
           </v-col>
         </v-row>
       </template>
@@ -160,8 +160,9 @@ const backToLogin = () => {
           :disabled="
             pin.digit.filter((index) => index != undefined).length < inputs
           "
-          >Verify code</v-btn
         >
+          Verify code
+        </v-btn>
         <v-btn
           @click="resend"
           class="cs-btn-login"
@@ -180,8 +181,9 @@ const backToLogin = () => {
           variant="flat"
           block
           color="secondary"
-          >Back to Login</v-btn
         >
+          Back to Login
+        </v-btn>
       </template>
     </cs-card>
   </v-form>
