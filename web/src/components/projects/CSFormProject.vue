@@ -1,13 +1,13 @@
-<script setup>
-import { ref, reactive, onBeforeMount } from 'vue';
-import validator from '@/utils/validator';
-import { useProjectStore } from '@/store/project';
-import { useUserStore } from '@/store/user';
-import { useSnackbarStore } from '@/store/snackbar';
-import { storeToRefs } from 'pinia';
-import router from '@/router';
-import { PROJECTS_ROUTES } from '@/router/projects';
-import dataUser from '@/data/users';
+<script lang="ts" setup>
+import { ref, reactive, onBeforeMount } from "vue";
+import validator from "@/utils/validator";
+import { useProjectStore } from "@/store/project";
+import { useUserStore } from "@/store/user";
+import { useSnackbarStore } from "@/store/snackbar";
+import { storeToRefs } from "pinia";
+import router from "@/router";
+import { PROJECTS_ROUTES } from "@/router/projects";
+import dataUser from "@/data/users";
 
 const props = defineProps({
   isEdit: Boolean,
@@ -22,15 +22,15 @@ const projectStore = useProjectStore();
 const userStore = useUserStore();
 const { userList } = storeToRefs(userStore);
 const project = reactive({
-  name: '',
-  description: '',
-  admin: '',
+  name: "",
+  description: "",
+  admin: "",
   reporters: [],
   assignees: [],
-  mainLanguage: '',
-  mainDatabase: '',
-})
-const form = ref()
+  mainLanguage: "",
+  mainDatabase: "",
+});
+const form = ref();
 
 const getProject = async () => {
   if (props.isEdit) {
@@ -44,19 +44,25 @@ const getProject = async () => {
     project.mainLanguage = projectStore.project.mainLanguage;
     project.mainDatabase = projectStore.project.mainDatabase;
   }
-}
+};
 
-const listAdmins = () => {
-  return userList.value.filter((user) => user.role === dataUser.roles.ADMIN);
-}
+const listAdmins = (): any[] => {
+  return userList.value.filter(
+    (user: any) => user.role === dataUser.roles.ADMIN
+  );
+};
 
-const listReporters = () => {
-  return userList.value.filter((user) => user.role === dataUser.roles.REPORTER);
-}
+const listReporters = (): any[] => {
+  return userList.value.filter(
+    (user: any) => user.role === dataUser.roles.REPORTER
+  );
+};
 
-const listDevelopers = () => {
-  return userList.value.filter((user) => user.role === dataUser.roles.DEVELOPER);
-}
+const listDevelopers = (): any[] => {
+  return userList.value.filter(
+    (user: any) => user.role === dataUser.roles.DEVELOPER
+  );
+};
 
 const save = async () => {
   const is = await form.value.validate();
@@ -65,7 +71,10 @@ const save = async () => {
     let snackBarMessage = {};
 
     const result = props.isEdit
-      ? await projectStore.updateProject({id: router.currentRoute.value.params.id, project: project})
+      ? await projectStore.updateProject({
+          id: router.currentRoute.value.params.id,
+          project: project,
+        })
       : await projectStore.createProject(project);
 
     if (result == true) {
@@ -73,24 +82,24 @@ const save = async () => {
 
       snackBarMessage = {
         message: props.isEdit
-          ? 'Project updated sucessfully'
-          : 'Project saved successfully',
-        color: 'success',
+          ? "Project updated sucessfully"
+          : "Project saved successfully",
+        color: "success",
       };
     } else {
       snackBarMessage = {
         message: result,
-        color: 'error',
+        color: "error",
       };
     }
 
     useSnackbarStore().showSnackbar(snackBarMessage);
   }
-}
+};
 
 const cancel = () => {
   router.go(-1);
-}
+};
 </script>
 
 <template>
@@ -153,7 +162,7 @@ const cancel = () => {
                       v-if="index === 2"
                       class="ml-2 text-black text-caption align-self-center"
                     >
-                      (+ {{ selectedUsers.length - 2 }} others)
+                      <!-- (+ {{ selectedUsers.length - 2 }} others) I didn´t understood this -->
                     </span>
                   </template>
                 </v-select>
@@ -179,7 +188,7 @@ const cancel = () => {
                       v-if="index === 2"
                       class="ml-2 text-black text-caption align-self-center"
                     >
-                      (+ {{ selectedUsers.length - 2 }} others)
+                      <!-- (+ {{ selectedUsers.length - 2 }} others) I didn´t understood this --> 
                     </span>
                   </template>
                 </v-select>
@@ -207,16 +216,10 @@ const cancel = () => {
             </v-row>
             <v-row>
               <v-col>
-                <v-btn
-                  @click="save"
-                  flat
-                  class="mr-4"
-                  color="primary"
-                  >{{ isEdit ? "Save" : "Create" }}</v-btn
-                >
-                <v-btn @click="cancel" flat color="warning"
-                  >Cancel</v-btn
-                >
+                <v-btn @click="save" flat class="mr-4" color="primary">{{
+                  isEdit ? "Save" : "Create"
+                }}</v-btn>
+                <v-btn @click="cancel" flat color="warning">Cancel</v-btn>
               </v-col>
             </v-row>
           </v-form>

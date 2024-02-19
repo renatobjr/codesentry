@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { AUTH_ROUTES } from "@/router/auth";
 import { ref } from "vue";
 import { useAuthStore } from "@/store/auth";
@@ -47,7 +47,7 @@ const back = () => {
           label="Email"
           :rules="[validator.isRequired, validator.isEmail]"
           class="mt-8"
-        ></v-text-field>
+        />
       </template>
       <template v-slot:actions>
         <v-btn
@@ -56,16 +56,18 @@ const back = () => {
           variant="flat"
           block
           color="primary"
-          >Continue</v-btn
         >
+          Continue
+        </v-btn>
         <v-btn
           @click="back"
           class="cs-btn-login"
           variant="flat"
           block
           color="secondary"
-          >Back</v-btn
         >
+          Back
+        </v-btn>
       </template>
     </cs-card>
   </v-form>

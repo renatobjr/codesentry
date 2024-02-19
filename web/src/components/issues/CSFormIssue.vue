@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { ref, reactive, onBeforeMount } from "vue";
 import { storeToRefs } from "pinia";
 import { useIssueStore } from "@/store/issue";
@@ -10,9 +10,9 @@ import router from "@/router";
 import validator from "@/utils/validator";
 import { watch } from "vue";
 
-const props = defineProps({
-  isEdit: Boolean,
-});
+const props = defineProps<{
+  isEdit: boolean;
+}>();
 
 onBeforeMount(async () => {
   await userStore.listUsers();
@@ -30,13 +30,14 @@ const { projectList } = storeToRefs(projectStore);
 const issue = reactive({
   priority: "",
   reproducibility: "",
-  project: "",
+  project: "" as any,
   resume: "",
   description: "",
   stepsToReproduce: "",
-  assignedTo: "",
-  previewFiles: [],
-  attachedFiles: [],
+  assignedTo: "" as any,
+  state: "",
+  previewFiles: [] as any[],
+  attachedFiles: [] as any[],
 });
 const form = ref();
 
@@ -58,7 +59,7 @@ const gerIssue = async () => {
 
 const listDevelopers = () => {
   return userList.value.filter(
-    (user) => user.role === dataUser.roles.DEVELOPER
+    (user: any) => user.role === dataUser.roles.DEVELOPER
   );
 };
 
@@ -79,20 +80,23 @@ const addPreview = () => {
   });
 };
 
-const removeFile = (file) => {
+const removeFile = (file: any) => {
   issue.attachedFiles = issue.attachedFiles.filter((img) => {
-    return img.name != file.filename
-  })
+    return img.name != file.filename;
+  });
   issue.previewFiles = issue.previewFiles.filter((img) => {
-    return img.filename != file.filename
-  })
+    return img.filename != file.filename;
+  });
 };
 
 const save = async () => {
   const is = await form.value.validate();
 
   if (is.valid) {
-    let snackBarMessage = {};
+    let snackBarMessage: {
+      message: string;
+      color: string;
+    };
 
     const result = props.isEdit
       ? await issueStore.updateIssue({
@@ -130,9 +134,9 @@ watch(
     } else {
       oldValue.forEach((file) => {
         issue.previewFiles = issue.previewFiles.filter((img) => {
-          return img.filename != file.name
-        })
-      })
+          return img.filename != file.name;
+        });
+      });
     }
   }
 );
@@ -189,7 +193,8 @@ watch(
             </v-row>
             <v-row class="mt-n2">
               <v-col>
-                <v-select v-if="isEdit"
+                <v-select
+                  v-if="isEdit"
                   v-model="issue.state"
                   density="compact"
                   variant="outlined"
@@ -299,7 +304,10 @@ watch(
               </v-col>
             </v-row>
             <v-card
-              v-if="issue.attachedFiles.length != 0 || issue.previewFiles.length != 0"
+              v-if="
+                issue.attachedFiles.length != 0 ||
+                issue.previewFiles.length != 0
+              "
               variant="outlined"
               elevation="0"
               rounded="mg"
@@ -313,7 +321,16 @@ watch(
                       :class="{ 'on-hover': isHovering }"
                       v-bind="props"
                     >
-                      <v-img :class="{ 'cs-hover-img-filter': isHovering }" :src="file.preview ? file.preview : `${urlAPI}/files/${file.filename}`" aspect-ratio="1" cover />
+                      <v-img
+                        :class="{ 'cs-hover-img-filter': isHovering }"
+                        :src="
+                          file.preview
+                            ? file.preview
+                            : `${urlAPI}/files/${file.filename}`
+                        "
+                        aspect-ratio="1"
+                        cover
+                      />
                       <div
                         style="
                           position: absolute;
@@ -323,7 +340,7 @@ watch(
                         "
                       >
                         <v-btn
-                          :class="{ 'cs-hover-btn-none': !isHovering}"
+                          :class="{ 'cs-hover-btn-none': !isHovering }"
                           color="error"
                           icon="mdi-image-remove"
                           elevation="2"

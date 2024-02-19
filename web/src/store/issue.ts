@@ -2,6 +2,7 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 import { ref } from "vue";
 import dataIssues from "@/data/issues";
 import issueService from "@/service/issues";
+import { IssuePriorityType } from "../@types/issue";
 
 export const useIssueStore = defineStore("issue", () => {
   // Reactive state
@@ -9,16 +10,16 @@ export const useIssueStore = defineStore("issue", () => {
     _id: "",
     resume: "",
     description: "",
-    project: {},
+    project: {} as any,
     stepsToReproduce: "",
-    priority: "",
+    priority: undefined as IssuePriorityType,
     reproducibility: "",
     state: "",
-    relatedTo: [],
-    reporter: [],
-    assignedTo: [],
-    attachedFiles: [],
-    notes: [],
+    relatedTo: [] as any,
+    reporter: [] as any,
+    assignedTo: [] as any,
+    attachedFiles: [] as any[],
+    notes: [] as any[],
     createdAt: "",
     updatedAt: "",
   });
@@ -54,10 +55,18 @@ export const useIssueStore = defineStore("issue", () => {
   ];
 
   // Actions
-  async function listIssues(options) {
+  async function listIssues(options?: any) {
     issuesList.value = await issueService.fetchIssues(options);
-  };
-  async function fetchIssues({ page, itemsPerPage, sortBy }) {
+  }
+  async function fetchIssues({
+    page,
+    itemsPerPage,
+    sortBy,
+  }: {
+    page: any;
+    itemsPerPage: any;
+    sortBy: any;
+  }) {
     if (issuesList) {
       totalIssues.value = issuesList.value.length;
 
@@ -88,28 +97,28 @@ export const useIssueStore = defineStore("issue", () => {
         });
       });
     }
-  };
-  async function fetchIssue(id) {
-    issue.value = await issueService.fecthIssue(id);
-  };
-  async function createIssue(issue) {
-    return await issueService.createIssue(issue);
-  };
-  async function updateIssue(issue) {
-    return await issueService.updateIssue(issue);
-  };
-  async function appendNote(note) {
-    return await issueService.appendNote(issue.value._id, note);
-  };
-  async function appendFiles(files) {
-    return await issueService.appendFiles(issue.value._id, files)
-  };
-  async function removeFile(file) {
-    return await issueService.removeFile(issue.value._id, file)
   }
-  async function deleteIssue(id) {
+  async function fetchIssue(id: any) {
+    issue.value = await issueService.fecthIssue(id);
+  }
+  async function createIssue(issue: any) {
+    return await issueService.createIssue(issue);
+  }
+  async function updateIssue(issue: any) {
+    return await issueService.updateIssue(issue);
+  }
+  async function appendNote(note: any) {
+    return await issueService.appendNote(issue.value._id, note);
+  }
+  async function appendFiles(files: any) {
+    return await issueService.appendFiles(issue.value._id, files);
+  }
+  async function removeFile(file: any) {
+    return await issueService.removeFile(issue.value._id, file);
+  }
+  async function deleteIssue(id: any) {
     return await issueService.deleteIssue(id);
-  };
+  }
 
   return {
     appendNote,

@@ -8,12 +8,13 @@ export const useProjectStore = defineStore("project", () => {
     _id: null,
     name: "",
     description: "",
-    admin: "",
-    reporters: [],
+    admin: "" as any,
+    reporters: [] as any,
     assignees: [],
     mainLanguage: "",
     mainDatabase: "",
-    issues: []
+    issues: [],
+    createdAt: "" as any,
   });
   let projectList = ref([]);
   let totalProjects = ref(0);
@@ -21,8 +22,16 @@ export const useProjectStore = defineStore("project", () => {
   // Actions
   async function listProjects() {
     projectList.value = await projectService.fetchProjects();
-  };
-  async function fetchProjects({ page, itemsPerPage, sortBy}) {
+  }
+  async function fetchProjects({
+    page,
+    itemsPerPage,
+    sortBy,
+  }: {
+    page: any;
+    itemsPerPage: any;
+    sortBy: any;
+  }) {
     if (projectList) {
       totalProjects.value = projectList.value.length;
 
@@ -37,10 +46,10 @@ export const useProjectStore = defineStore("project", () => {
             const aValue = a[sortKey];
             const bValue = b[sortKey];
 
-            if (sortOrder === 'asc') {
-              return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
+            if (sortOrder === "asc") {
+              return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
             } else {
-              return aValue > bValue ? -1 : aValue < bValue ? 1 : 0
+              return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
             }
           });
         }
@@ -53,17 +62,17 @@ export const useProjectStore = defineStore("project", () => {
         });
       });
     }
-  };
-  async function fetchProject(id) {
+  }
+  async function fetchProject(id: any) {
     project.value = await projectService.fetchProject(id);
-  };
-  async function createProject(project) {
+  }
+  async function createProject(project: any) {
     return await projectService.createProject(project);
-  };
-  async function updateProject(project) {
+  }
+  async function updateProject(project: any) {
     return await projectService.updateProject(project);
-  };
-  async function deleteProject(id) {
+  }
+  async function deleteProject(id: any) {
     return await projectService.deleteProject(id);
   }
 
@@ -77,7 +86,7 @@ export const useProjectStore = defineStore("project", () => {
     totalProjects,
     updateProject,
     listProjects,
-  }
+  };
 });
 
 if (import.meta.hot)

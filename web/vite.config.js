@@ -34,8 +34,8 @@ export default defineConfig({
   define: {
     "process.env": {
       URL_API: "http://localhost:3000",
-      SESSION_TOKEN: 'session_token',
-      RECOVERY_TOKEN: 'recovery_token',
+      SESSION_TOKEN: "session_token",
+      RECOVERY_TOKEN: "recovery_token",
     },
   },
   resolve: {
@@ -47,5 +47,8 @@ export default defineConfig({
   server: {
     port: 8089,
     host: true,
+    watch: {
+      usePolling: true,
+    },
   },
 });

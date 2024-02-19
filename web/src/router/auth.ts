@@ -1,3 +1,5 @@
+import { RouteMeta } from '../@types/layouts';
+
 export const AUTH_ROUTES = {
   LOGIN: 'login',
   RECOVERY: 'recovery',
@@ -25,7 +27,7 @@ export default [
     name: AUTH_ROUTES.VERIFY,
     component: () => import('@/views/auth/Verify.vue'),
     meta: {
-      origin: 'recovery'
+      origin: 'recovery' as string | undefined
     }
   },
   {
@@ -33,7 +35,7 @@ export default [
     name: AUTH_ROUTES.REGISTER,
     component: () => import('@/views/auth/Verify.vue'),
     meta: {
-      origin: 'register'
+      origin: 'register' as string | undefined
     }
   },
   {
@@ -41,7 +43,7 @@ export default [
     name: AUTH_ROUTES.RESET,
     component: () => import('@/views/auth/SetPassword.vue'),
     meta: {
-      origin: 'reset-password'
+      origin: 'reset-password' as string | undefined
     }
   },
   {
@@ -49,7 +51,7 @@ export default [
     name: AUTH_ROUTES.CREATE,
     component: () => import('@/views/auth/SetPassword.vue'),
     meta: {
-      origin: 'create-password'
+      origin: 'create-password' as string | undefined
     }
   },
   {
@@ -67,6 +69,6 @@ export default [
     ...route["meta"],
     layout: 'login',
     requiresAuth: false,
-  }
+  } as RouteMeta
   return route;
 });

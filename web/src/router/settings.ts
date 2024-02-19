@@ -1,3 +1,5 @@
+import { RouteMeta } from "../@types/layouts";
+
 export const SETTINGS_ROUTES = {
   LIST: "settings",
 };
@@ -18,9 +20,9 @@ export default [
   route["meta"] = {
     ...route["meta"],
     active: "/settings",
-    layout: "base",
+    layout: "Base",
     requiresAuth: true,
-  };
+  } as RouteMeta;
 
   return route;
 });

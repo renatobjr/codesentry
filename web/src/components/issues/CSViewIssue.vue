@@ -1,15 +1,14 @@
-<script setup>
-import { ref, onMounted } from "vue";
+<script lang="ts" setup>
+import { ref, onMounted, computed, watch } from "vue";
+import { storeToRefs } from "pinia";
+
+import router from "@/router";
 import { useIssueStore } from "@/store/issue";
 import { useAuthStore } from "@/store/auth";
 import { useSnackbarStore } from "@/store/snackbar";
 import { useDialogStore } from "@/store/dialog";
-import { storeToRefs } from "pinia";
 import validator from "@/utils/validator";
 import normalize from "@/utils/normalize";
-import router from "@/router";
-import { computed } from "vue";
-import { watch } from "vue";
 
 const issueStore = useIssueStore();
 const authStore = useAuthStore();
@@ -81,7 +80,7 @@ const appendFiles = async () => {
 };
 
 const addPreview = () => {
-  uploadedFiles.value.forEach((file) => {
+  uploadedFiles.value.forEach((file:any) => {
     const reader = new FileReader();
 
     reader.onload = (e) => {
@@ -97,11 +96,11 @@ const addPreview = () => {
   });
 };
 
-const fileUrl = (file) => {
+const fileUrl = (file:any) => {
   return file.preview ? file.preview : `${urlAPI}/files/${file.filename}`;
 };
 
-const showImg = (file) => {
+const showImg = (file:any) => {
   const url = fileUrl(file);
   useDialogStore().openDialog({
     title: file.originalname,
@@ -111,14 +110,13 @@ const showImg = (file) => {
   });
 };
 
-const removeFile = async (file) => {
-  if (!file.preview)
-    await issueStore.removeFile(file);
+const removeFile = async (file:any) => {
+  if (!file.preview) await issueStore.removeFile(file);
 
   issue.value.attachedFiles = issue.value.attachedFiles.filter(
     (f) => f.filename !== file.filename
   );
-}
+};
 </script>
 
 <template>

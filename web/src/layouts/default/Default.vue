@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { useSnackbarStore } from "@/store/snackbar";
 import { useDialogStore } from "@/store/dialog";
 import { storeToRefs } from "pinia";

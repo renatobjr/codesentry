@@ -1,15 +1,12 @@
-<script setup>
+<script lang="ts" setup>
 // For development porpuse
 import normalize from "@/utils/normalize";
 
-defineProps({
-  issues: {
-    type: Object,
-    required: false,
-  },
-});
+defineProps<{
+  issues?: any[]
+}>();
 
-const countSignnedIssues = (issues) => {
+const countSignnedIssues = (issues:any[]) => {
   return issues.length;
 };
 
@@ -25,7 +22,7 @@ const listSignedIssues = () => {
         <cs-list-header
           title="Signed Issues"
           :action="listSignedIssues"
-          :infoChips="{ partial: countSignnedIssues(issues), total: 90 }"
+          :infoChips="{ partial: countSignnedIssues(issues ?? []), total: 90 }"
         />
       </v-expansion-panel-title>
       <div v-for="issue in issues" :key="issue">

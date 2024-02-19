@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { AUTH_ROUTES } from "@/router/auth";
 import { ref, onBeforeMount, watch, computed } from "vue";
 import { useAuthStore } from "@/store/auth";
@@ -25,7 +25,7 @@ const remainingTime = computed(() => {
   return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 });
 
-const nextInput = (index, event) => {
+const nextInput = (index: any, event: any) => {
   const pinLength = pin.value.digit.filter(
     (index) => index != undefined
   ).length;
@@ -54,13 +54,13 @@ const startTimer = () => {
 
 watch(timeLeft, (time) => {
   if (time === 0) {
-    clearInterval(timerInterval);
+    // clearInterval(timerInterval); // this var doesn't exist anywhere
     isTimerRunning.value = false;
   }
 });
 
 const verifyCode = async () => {
-  let token = "";
+  let token: any = "";
   const pinCode = pin.value.digit.join("");
   const origin = route.meta.origin;
 
@@ -84,8 +84,8 @@ const verifyCode = async () => {
 };
 
 const resend = async () => {
-  let snackbar = {};
-  let token = "";
+  let snackbar: any = {};
+  let token: any = "";
   const origin = route.meta.origin;
 
   origin === AUTH_ROUTES.REGISTER
@@ -120,7 +120,7 @@ const backToLogin = () => {
 </script>
 
 <style>
-.v-field__input {
+.form-verify .v-field__input {
   align-items: flex-start;
   display: flex;
   padding: 0px;
@@ -133,7 +133,7 @@ const backToLogin = () => {
 </style>
 
 <template>
-  <v-form ref="form">
+  <v-form ref="form" class="form-verify">
     <cs-card>
       <template v-slot:title>Verify code</template>
       <template v-slot:content>
@@ -146,7 +146,7 @@ const backToLogin = () => {
               type="text"
               maxLength="1"
               @input="nextInput(index, $event)"
-            ></v-text-field>
+            />
           </v-col>
         </v-row>
       </template>
@@ -160,8 +160,9 @@ const backToLogin = () => {
           :disabled="
             pin.digit.filter((index) => index != undefined).length < inputs
           "
-          >Verify code</v-btn
         >
+          Verify code
+        </v-btn>
         <v-btn
           @click="resend"
           class="cs-btn-login"
@@ -180,8 +181,9 @@ const backToLogin = () => {
           variant="flat"
           block
           color="secondary"
-          >Back to Login</v-btn
         >
+          Back to Login
+        </v-btn>
       </template>
     </cs-card>
   </v-form>

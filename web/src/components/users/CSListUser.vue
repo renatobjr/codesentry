@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { ref, onMounted } from "vue";
 import { useDialogStore } from "@/store/dialog";
 import { USERS_ROUTES } from "@/router/users";
@@ -11,7 +11,7 @@ const userStore = useUserStore();
 
 const isLoaded = ref(true);
 const users = ref([]);
-const header = ref([userData.header]);
+const header = ref<any>([userData.header]);
 
 const itemsPerPage = normalize.setItemsPerPage;
 let totalUsers = 0;
@@ -21,11 +21,11 @@ onMounted(async () => {
   await loadUsers({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
 });
 
-const loadUsers = async ({ page, itemsPerPage, sortBy }) => {
+const loadUsers = async ({ page, itemsPerPage, sortBy }:any) => {
   isLoaded.value = true;
   await userStore
     .fetchUsers({ page, itemsPerPage, sortBy })
-    .then(({ items, total }) => {
+    .then(({ items, total }:any) => {
       users.value = items;
       totalUsers = total;
     });
@@ -34,19 +34,19 @@ const loadUsers = async ({ page, itemsPerPage, sortBy }) => {
 
 const countUserPending = () => {
   return users.value.filter(
-    (user) => user.status == userData.status.WAITING_APPROVAL
+    (user:any) => user.status == userData.status.WAITING_APPROVAL
   ).length;
 };
 
-const edit = (id) => {
+const edit = (id:any) => {
   router.push({ name: USERS_ROUTES.EDIT, params: { id } });
 };
 
-const view = (id) => {
+const view = (id:any) => {
   router.push({ name: USERS_ROUTES.VIEW, params: { id } });
 };
 
-const remove = async (id) => {
+const remove = async (id:any) => {
   const isConfirmed = await useDialogStore().openDialog({
     title: "Delete User",
     message: "Are you sure you want to delete this user?",
@@ -54,13 +54,13 @@ const remove = async (id) => {
 
   if (!isConfirmed) return;
 
-  await userStore.deleteUser(id).then( async () => {
+  await userStore.deleteUser(id).then(async () => {
     await userStore.listUsers();
     loadUsers({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
   });
 };
 
-const approve = async (id) => {
+const approve = async (id:any) => {
   const isConfirmed = await useDialogStore().openDialog({
     title: "Approve User",
     message: "Are you sure you want to approve this user?",
@@ -68,7 +68,7 @@ const approve = async (id) => {
 
   if (!isConfirmed) return;
 
-  await userStore.approveUser(id).then( async () => {
+  await userStore.approveUser(id).then(async () => {
     await userStore.listUsers();
     loadUsers({ page: 1, itemsPerPage: itemsPerPage, sortBy: [] });
   });
